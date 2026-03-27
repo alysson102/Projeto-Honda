@@ -1,0 +1,19 @@
+RewriteEngine On
+
+# Block direct access to internal application directories.
+RewriteRule ^(?:app|bootstrap|database|vendor|storage|tests)(?:/|$) - [F,L,NC]
+
+# Block hidden files (except Let's Encrypt/.well-known).
+RewriteRule "(^|/)\.(?!well-known/)" - [F,L]
+
+# Block direct access to sensitive root files.
+RewriteRule ^(?:\.env|composer\.(?:json|lock)|phpunit\.xml(?:\.dist)?|README\.md)$ - [F,L,NC]
+
+# Ensure /Projeto-Honda opens the app entrypoint instead of the public directory.
+RewriteRule ^$ public/index.php [L]
+
+# If already targeting /public, stop rewriting.
+RewriteRule ^public/ - [L]
+
+# Route all requests through /public internally.
+RewriteRule ^(.*)$ public/$1 [L]
