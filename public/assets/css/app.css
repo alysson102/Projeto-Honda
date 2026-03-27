@@ -52,6 +52,7 @@ header.topbar {
     left: 0;
     z-index: 1000;
     border-bottom: 1px solid white;
+    color:red;
 }
 
 
