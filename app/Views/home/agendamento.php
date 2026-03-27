@@ -1,0 +1,200 @@
+<?php
+use App\Core\Csrf;
+use App\Core\Auth;
+
+$title = 'Agendamento de Serviços';
+
+// Obter dados do usuário logado
+$usuarioNome = '';
+$usuarioEmail = '';
+$usuarioTelefone = '';
+
+if (Auth::check()) {
+    $usuario = Auth::user();
+    if (is_array($usuario)) {
+        $usuarioNome = $usuario['name'] ?? '';
+        $usuarioEmail = $usuario['email'] ?? '';
+        $usuarioTelefone = $usuario['telefone'] ?? '';
+    }
+}
+
+// Opções de revisão disponíveis
+$revisoes = [
+    1000 => '1.000 km',
+    6000 => '6.000 km',
+    12000 => '12.000 km',
+    18000 => '18.000 km',
+    24000 => '24.000 km',
+    30000 => '30.000 km ',
+    36000 => '36.000 km ',
+    42000 => '42.000 km ',
+    48000 => '48.000 km ',
+    54000 => '54.000 km '
+];
+
+// Horários de atendimento
+$horarios = ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '15:00', '15:30', '16:00', '16:30', '17:00'];
+$revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
+?>
+
+<div class="agendamento-container">
+    <div class="agendamento-header">
+        <h1><span class="moto-animada">🏍️</span> Agendamento de Serviços</h1>
+    </div>
+
+    <div id="successMessage" class="success-message success-message-hidden">
+        <div class="success-icon">✓</div>
+        <h2>Agendamento Confirmado!</h2>
+        <p>Seu agendamento foi realizado com sucesso. Você receberá uma confirmação por email.</p>
+        <p class="success-subtitle">Redirecionando...</p>
+    </div>
+
+    <div id="formContainer">
+        <form id="agendamentoForm" class="form-agendamento" method="POST" action="<?= e(url('/agendamento')) ?>">
+            <?= Csrf::field() ?>
+
+            <!-- Dados do Cliente -->
+            <div class="form-section">
+                <h3 class="section-title">💼 Informações do Cliente</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="nome" name="nome" required placeholder=" " value="<?= e($usuarioNome) ?>">
+                        <label for="nome" class="form-label">Nome Completo <span class="field-required">*</span></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" required placeholder=" " value="<?= e($usuarioEmail) ?>">
+                        <label for="email" class="form-label">E-mail <span class="field-required">*</span></label>
+                    </div>
+                </div>
+
+                <div class="form-row form-row-center">
+                    <div class="form-group">
+                        <input type="tel" id="telefone" name="telefone" required placeholder=" " pattern="[0-9\-\(\)\s]{10,}" maxlength="15" value="<?= e($usuarioTelefone) ?>">
+                        <label for="telefone" class="form-label">Telefone <span class="field-required">*</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dados da Motocicleta -->
+            <div class="form-section">
+                <h3 class="section-title">🏍️ Informações da Motocicleta</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="marca" name="marca" required placeholder=" " maxlength="50">
+                        <label for="marca" class="form-label">Marca/Modelo <span class="field-required">*</span></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="ano" name="ano" required min="1990" max="2099" placeholder=" ">
+                        <label for="ano" class="form-label">Ano <span class="field-required">*</span></label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="chassi" name="chassi" required placeholder=" " maxlength="17">
+                        <label for="chassi" class="form-label">Chassis/VIN <span class="field-required">*</span></label>
+                        <span class="help-text">📌 17 caracteres (padrão VIN)</span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="placa" name="placa" required placeholder=" " maxlength="8" pattern="[A-Z]{3}-[0-9]{1}[A-Z]{1}[0-9]{2}">
+                        <label for="placa" class="form-label">Placa <span class="field-required">*</span></label>
+                        <span class="help-text">📌 Formato: ABC-1D23</span>
+                        <div id="placaWarning" class="placa-warning placa-warning-hidden">
+                            ⚠️ Os 3 primeiros caracteres só podem ser letras!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <input type="number" id="quilometragem" name="quilometragem" required min="0" placeholder=" " max="999999">
+                        <label for="quilometragem" class="form-label">Quilometragem Atual <span class="field-required">*</span></label>
+                        <span class="help-text">📌 Para seleção adequada do tipo de revisão</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tipo de Revisão -->
+            <div class="form-section">
+                <h3 class="section-title">🔧 Tipo de Revisão</h3>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <select id="revisao" name="revisao" required>
+                            <option value=""></option>
+                            <?php foreach ($revisoes as $km => $label): ?>
+                                <option value="<?= $km ?>"><?= $label ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <label for="revisao" class="form-label">Selecione o Tipo de Revisão <span class="field-required">*</span></label>
+                        <span class="help-text">📌 Revisões de 12.000 km+ duram aproximadamente 2 horas</span>
+                    </div>
+                </div>
+
+                <div id="duracaoInfo" class="duracao-info-hidden">
+                    <div class="info-box" id="duracaoTexto"></div>
+                </div>
+            </div>
+
+            <!-- Data e Horário -->
+            <div class="form-section">
+                <h3 class="section-title">📅 Data e Horário</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="date" id="data" name="data" required placeholder=" ">
+                        <label for="data" class="form-label">Data <span class="field-required">*</span></label>
+                        <span class="help-text">📌 Segunda a Sexta apenas</span>
+                    </div>
+                </div>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label class="horarios-label">Horário Disponível <span class="field-required">*</span></label>
+                        <input type="hidden" id="horario" name="horario" required>
+                        <div class="horarios-grid" id="horariosContainer">
+                            <p class="horarios-placeholder">Selecione uma data primeiro</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Observações -->
+            <div class="form-section">
+                <h3 class="section-title">📝 Observações</h3>
+
+                <div class="form-row full">
+                    <div class="form-group">
+                        <textarea id="observacoes" name="observacoes" placeholder=" " maxlength="500"></textarea>
+                        <label for="observacoes" class="form-label">Observações Adicionais</label>
+                        <span class="help-text">📌 Opcional - Máximo 500 caracteres</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-submit" id="submitBtn">Agendar Serviço</button>
+                <button type="reset" class="btn btn-reset">Limpar Formulário</button>
+            </div>
+
+            <div class="loading loading-hidden" id="loadingIndicator">
+                <div class="spinner"></div>
+                <p class="loading-text">Processando seu agendamento...</p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Configurações passadas do PHP para JavaScript -->
+<script type="application/json" data-config="agendamento">
+{
+    "horarios": <?= json_encode($horarios) ?>,
+    "revisoesDuasHoras": <?= json_encode($revisoesDuasHoras) ?>
+}
+</script>
+
+<!-- Script de agendamento -->
+<script src="<?= e(url('/assets/js/agendamento.js')) ?>"></script>
