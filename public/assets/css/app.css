@@ -1685,6 +1685,8 @@ body.page-index {
 .form-group input:focus ~ .form-label,
 .form-group input:not(:placeholder-shown) ~ .form-label,
 .form-group select:focus ~ .form-label,
+.form-group select:valid ~ .form-label,
+.form-group select.has-value ~ .form-label,
 .form-group textarea:focus ~ .form-label,
 .form-group textarea:not(:placeholder-shown) ~ .form-label {
     top: -8px;

@@ -4,6 +4,12 @@ let REVISOES_DUAS_HORAS = [];
 
 // Inicializar quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', function() {
+    // Mantém o label do select no topo quando há valor escolhido
+    function sincronizarEstadoSelect(selectElement) {
+        if (!selectElement) return;
+        selectElement.classList.toggle('has-value', selectElement.value !== '');
+    }
+
     // Obter configurações do HTML
     const configScript = document.querySelector('script[data-config="agendamento"]');
     if (configScript) {
@@ -32,8 +38,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const revisaoSelect = document.getElementById('revisao');
     if (revisaoSelect) {
         revisaoSelect.addEventListener('change', function() {
+            sincronizarEstadoSelect(revisaoSelect);
             atualizarDuracao();
         });
+
+        revisaoSelect.addEventListener('blur', function() {
+            sincronizarEstadoSelect(revisaoSelect);
+        });
+
+        sincronizarEstadoSelect(revisaoSelect);
     }
 
     // Event listener para input de data
@@ -229,10 +242,16 @@ function atualizarDuracao() {
     const revisao = parseInt(document.getElementById('revisao').value);
     const duracaoInfo = document.getElementById('duracaoInfo');
     const duracaoTexto = document.getElementById('duracaoTexto');
+    const revisoesRapidas = [1000, 6000];
 
     if (revisao) {
-        const duracao = REVISOES_DUAS_HORAS.includes(revisao) ? '2 horas' : '1 hora';
-        const tempoClass = REVISOES_DUAS_HORAS.includes(revisao) ? 'crítico' : 'normal';
+        let duracao = '1 hora';
+
+        if (revisoesRapidas.includes(revisao)) {
+            duracao = '15 a 20 minutos';
+        } else if (REVISOES_DUAS_HORAS.includes(revisao)) {
+            duracao = '2 horas';
+        }
         
         duracaoTexto.innerHTML = `<strong>⏱️ Duração aproximada:</strong> ${duracao}`;
         duracaoInfo.classList.remove('duracao-info-hidden');

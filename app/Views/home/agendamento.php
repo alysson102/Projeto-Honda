@@ -20,16 +20,16 @@ if (Auth::check()) {
 
 // Opções de revisão disponíveis
 $revisoes = [
-    1000 => '1.000 km',
-    6000 => '6.000 km',
-    12000 => '12.000 km',
-    18000 => '18.000 km',
-    24000 => '24.000 km',
-    30000 => '30.000 km ',
-    36000 => '36.000 km ',
-    42000 => '42.000 km ',
-    48000 => '48.000 km ',
-    54000 => '54.000 km '
+    1000 => '1.000 km ou seis meses',
+    6000 => '6.000 km ou um ano',
+    12000 => '12.000 km ou 18 meses',
+    18000 => '18.000 km ou 24 meses',
+    24000 => '24.000 km ou 30 meses',
+    30000 => '30.000 km ou 36 meses',
+    36000 => '36.000 km ou 42 meses',
+    42000 => '42.000 km ou 48 meses',
+    48000 => '48.000 km ou 54 meses',
+    54000 => '54.000 km ou 60 meses'
 ];
 
 // Horários de atendimento
@@ -94,8 +94,8 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
                 <div class="form-row">
                     <div class="form-group">
                         <input type="text" id="chassi" name="chassi" required placeholder=" " maxlength="17">
-                        <label for="chassi" class="form-label">Chassis/VIN <span class="field-required">*</span></label>
-                        <span class="help-text">📌 17 caracteres (padrão VIN)</span>
+                        <label for="chassi" class="form-label">Chassi <span class="field-required">*</span></label>
+                        <span class="help-text">📌 17 caracteres</span>
                     </div>
                     <div class="form-group">
                         <input type="text" id="placa" name="placa" required placeholder=" " maxlength="8" pattern="[A-Z]{3}-[0-9]{1}[A-Z]{1}[0-9]{2}">
@@ -129,7 +129,6 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
                             <?php endforeach; ?>
                         </select>
                         <label for="revisao" class="form-label">Selecione o Tipo de Revisão <span class="field-required">*</span></label>
-                        <span class="help-text">📌 Revisões de 12.000 km+ duram aproximadamente 2 horas</span>
                     </div>
                 </div>
 
