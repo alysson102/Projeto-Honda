@@ -38,9 +38,9 @@ CREATE TABLE IF NOT EXISTS `agendamentos` (
   COLLATE=utf8mb4_unicode_ci;
 
 -- Criar índice para verificar conflitos de agendamento
-CREATE INDEX idx_conflito_check ON `agendamentos` 
-(`data_agendamento`, `horario_inicio`, `duracao_horas`) 
-WHERE `status` IN ('pendente', 'confirmado');
+-- Nota: MariaDB não suporta índice parcial com WHERE em CREATE INDEX.
+CREATE INDEX idx_conflito_check ON `agendamentos`
+(`data_agendamento`, `horario_inicio`, `duracao_horas`, `status`);
 
 -- =====================================================
 -- Confirmação

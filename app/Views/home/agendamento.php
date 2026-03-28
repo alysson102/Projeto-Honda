@@ -145,7 +145,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
                     <div class="form-group">
                         <input type="date" id="data" name="data" required placeholder=" ">
                         <label for="data" class="form-label">Data <span class="field-required">*</span></label>
-                        <span class="help-text">📌 Segunda a Sexta apenas</span>
+                        <span class="help-text">📌 Segunda a Sábado apenas</span>
                     </div>
                 </div>
 
@@ -191,7 +191,8 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 <script type="application/json" data-config="agendamento">
 {
     "horarios": <?= json_encode($horarios) ?>,
-    "revisoesDuasHoras": <?= json_encode($revisoesDuasHoras) ?>
+    "revisoesDuasHoras": <?= json_encode($revisoesDuasHoras) ?>,
+    "apiVerificarDisponibilidade": <?= json_encode(url('/api/verificar-disponibilidade')) ?>
 }
 </script>
 

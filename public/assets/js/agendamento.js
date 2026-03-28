@@ -1,6 +1,7 @@
 // Configurações globais
 let HORARIOS_ATENDIMENTO = [];
 let REVISOES_DUAS_HORAS = [];
+let API_VERIFICAR_DISPONIBILIDADE = '/api/verificar-disponibilidade';
 
 // Inicializar quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', function() {
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const config = JSON.parse(configScript.textContent);
             HORARIOS_ATENDIMENTO = config.horarios || [];
             REVISOES_DUAS_HORAS = config.revisoesDuasHoras || [];
+            API_VERIFICAR_DISPONIBILIDADE = config.apiVerificarDisponibilidade || API_VERIFICAR_DISPONIBILIDADE;
         } catch (e) {
             console.error('Erro ao parsear configurações:', e);
         }
@@ -294,11 +296,8 @@ function carregarHorariosDisponiveis() {
     const horariosDisponiveis = [];
     let verificadas = 0;
     
-    // Obter URL base
-    const baseUrl = window.location.origin || 'http://localhost';
-
     HORARIOS_ATENDIMENTO.forEach((horario, index) => {
-        fetch('/api/verificar-disponibilidade', {
+        fetch(API_VERIFICAR_DISPONIBILIDADE, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -310,7 +309,19 @@ function carregarHorariosDisponiveis() {
                 csrf_token: csrfToken
             })
         })
-        .then(response => response.json())
+        .then(async response => {
+            const rawText = await response.text();
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            if (!rawText) {
+                throw new Error('Resposta vazia da API');
+            }
+
+            return JSON.parse(rawText);
+        })
         .then(resultado => {
             verificadas++;
             if (resultado.disponivel) {

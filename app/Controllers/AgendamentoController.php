@@ -6,6 +6,8 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Controller;
+use App\Core\Request;
+use App\Core\Response;
 use App\Core\Session;
 use App\Core\Validator;
 use App\Models\Agendamento;
@@ -14,9 +16,9 @@ final class AgendamentoController extends Controller
 {
     private Agendamento $agendamentoModel;
 
-    public function __construct()
+    public function __construct(Request $request, Response $response)
     {
-        parent::__construct();
+        parent::__construct($request, $response);
         $this->agendamentoModel = new Agendamento();
     }
 
@@ -26,7 +28,7 @@ final class AgendamentoController extends Controller
     public function store(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirectTo('/agendamento');
+            $this->redirect('/agendamento');
             return;
         }
 
@@ -36,14 +38,14 @@ final class AgendamentoController extends Controller
         if (!is_array($dados)) {
             // Se houver erro de validação, redirecionar com mensagem
             Session::flash('error', $dados);
-            $this->redirectTo('/agendamento');
+            $this->redirect('/agendamento');
             return;
         }
 
         // Verificar conflitos de agendamento
         if ($this->agendamentoModel->temConflito($dados['data'], $dados['horario'], $dados['duracao'])) {
             Session::flash('error', '❌ Este horário já está reservado. Por favor, escolha outro horário ou data.');
-            $this->redirectTo('/agendamento');
+            $this->redirect('/agendamento');
             return;
         }
 
@@ -60,10 +62,10 @@ final class AgendamentoController extends Controller
             $this->enviarEmailConfirmacao($dados, $agendamentoId);
 
             Session::flash('success', '✅ Agendamento realizado com sucesso! Você receberá uma confirmação por e-mail.');
-            $this->redirectTo('/agendamento');
+            $this->redirect('/agendamento');
         } catch (\Exception $e) {
             Session::flash('error', '❌ Erro ao processar agendamento. Tente novamente.');
-            $this->redirectTo('/agendamento');
+            $this->redirect('/agendamento');
         }
     }
 
