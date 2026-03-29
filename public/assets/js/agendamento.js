@@ -1,5 +1,6 @@
 // Configurações globais
-let HORARIOS_ATENDIMENTO = [];
+let HORARIOS_SEMANAIS = [];      // Seg–Sex: 7h–13h e 15h–17h
+let HORARIOS_SABADO = [];        // Sáb: 7h–11h
 let REVISOES_DUAS_HORAS = [];
 let API_VERIFICAR_DISPONIBILIDADE = '/api/verificar-disponibilidade';
 let REDIRECT_APOS_ENVIO = '/';
@@ -17,7 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (configScript) {
         try {
             const config = JSON.parse(configScript.textContent);
-            HORARIOS_ATENDIMENTO = config.horarios || [];
+            HORARIOS_SEMANAIS  = config.horariosSemanais  || [];
+            HORARIOS_SABADO    = config.horariosSabado    || [];
             REVISOES_DUAS_HORAS = config.revisoesDuasHoras || [];
             API_VERIFICAR_DISPONIBILIDADE = config.apiVerificarDisponibilidade || API_VERIFICAR_DISPONIBILIDADE;
             REDIRECT_APOS_ENVIO = config.redirectAposEnvio || REDIRECT_APOS_ENVIO;
@@ -288,6 +290,25 @@ function atualizarDuracao() {
     carregarHorariosDisponiveis();
 }
 
+function converterHorarioEmMinutos(horario) {
+    const [hora, minuto] = horario.split(':').map(Number);
+    return (hora * 60) + minuto;
+}
+
+function horarioCabeNaJanela(diaSemana, horario, duracaoMinutos) {
+    const inicio = converterHorarioEmMinutos(horario);
+    const fim = inicio + duracaoMinutos;
+
+    if (diaSemana === 6) {
+        return inicio >= 420 && fim <= 660;
+    }
+
+    const dentroManha = inicio >= 420 && fim <= 780;
+    const dentroTarde = inicio >= 900 && fim <= 1020;
+
+    return dentroManha || dentroTarde;
+}
+
 // Carregar horários disponíveis
 function carregarHorariosDisponiveis() {
     const data = document.getElementById('data').value;
@@ -299,28 +320,37 @@ function carregarHorariosDisponiveis() {
         return;
     }
 
-    // Validar se é dia de semana
+    // Validar se não é domingo
     const dataObj = new Date(data + 'T00:00:00');
-    const diaSemana = dataObj.getDay();
+    const diaSemana = dataObj.getDay(); // 0=Dom, 6=Sáb
 
-    if (diaSemana === 0 || diaSemana === 6) {
-        container.innerHTML = '<p class="horarios-error">⛔ Atendemos apenas de segunda a sexta-feira</p>';
+    if (diaSemana === 0) {
+        container.innerHTML = '<p class="horarios-error">⛔ Não atendemos aos domingos</p>';
         return;
     }
 
-    const duracao = REVISOES_DUAS_HORAS.includes(revisao) ? 2 : 1;
+    // Escolher lista de horários conforme o dia
+    const listaHorarios = (diaSemana === 6) ? HORARIOS_SABADO : HORARIOS_SEMANAIS;
+
+    const duracao = REVISOES_DUAS_HORAS.includes(revisao) ? 120 : 20;
+    const horariosCandidatos = listaHorarios.filter(horario => horarioCabeNaJanela(diaSemana, horario, duracao));
+
+    if (horariosCandidatos.length === 0) {
+        container.innerHTML = '<p class="horarios-placeholder">Nenhum horário disponível para esta revisão nesta data</p>';
+        return;
+    }
 
     // Mostrar carregamento
     container.innerHTML = '<p class="horarios-carregando"><span class="spinner-small"></span> Carregando horários...</p>';
 
     // Fazer requisição para verificar disponibilidade
     const csrfToken = document.querySelector('input[name="_token"]')?.value || '';
-    
+
     // Para cada horário, verificar disponibilidade
     const horariosDisponiveis = [];
     let verificadas = 0;
-    
-    HORARIOS_ATENDIMENTO.forEach((horario, index) => {
+
+    horariosCandidatos.forEach((horario) => {
         fetch(API_VERIFICAR_DISPONIBILIDADE, {
             method: 'POST',
             headers: {
@@ -353,7 +383,7 @@ function carregarHorariosDisponiveis() {
             }
 
             // Quando todas as verificações terminarem
-            if (verificadas === HORARIOS_ATENDIMENTO.length) {
+            if (verificadas === horariosCandidatos.length) {
                 if (horariosDisponiveis.length === 0) {
                     container.innerHTML = '<p class="horarios-placeholder">Nenhum horário disponível para esta data</p>';
                     return;
@@ -386,7 +416,7 @@ function carregarHorariosDisponiveis() {
         .catch(erro => {
             console.error('Erro ao verificar disponibilidade:', erro);
             verificadas++;
-            if (verificadas === HORARIOS_ATENDIMENTO.length) {
+            if (verificadas === horariosCandidatos.length) {
                 container.innerHTML = '<p class="horarios-error">Erro ao carregar horários. Tente novamente.</p>';
             }
         });

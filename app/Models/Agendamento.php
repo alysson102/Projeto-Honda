@@ -13,18 +13,17 @@ final class Agendamento extends Model
      */
     public function create(array $data): int
     {
-        // Determinar duração baseado no tipo de revisão
-        $duracao = $this->calcularDuracao((int) $data['tipo_revisao']);
+        $duracao = (int) ($data['duracao'] ?? $this->calcularDuracao((int) ($data['revisao'] ?? 0)));
 
         $stmt = $this->db->prepare(
             'INSERT INTO agendamentos (
                 nome, email, telefone, marca_modelo, ano_moto, chassi, placa, 
                 quilometragem, tipo_revisao, data_agendamento, horario_inicio, 
-                duracao_horas, observacoes, user_id
+                duracao_minutos, observacoes, user_id
             ) VALUES (
                 :nome, :email, :telefone, :marca_modelo, :ano_moto, :chassi, :placa,
                 :quilometragem, :tipo_revisao, :data_agendamento, :horario_inicio,
-                :duracao_horas, :observacoes, :user_id
+                :duracao_minutos, :observacoes, :user_id
             )'
         );
 
@@ -40,7 +39,7 @@ final class Agendamento extends Model
             'tipo_revisao' => (int) $data['revisao'],
             'data_agendamento' => $data['data'],
             'horario_inicio' => $data['horario'],
-            'duracao_horas' => $duracao,
+            'duracao_minutos' => $duracao,
             'observacoes' => $data['observacoes'] ?? null,
             'user_id' => $data['user_id'] ?? null,
         ]);
@@ -53,9 +52,9 @@ final class Agendamento extends Model
      */
     public function temConflito(string $data, string $horaInicio, int $duracao): bool
     {
-        // Calcular hora final
+        // $duracao agora em MINUTOS
         $horaFinObj = \DateTime::createFromFormat('H:i', $horaInicio);
-        $horaFinObj->modify("+{$duracao} hours");
+        $horaFinObj->modify("+{$duracao} minutes");
         $horaFim = $horaFinObj->format('H:i:s');
         $horaInicio = $horaInicio . ':00';
 
@@ -64,7 +63,8 @@ final class Agendamento extends Model
             WHERE data_agendamento = :data 
             AND status IN ("pendente", "confirmado")
             AND (
-                (horario_inicio < :hora_fim AND DATE_ADD(horario_inicio, INTERVAL duracao_horas HOUR) > :hora_inicio)
+                horario_inicio < :hora_fim
+                AND ADDTIME(horario_inicio, SEC_TO_TIME(duracao_minutos * 60)) > :hora_inicio
             )'
         );
 
@@ -84,9 +84,9 @@ final class Agendamento extends Model
     private function calcularDuracao(int $km): int
     {
         return match($km) {
-            1000, 6000 => 1,
-            12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000 => 2,
-            default => 1
+            1000, 6000 => 20,
+            12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000 => 120, // 2 horas
+            default => 20
         };
     }
 

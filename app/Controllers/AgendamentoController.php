@@ -43,6 +43,12 @@ final class AgendamentoController extends Controller
         }
 
         // Verificar conflitos de agendamento
+        if (!$this->horarioCabeNaJanelaDeAtendimento($dados['data'], $dados['horario'], $dados['duracao'])) {
+            Session::flash('error', '❌ Este horário não comporta a duração da revisão dentro do expediente.');
+            $this->redirect('/agendamento');
+            return;
+        }
+
         if ($this->agendamentoModel->temConflito($dados['data'], $dados['horario'], $dados['duracao'])) {
             Session::flash('error', '❌ Este horário já está reservado. Por favor, escolha outro horário ou data.');
             $this->redirect('/agendamento');
@@ -85,10 +91,10 @@ final class AgendamentoController extends Controller
 
         $data = $input['data'] ?? '';
         $horario = $input['horario'] ?? '';
-        $duracao = (int) ($input['duracao'] ?? 1);
+        $duracao = (int) ($input['duracao'] ?? 30); // minutos
 
         // Validar entrada
-        if (!$data || !$horario || !$this->validarData($data) || !$this->validarHorario($horario)) {
+        if (!$data || !$horario || $duracao <= 0 || !$this->validarData($data) || !$this->validarHorario($horario, $data) || !$this->horarioCabeNaJanelaDeAtendimento($data, $horario, $duracao)) {
             http_response_code(400);
             echo json_encode(['erro' => 'Dados inválidos']);
             exit;
@@ -172,7 +178,7 @@ final class AgendamentoController extends Controller
         }
 
         // Calcular duração
-        $duracao = in_array($revisao, [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000]) ? 2 : 1;
+        $duracao = in_array($revisao, [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000]) ? 120 : 20;
 
         // Campo: Data
         $data = $_POST['data'] ?? '';
@@ -182,7 +188,7 @@ final class AgendamentoController extends Controller
 
         // Campo: Horário
         $horario = $_POST['horario'] ?? '';
-        if (!$this->validarHorario($horario)) {
+        if (!$this->validarHorario($horario, $data)) {
             return 'Horário inválido.';
         }
 
@@ -210,42 +216,85 @@ final class AgendamentoController extends Controller
     }
 
     /**
-     * Validar data (deve ser segunda a sexta e no futuro)
+     * Validar data (deve ser segunda a sábado e no futuro)
      */
     private function validarData(string $data): bool
     {
         try {
             $dataObj = \DateTime::createFromFormat('Y-m-d', $data);
-            if (!$dataObj) {
+            if (!$dataObj || $dataObj->format('Y-m-d') !== $data) {
                 return false;
             }
 
             // Verificar se é data futura
             $hoje = new \DateTime();
             $hoje->setTime(0, 0, 0);
-            
+
             if ($dataObj <= $hoje) {
                 return false;
             }
 
-            // Verificar se é dia de semana (segunda a sexta)
-            $diaSemana = $dataObj->format('w'); // 0 = domingo, 6 = sábado
-            return $diaSemana !== '0' && $diaSemana !== '6';
+            // Aceitar segunda (1) a sábado (6), bloquear apenas domingo (0)
+            $diaSemana = (int) $dataObj->format('w');
+            return $diaSemana !== 0;
         } catch (\Exception $e) {
             return false;
         }
     }
 
     /**
-     * Validar horário
+     * Validar horário conforme o dia da semana
+     * Seg–Sex: 07h–13h e 15h–17h | Sáb: 07h–11h
      */
-    private function validarHorario(string $horario): bool
+    private function validarHorario(string $horario, string $data = ''): bool
     {
-        $horariosValidos = ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', 
-                            '11:00', '11:30', '12:00', '12:30', '13:00', '15:00', '15:30', '16:00', 
-                            '16:30', '17:00'];
+        $horariosSemanais = [
+            '07:00', '07:30', '08:00', '08:30', '09:00', '09:30',
+            '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
+            '15:00', '15:30', '16:00', '16:30'
+        ];
 
-        return in_array($horario, $horariosValidos);
+        $horariosSabado = [
+            '07:00', '07:30', '08:00', '08:30', '09:00', '09:30',
+            '10:00', '10:30'
+        ];
+
+        if ($data !== '') {
+            $dataObj = \DateTime::createFromFormat('Y-m-d', $data);
+            if ($dataObj && (int) $dataObj->format('w') === 6) {
+                return in_array($horario, $horariosSabado);
+            }
+        }
+
+        return in_array($horario, $horariosSemanais);
+    }
+
+    private function horarioCabeNaJanelaDeAtendimento(string $data, string $horario, int $duracaoMinutos): bool
+    {
+        $inicio = \DateTime::createFromFormat('Y-m-d H:i', $data . ' ' . $horario);
+        if (!$inicio) {
+            return false;
+        }
+
+        $fim = clone $inicio;
+        $fim->modify("+{$duracaoMinutos} minutes");
+        $diaSemana = (int) $inicio->format('w');
+
+        if ($diaSemana === 6) {
+            $inicioSabado = \DateTime::createFromFormat('Y-m-d H:i', $data . ' 07:00');
+            $fimSabado = \DateTime::createFromFormat('Y-m-d H:i', $data . ' 11:00');
+            return $inicio >= $inicioSabado && $fim <= $fimSabado;
+        }
+
+        $inicioManha = \DateTime::createFromFormat('Y-m-d H:i', $data . ' 07:00');
+        $fimManha = \DateTime::createFromFormat('Y-m-d H:i', $data . ' 13:00');
+        $inicioTarde = \DateTime::createFromFormat('Y-m-d H:i', $data . ' 15:00');
+        $fimTarde = \DateTime::createFromFormat('Y-m-d H:i', $data . ' 17:00');
+
+        $cabeNaManha = $inicio >= $inicioManha && $fim <= $fimManha;
+        $cabeNaTarde = $inicio >= $inicioTarde && $fim <= $fimTarde;
+
+        return $cabeNaManha || $cabeNaTarde;
     }
 
     /**

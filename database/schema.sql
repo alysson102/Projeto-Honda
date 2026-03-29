@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `agendamentos` (
     `tipo_revisao`      INT UNSIGNED      NOT NULL COMMENT '1000, 6000, 12000, etc',
     `data_agendamento`  DATE              NOT NULL,
     `horario_inicio`    TIME              NOT NULL,
-    `duracao_horas`     INT UNSIGNED      NOT NULL DEFAULT 1,
+    `duracao_minutos`   SMALLINT UNSIGNED NOT NULL DEFAULT 30 COMMENT 'Duração em minutos (30 = rápida, 120 = completa)',
     `observacoes`       TEXT,
     `status`            ENUM('pendente', 'confirmado', 'concluido', 'cancelado') NOT NULL DEFAULT 'pendente',
     `user_id`           INT UNSIGNED,
@@ -54,5 +54,4 @@ CREATE TABLE IF NOT EXISTS `agendamentos` (
   COLLATE=utf8mb4_unicode_ci;
 
 -- Índice para verificar conflitos de agendamento
-CREATE INDEX idx_conflito_check ON `agendamentos` (`data_agendamento`, `horario_inicio`, `duracao_horas`) 
-WHERE `status` IN ('pendente', 'confirmado');
+CREATE INDEX idx_conflito_check ON `agendamentos` (`data_agendamento`, `horario_inicio`, `duracao_minutos`, `status`);

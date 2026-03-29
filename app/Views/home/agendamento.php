@@ -32,8 +32,12 @@ $revisoes = [
     54000 => '54.000 km ou 60 meses'
 ];
 
-// Horários de atendimento
-$horarios = ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '15:00', '15:30', '16:00', '16:30', '17:00'];
+// Horários de início permitidos — Segunda a Sexta
+$horariosSemanais = ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '15:00', '15:30', '16:00', '16:30'];
+
+// Horários de início permitidos — Sábado (07h–11h)
+$horariosSabado = ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30'];
+
 $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 ?>
 
@@ -145,7 +149,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
                     <div class="form-group">
                         <input type="date" id="data" name="data" required placeholder=" ">
                         <label for="data" class="form-label">Data <span class="field-required">*</span></label>
-                        <span class="help-text">📌 Segunda a Sábado apenas</span>
+                        <span class="help-text">📌 Segunda a Sábado | Seg–Sex: 7h–13h e 15h–17h | Sáb: 7h–11h</span>
                     </div>
                 </div>
 
@@ -190,7 +194,8 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 <!-- Configurações passadas do PHP para JavaScript -->
 <script type="application/json" data-config="agendamento">
 {
-    "horarios": <?= json_encode($horarios) ?>,
+    "horariosSemanais": <?= json_encode($horariosSemanais) ?>,
+    "horariosSabado": <?= json_encode($horariosSabado) ?>,
     "revisoesDuasHoras": <?= json_encode($revisoesDuasHoras) ?>,
     "apiVerificarDisponibilidade": <?= json_encode(url('/api/verificar-disponibilidade')) ?>,
     "redirectAposEnvio": <?= json_encode(url('/')) ?>

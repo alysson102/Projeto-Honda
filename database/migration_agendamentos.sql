@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `agendamentos` (
     `tipo_revisao`      INT UNSIGNED      NOT NULL COMMENT '1000, 6000, 12000, etc',
     `data_agendamento`  DATE              NOT NULL,
     `horario_inicio`    TIME              NOT NULL,
-    `duracao_horas`     INT UNSIGNED      NOT NULL DEFAULT 1,
+    `duracao_minutos`   SMALLINT UNSIGNED NOT NULL DEFAULT 30 COMMENT 'Duração em minutos (30 = rápida, 120 = completa)',
     `observacoes`       TEXT,
     `status`            ENUM('pendente', 'confirmado', 'concluido', 'cancelado') NOT NULL DEFAULT 'pendente',
     `user_id`           INT UNSIGNED,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `agendamentos` (
 -- Criar índice para verificar conflitos de agendamento
 -- Nota: MariaDB não suporta índice parcial com WHERE em CREATE INDEX.
 CREATE INDEX idx_conflito_check ON `agendamentos`
-(`data_agendamento`, `horario_inicio`, `duracao_horas`, `status`);
+(`data_agendamento`, `horario_inicio`, `duracao_minutos`, `status`);
 
 -- =====================================================
 -- Confirmação
