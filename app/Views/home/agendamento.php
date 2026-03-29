@@ -32,6 +32,74 @@ $revisoes = [
     54000 => '54.000 km ou 60 meses'
 ];
 
+$modelosHonda = [
+    'Street' => [
+        'Pop 110i',
+        'Pop 110 ES',
+        'Biz 125',
+        'Elite 125',
+        'PCX 160',
+        'CG 160 Start',
+        'CG 160 Fan',
+        'CG 160 Titan',
+        'CG 160 Cargo',
+        'NXR 160 Bros',
+        'CB 300F Twister',
+        'Sahara 300',
+    ],
+    'Trail e Adventure' => [
+        'XR 300L Tornado',
+        'XRE 190',
+        'XRE 300',
+        'NX 500',
+        'NC 750X',
+        'XL 750 Transalp',
+        'CRF 1100L Africa Twin',
+        'CRF 1100L Africa Twin Adventure Sports',
+    ],
+    'Naked e Sport' => [
+        'CB 500 Hornet',
+        'CB 650R',
+        'CB 750 Hornet',
+        'CB 1000R',
+        'CBR 500R',
+        'CBR 650R',
+        'CBR 1000RR-R Fireblade',
+    ],
+    'Custom e Cruiser' => [
+        'Rebel 500',
+        'Shadow 750',
+        'VTX 1800',
+        'Gold Wing',
+    ],
+    'Big Trail e Touring' => [
+        'NT 1100',
+        'Gold Wing Tour',
+        'CRF 1100L Africa Twin ES',
+    ],
+    'Off-Road e Competicao' => [
+        'CRF 110F',
+        'CRF 150R',
+        'CRF 250F',
+        'CRF 250R',
+        'CRF 250RX',
+        'CRF 450R',
+        'CRF 450RX',
+        'CRF 450X',
+        'CRF 50F',
+    ],
+    'Classicas e Iconicas' => [
+        'CBX 200 Strada',
+        'CBX 250 Twister',
+        'CB 300R',
+        'NXR 150 Bros',
+        'NX4 Falcon',
+        'XLX 350R',
+        'XLR 125',
+        'C100 Dream',
+    ],
+];
+
 // Horários de início permitidos — Segunda a Sexta
 $horariosSemanais = ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '15:00', '15:30', '16:00', '16:30'];
 
@@ -86,8 +154,18 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 
                 <div class="form-row">
                     <div class="form-group">
-                        <input type="text" id="marca" name="marca" required placeholder=" " maxlength="50">
-                        <label for="marca" class="form-label">Marca/Modelo <span class="field-required">*</span></label>
+                        <select id="marca" name="marca" required>
+                            <option value=""></option>
+                            <?php foreach ($modelosHonda as $categoria => $modelos): ?>
+                                <optgroup label="<?= e($categoria) ?>">
+                                    <?php foreach ($modelos as $modelo): ?>
+                                        <option value="<?= e($modelo) ?>"><?= e($modelo) ?></option>
+                                    <?php endforeach; ?>
+                                </optgroup>
+                            <?php endforeach; ?>
+                        </select>
+                        <label for="marca" class="form-label">Modelo Honda <span class="field-required">*</span></label>
+                        <span class="help-text">📌 Selecione o modelo original da sua motocicleta Honda</span>
                     </div>
                     <div class="form-group">
                         <input type="number" id="ano" name="ano" required min="1990" max="2099" placeholder=" ">
