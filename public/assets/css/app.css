@@ -1912,13 +1912,54 @@ body.page-index {
 }
 
 .loading {
-    display: none;
-    text-align: center;
-    padding: 20px;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  background: rgba(14, 14, 16, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 2000;
+  text-align: center;
+  padding: max(16px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 220ms ease, visibility 0s linear 0s;
 }
 
 .loading.active {
-    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+.loading .spinner {
+  width: 56px;
+  height: 56px;
+  border-width: 5px;
+  margin: 0 auto;
+}
+
+.loading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 360px);
+  min-height: 170px;
+  height: auto;
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.97), rgba(255, 245, 245, 0.97));
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+}
+
+.loading > * {
+  position: relative;
+  z-index: 1;
 }
 
 .spinner {
@@ -2004,12 +2045,79 @@ body.page-index {
 }
 
 .loading-hidden {
-    display: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 0s linear 220ms;
 }
 
 .loading-text {
+  margin-top: 14px;
+  color: #8c1a1a;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  width: min(76vw, 280px);
+  line-height: 1.45;
+  font-size: 15px;
+}
+
+body.is-submitting-agendamento {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading,
+  .loading-hidden,
+  .spinner,
+  .spinner-small {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .loading {
+    gap: 12px;
+  }
+
+  .loading::before {
+    width: min(94vw, 330px);
+    min-height: 156px;
+    border-radius: 14px;
+  }
+
+  .loading .spinner {
+    width: 48px;
+    height: 48px;
+    border-width: 4px;
+  }
+
+  .loading-text {
+    width: min(82vw, 260px);
+    font-size: 14px;
     margin-top: 10px;
-    color: #999;
+  }
+}
+
+@media (max-width: 380px) {
+  .loading {
+    gap: 10px;
+  }
+
+  .loading::before {
+    width: calc(100vw - 18px);
+    min-height: 148px;
+  }
+
+  .loading .spinner {
+    width: 44px;
+    height: 44px;
+  }
+
+  .loading-text {
+    width: min(86vw, 236px);
+    font-size: 13px;
+  }
 }
 
 /* Form row centralizado */

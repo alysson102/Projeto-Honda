@@ -192,7 +192,8 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 {
     "horarios": <?= json_encode($horarios) ?>,
     "revisoesDuasHoras": <?= json_encode($revisoesDuasHoras) ?>,
-    "apiVerificarDisponibilidade": <?= json_encode(url('/api/verificar-disponibilidade')) ?>
+    "apiVerificarDisponibilidade": <?= json_encode(url('/api/verificar-disponibilidade')) ?>,
+    "redirectAposEnvio": <?= json_encode(url('/')) ?>
 }
 </script>
 

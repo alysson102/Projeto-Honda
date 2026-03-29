@@ -2,6 +2,7 @@
 let HORARIOS_ATENDIMENTO = [];
 let REVISOES_DUAS_HORAS = [];
 let API_VERIFICAR_DISPONIBILIDADE = '/api/verificar-disponibilidade';
+let REDIRECT_APOS_ENVIO = '/';
 
 // Inicializar quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', function() {
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
             HORARIOS_ATENDIMENTO = config.horarios || [];
             REVISOES_DUAS_HORAS = config.revisoesDuasHoras || [];
             API_VERIFICAR_DISPONIBILIDADE = config.apiVerificarDisponibilidade || API_VERIFICAR_DISPONIBILIDADE;
+            REDIRECT_APOS_ENVIO = config.redirectAposEnvio || REDIRECT_APOS_ENVIO;
         } catch (e) {
             console.error('Erro ao parsear configurações:', e);
         }
@@ -153,22 +155,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const loadingIndicator = document.getElementById('loadingIndicator');
             const submitBtn = document.getElementById('submitBtn');
-            const formContainer = document.getElementById('formContainer');
-            const successMessage = document.getElementById('successMessage');
             
             loadingIndicator.classList.remove('loading-hidden');
+            document.body.classList.add('is-submitting-agendamento');
+            const loadingText = loadingIndicator.querySelector('.loading-text');
+            if (loadingText) {
+                loadingText.textContent = 'Enviando agendamento...';
+            }
+
             submitBtn.disabled = true;
 
-            // Simular envio para o servidor
-            setTimeout(() => {
+            // Enviar formulário para o servidor
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this)
+            })
+            .then(response => {
+                if (response.ok) {
+                    if (loadingText) {
+                        loadingText.textContent = 'Agendamento confirmado! Redirecionando...';
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = REDIRECT_APOS_ENVIO;
+                    }, 1200);
+                } else {
+                    throw new Error('Erro na resposta do servidor');
+                }
+            })
+            .catch(erro => {
+                console.error('Erro ao enviar agendamento:', erro);
                 loadingIndicator.classList.add('loading-hidden');
-                if (formContainer) formContainer.style.display = 'none';
-                if (successMessage) successMessage.classList.remove('success-message-hidden');
-                
-                setTimeout(() => {
-                    window.location.href = '/agendamento';
-                }, 3000);
-            }, 1500);
+                document.body.classList.remove('is-submitting-agendamento');
+                if (loadingText) {
+                    loadingText.textContent = 'Processando seu agendamento...';
+                }
+                submitBtn.disabled = false;
+                alert('❌ Erro ao enviar agendamento. Tente novamente.');
+            });
         });
     }
 });
