@@ -45,6 +45,19 @@ final class Request
         $query = $_GET;
         $body = $_POST;
 
+        $contentTypeHeader = (string) ($_SERVER['CONTENT_TYPE'] ?? $_SERVER['HTTP_CONTENT_TYPE'] ?? '');
+        $contentType = mb_strtolower($contentTypeHeader);
+
+        if (str_contains($contentType, 'application/json')) {
+            $rawBody = file_get_contents('php://input');
+            if (is_string($rawBody) && $rawBody !== '') {
+                $decodedBody = json_decode($rawBody, true);
+                if (is_array($decodedBody)) {
+                    $body = array_merge($body, $decodedBody);
+                }
+            }
+        }
+
         if (!is_array($query)) {
             $query = [];
         }

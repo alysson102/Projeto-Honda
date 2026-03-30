@@ -469,7 +469,7 @@ function carregarHorariosDisponiveis() {
                 data: data,
                 horario: horario,
                 duracao: duracao,
-                csrf_token: csrfToken
+                _token: csrfToken
             })
         })
         .then(async response => {

@@ -12,7 +12,7 @@ return static function (Router $router): void {
     $router->get('/', [HomeController::class, 'index']);
     $router->get('/agendamento', [HomeController::class, 'agendamento']);
     $router->post('/agendamento', [\App\Controllers\AgendamentoController::class, 'store'], [CsrfMiddleware::class]);
-    $router->post('/api/verificar-disponibilidade', [\App\Controllers\AgendamentoController::class, 'verificarDisponibilidade']);
+    $router->post('/api/verificar-disponibilidade', [\App\Controllers\AgendamentoController::class, 'verificarDisponibilidade'], [CsrfMiddleware::class]);
     $router->get('/about', [HomeController::class, 'about']);
     $router->get('/contact', [HomeController::class, 'contact']);
     $router->get('/register', [HomeController::class, 'register']);

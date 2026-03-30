@@ -9,11 +9,18 @@ use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
-use App\Core\Validator;
 use App\Models\Agendamento;
 
 final class AgendamentoController extends Controller
 {
+    private const DEFAULT_SUBMIT_MAX_ATTEMPTS = 10;
+    private const DEFAULT_SUBMIT_WINDOW_SECONDS = 300;
+    private const DEFAULT_SUBMIT_BLOCK_SECONDS = 600;
+
+    private const DEFAULT_AVAILABILITY_MAX_ATTEMPTS = 80;
+    private const DEFAULT_AVAILABILITY_WINDOW_SECONDS = 60;
+    private const DEFAULT_AVAILABILITY_BLOCK_SECONDS = 120;
+
     private Agendamento $agendamentoModel;
 
     public function __construct(Request $request, Response $response)
@@ -28,6 +35,17 @@ final class AgendamentoController extends Controller
     public function store(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('/agendamento');
+            return;
+        }
+
+        if (!$this->consumeRateLimit(
+            'agendamento_store',
+            (int) config('security.agendamento_submit_max_attempts', self::DEFAULT_SUBMIT_MAX_ATTEMPTS),
+            (int) config('security.agendamento_submit_window_seconds', self::DEFAULT_SUBMIT_WINDOW_SECONDS),
+            (int) config('security.agendamento_submit_block_seconds', self::DEFAULT_SUBMIT_BLOCK_SECONDS)
+        )) {
+            Session::flash('error', '❌ Muitas tentativas de agendamento. Aguarde alguns minutos e tente novamente.');
             $this->redirect('/agendamento');
             return;
         }
@@ -49,20 +67,19 @@ final class AgendamentoController extends Controller
             return;
         }
 
-        if ($this->agendamentoModel->temConflito($dados['data'], $dados['horario'], $dados['duracao'])) {
-            Session::flash('error', '❌ Este horário já está reservado. Por favor, escolha outro horário ou data.');
-            $this->redirect('/agendamento');
-            return;
-        }
-
         try {
             // Incluir ID do usuário se autenticado
             if (Auth::check()) {
                 $dados['user_id'] = Auth::user()['id'];
             }
 
-            // Criar agendamento
-            $agendamentoId = $this->agendamentoModel->create($dados);
+            // Criar agendamento de forma atômica para evitar corrida entre checagem e inserção.
+            $agendamentoId = $this->agendamentoModel->createSemConflito($dados);
+            if ($agendamentoId === false) {
+                Session::flash('error', '❌ Este horário já está reservado. Por favor, escolha outro horário ou data.');
+                $this->redirect('/agendamento');
+                return;
+            }
 
             // Enviar email de confirmação (implementar depois)
             $this->enviarEmailConfirmacao($dados, $agendamentoId);
@@ -70,6 +87,7 @@ final class AgendamentoController extends Controller
             Session::flash('success', '✅ Agendamento realizado com sucesso! Você receberá uma confirmação por e-mail.');
             $this->redirect('/agendamento');
         } catch (\Exception $e) {
+            error_log('Erro ao criar agendamento: ' . $e->getMessage());
             Session::flash('error', '❌ Erro ao processar agendamento. Tente novamente.');
             $this->redirect('/agendamento');
         }
@@ -81,20 +99,31 @@ final class AgendamentoController extends Controller
     public function verificarDisponibilidade(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Content-Type: application/json');
             http_response_code(405);
             echo json_encode(['erro' => 'Método não permitido']);
             exit;
         }
 
-        // Ler dados JSON
-        $input = json_decode(file_get_contents('php://input'), true);
+        if (!$this->consumeRateLimit(
+            'agendamento_disponibilidade',
+            (int) config('security.agendamento_api_max_attempts', self::DEFAULT_AVAILABILITY_MAX_ATTEMPTS),
+            (int) config('security.agendamento_api_window_seconds', self::DEFAULT_AVAILABILITY_WINDOW_SECONDS),
+            (int) config('security.agendamento_api_block_seconds', self::DEFAULT_AVAILABILITY_BLOCK_SECONDS)
+        )) {
+            header('Content-Type: application/json');
+            http_response_code(429);
+            echo json_encode(['erro' => 'Muitas consultas de disponibilidade. Tente novamente em instantes.']);
+            exit;
+        }
 
-        $data = $input['data'] ?? '';
-        $horario = $input['horario'] ?? '';
-        $duracao = (int) ($input['duracao'] ?? 30); // minutos
+        $data = (string) $this->request->input('data', '');
+        $horario = (string) $this->request->input('horario', '');
+        $duracao = (int) $this->request->input('duracao', 30);
 
         // Validar entrada
         if (!$data || !$horario || $duracao <= 0 || !$this->validarData($data) || !$this->validarHorario($horario, $data) || !$this->horarioCabeNaJanelaDeAtendimento($data, $horario, $duracao)) {
+            header('Content-Type: application/json');
             http_response_code(400);
             echo json_encode(['erro' => 'Dados inválidos']);
             exit;
@@ -118,8 +147,6 @@ final class AgendamentoController extends Controller
      */
     private function validarDados(): array|string
     {
-        $validator = new Validator();
-
         // Campo: Nome
         $nome = trim($_POST['nome'] ?? '');
         if (strlen($nome) < 3 || strlen($nome) > 100) {
@@ -143,6 +170,10 @@ final class AgendamentoController extends Controller
         $marca = trim($_POST['marca'] ?? '');
         if (strlen($marca) < 3 || strlen($marca) > 100) {
             return 'Marca/Modelo deve ter entre 3 e 100 caracteres.';
+        }
+
+        if (!$this->modeloPermitido($marca)) {
+            return 'Modelo de motocicleta inválido.';
         }
 
         // Campo: Ano
@@ -173,7 +204,7 @@ final class AgendamentoController extends Controller
         // Campo: Revisão
         $revisoes_validas = [1000, 6000, 12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
         $revisao = (int) ($_POST['revisao'] ?? 0);
-        if (!in_array($revisao, $revisoes_validas)) {
+        if (!in_array($revisao, $revisoes_validas, true)) {
             return 'Tipo de revisão inválido.';
         }
 
@@ -213,6 +244,61 @@ final class AgendamentoController extends Controller
             'duracao' => $duracao,
             'observacoes' => $observacoes ?: null,
         ];
+    }
+
+    private function consumeRateLimit(string $scope, int $maxAttempts, int $windowSeconds, int $blockSeconds): bool
+    {
+        $ip = (string) ($_SERVER['REMOTE_ADDR'] ?? 'unknown');
+        $key = hash('sha256', $scope . '|' . $ip);
+        $now = time();
+
+        $store = $_SESSION['_agendamento_rate_limit'][$key] ?? [
+            'attempts' => 0,
+            'window_started_at' => $now,
+            'blocked_until' => 0,
+        ];
+
+        $blockedUntil = (int) ($store['blocked_until'] ?? 0);
+        if ($blockedUntil > $now) {
+            return false;
+        }
+
+        $windowStartedAt = (int) ($store['window_started_at'] ?? $now);
+        if (($now - $windowStartedAt) > $windowSeconds) {
+            $store['attempts'] = 0;
+            $store['window_started_at'] = $now;
+            $store['blocked_until'] = 0;
+        }
+
+        $store['attempts'] = (int) ($store['attempts'] ?? 0) + 1;
+
+        if ($store['attempts'] > $maxAttempts) {
+            $store['blocked_until'] = $now + $blockSeconds;
+            $store['attempts'] = 0;
+            $store['window_started_at'] = $now;
+            $_SESSION['_agendamento_rate_limit'][$key] = $store;
+            return false;
+        }
+
+        $_SESSION['_agendamento_rate_limit'][$key] = $store;
+        return true;
+    }
+
+    private function modeloPermitido(string $modelo): bool
+    {
+        $modelosPermitidos = [
+            'Pop 110i', 'Pop 110 ES', 'Biz 125', 'Elite 125', 'PCX 160', 'CG 160 Start', 'CG 160 Fan',
+            'CG 160 Titan', 'CG 160 Cargo', 'NXR 160 Bros', 'CB 300F Twister', 'Sahara 300',
+            'XR 300L Tornado', 'XRE 190', 'XRE 300', 'NX 500', 'NC 750X', 'XL 750 Transalp',
+            'CRF 1100L Africa Twin', 'CRF 1100L Africa Twin Adventure Sports', 'CB 500 Hornet', 'CB 650R',
+            'CB 750 Hornet', 'CB 1000R', 'CBR 500R', 'CBR 650R', 'CBR 1000RR-R Fireblade', 'Rebel 500',
+            'Shadow 750', 'VTX 1800', 'Gold Wing', 'NT 1100', 'Gold Wing Tour', 'CRF 1100L Africa Twin ES',
+            'CRF 110F', 'CRF 150R', 'CRF 250F', 'CRF 250R', 'CRF 250RX', 'CRF 450R', 'CRF 450RX',
+            'CRF 450X', 'CRF 50F', 'CG 150', 'CBX 200 Strada', 'CBX 250 Twister', 'CB 300R', 'NXR 150 Bros',
+            'NX4 Falcon', 'XLX 350R', 'XLR 125', 'C100 Dream'
+        ];
+
+        return in_array($modelo, $modelosPermitidos, true);
     }
 
     /**

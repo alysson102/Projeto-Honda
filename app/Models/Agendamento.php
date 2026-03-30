@@ -9,6 +9,44 @@ use App\Core\Model;
 final class Agendamento extends Model
 {
     /**
+     * Criar agendamento com proteção contra corrida por data.
+     * Retorna false se o horário ficou indisponível durante a tentativa.
+     */
+    public function createSemConflito(array $data): int|false
+    {
+        $lockName = 'agendamento:' . preg_replace('/[^0-9]/', '', (string) ($data['data'] ?? ''));
+        $lockStmt = $this->db->prepare('SELECT GET_LOCK(:lock_name, :timeout) AS acquired');
+        $lockStmt->execute([
+            'lock_name' => $lockName,
+            'timeout' => 5,
+        ]);
+
+        $lockResult = $lockStmt->fetch();
+        $acquired = (int) ($lockResult['acquired'] ?? 0) === 1;
+
+        if (!$acquired) {
+            return false;
+        }
+
+        try {
+            $duracao = (int) ($data['duracao'] ?? $this->calcularDuracao((int) ($data['revisao'] ?? 0)));
+            if ($this->temConflito((string) $data['data'], (string) $data['horario'], $duracao)) {
+                return false;
+            }
+
+            $data['duracao'] = $duracao;
+            return $this->create($data);
+        } finally {
+            try {
+                $releaseStmt = $this->db->prepare('SELECT RELEASE_LOCK(:lock_name)');
+                $releaseStmt->execute(['lock_name' => $lockName]);
+            } catch (\Throwable) {
+                // Em caso de falha, o lock ainda sera liberado ao encerrar a conexao.
+            }
+        }
+    }
+
+    /**
      * Criar novo agendamento
      */
     public function create(array $data): int

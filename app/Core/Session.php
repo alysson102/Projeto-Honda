@@ -12,13 +12,15 @@ final class Session
             return;
         }
 
+        ini_set('session.use_strict_mode', '1');
+
         session_name((string) Config::get('security.session_name', 'app_session'));
 
         session_set_cookie_params([
             'lifetime' => 0,
             'path' => '/',
             'domain' => '',
-            'secure' => !empty($_SERVER['HTTPS']),
+            'secure' => $this->shouldUseSecureCookie(),
             'httponly' => true,
             'samesite' => 'Lax',
         ]);
@@ -42,5 +44,19 @@ final class Session
         unset($_SESSION['_flash'][$key]);
 
         return $flash;
+    }
+
+    private function shouldUseSecureCookie(): bool
+    {
+        if ((bool) Config::get('security.force_https', false) === true) {
+            return true;
+        }
+
+        if (!empty($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) !== 'off') {
+            return true;
+        }
+
+        $forwardedProto = strtolower((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''));
+        return $forwardedProto === 'https';
     }
 }
