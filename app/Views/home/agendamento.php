@@ -89,6 +89,7 @@ $modelosHonda = [
         'CRF 50F',
     ],
     'Classicas e Iconicas' => [
+        'CG 150',
         'CBX 200 Strada',
         'CBX 250 Twister',
         'CB 300R',
@@ -236,7 +237,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
                         <label class="horarios-label">Horário Disponível <span class="field-required">*</span></label>
                         <input type="hidden" id="horario" name="horario" required>
                         <div class="horarios-grid" id="horariosContainer">
-                            <p class="horarios-placeholder">Selecione uma data primeiro</p>
+                            <p class="horarios-placeholder">Selecione uma data</p>
                         </div>
                     </div>
                 </div>

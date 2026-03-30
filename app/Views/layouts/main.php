@@ -31,7 +31,7 @@ $aboutActive = $isActive('/about');
 $contactActive = $isActive('/contact');
 $registerActive = $isActive('/register');
 $isRegisterPage = $registerActive;
-$shouldApplyMobileFooterSpacing = in_array($currentRequestPath, ['/register', '/about', '/contact'], true);
+$shouldApplyMobileFooterSpacing = in_array($currentRequestPath, ['/register', '/about', '/contact', '/agendamento'], true);
 $bodyClasses = [$isGuestLandingPage ? 'page-home' : 'page-inner'];
 
 if ($shouldApplyMobileFooterSpacing) {

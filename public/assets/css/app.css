@@ -1571,13 +1571,13 @@ body.page-index {
 .agendamento-container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 30px 20px;
+    padding: 10px 20px;
 }
 
 .agendamento-header {
     text-align: center;
-    margin-bottom: 40px;
-    padding: 20px 0;
+    margin-bottom: 20px;
+    padding: 5px 0;
 }
 
 .agendamento-header h1 {
@@ -1846,6 +1846,16 @@ body.page-index {
     gap: 5px;
 }
 
+.form-agendamento .help-text {
+    color: #fff;
+}
+
+.form-agendamento .placa-warning {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.12);
+    border-left-color: #fff;
+}
+
 
 
 .field-required {
@@ -1873,8 +1883,9 @@ body.page-index {
 }
 
 .btn-submit {
-    background: linear-gradient(135deg, #b71c1c, #d32f2f);
-    color: white;
+    background-color: #b71c1c;
+    color: #faf4f4;
+    border: 1px solid rgb(214, 118, 118);
     grid-column: 1;
 }
 
@@ -1938,6 +1949,14 @@ body.page-index {
 
 .info-box strong {
     color: #b71c1c;
+}
+
+.form-agendamento .info-box {
+  color: #fff;
+}
+
+.form-agendamento .info-box strong {
+  color: #fff;
 }
 
 .duration-badge {
@@ -2056,9 +2075,19 @@ body.page-index {
 }
 
 .horarios-placeholder {
-    color: #999;
+    color: #fff;
     grid-column: 1/-1;
     text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 11px 16px;
+    letter-spacing: 0.3px;
+    width: fit-content;
+  min-width: 230px;
+    margin: 0 auto;
 }
 
 .horarios-error {

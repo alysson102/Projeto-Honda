@@ -58,7 +58,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listener para input de data
     const dataElement = document.getElementById('data');
     if (dataElement) {
+        dataElement.addEventListener('click', function(e) {
+            const validacao = validarCamposAntesDaData();
+            if (!validacao.valido) {
+                e.preventDefault();
+                alert('⚠️ ' + validacao.mensagem);
+                if (validacao.campo) {
+                    validacao.campo.focus();
+                }
+            }
+        });
+
         dataElement.addEventListener('change', function() {
+            const validacao = validarCamposAntesDaData();
+            if (!validacao.valido) {
+                this.value = '';
+                document.getElementById('horario').value = '';
+                document.getElementById('horariosContainer').innerHTML = '<p class="horarios-placeholder">Preencha os campos anteriores antes de escolher a data</p>';
+                alert('⚠️ ' + validacao.mensagem);
+                if (validacao.campo) {
+                    validacao.campo.focus();
+                }
+                return;
+            }
+
             carregarHorariosDisponiveis();
         });
     }
@@ -265,6 +288,92 @@ function validarFormulario() {
     return true;
 }
 
+function validarCamposAntesDaData() {
+    const nome = document.getElementById('nome');
+    if (!nome.value.trim() || nome.value.trim().length < 3) {
+        return {
+            valido: false,
+            mensagem: 'Preencha o nome completo (mínimo 3 caracteres) antes de escolher a data.',
+            campo: nome
+        };
+    }
+
+    const email = document.getElementById('email');
+    if (!email.value.trim() || !email.value.includes('@')) {
+        return {
+            valido: false,
+            mensagem: 'Preencha um e-mail válido antes de escolher a data.',
+            campo: email
+        };
+    }
+
+    const telefone = document.getElementById('telefone');
+    if (!telefone.value.trim() || telefone.value.trim().length < 14) {
+        return {
+            valido: false,
+            mensagem: 'Preencha o telefone com DDD antes de escolher a data.',
+            campo: telefone
+        };
+    }
+
+    const marca = document.getElementById('marca');
+    if (!marca.value.trim()) {
+        return {
+            valido: false,
+            mensagem: 'Selecione o modelo Honda antes de escolher a data.',
+            campo: marca
+        };
+    }
+
+    const ano = document.getElementById('ano');
+    const anoNumero = parseInt(ano.value, 10);
+    if (!ano.value || anoNumero < 1990 || anoNumero > 2100) {
+        return {
+            valido: false,
+            mensagem: 'Informe um ano válido antes de escolher a data.',
+            campo: ano
+        };
+    }
+
+    const chassi = document.getElementById('chassi');
+    if (!chassi.value.trim() || chassi.value.trim().length < 5) {
+        return {
+            valido: false,
+            mensagem: 'Preencha o chassi antes de escolher a data.',
+            campo: chassi
+        };
+    }
+
+    const placa = document.getElementById('placa');
+    if (!placa.value.trim() || placa.value.trim().length < 7) {
+        return {
+            valido: false,
+            mensagem: 'Preencha a placa corretamente antes de escolher a data.',
+            campo: placa
+        };
+    }
+
+    const quilometragem = document.getElementById('quilometragem');
+    if (!quilometragem.value || parseInt(quilometragem.value, 10) < 0) {
+        return {
+            valido: false,
+            mensagem: 'Informe a quilometragem antes de escolher a data.',
+            campo: quilometragem
+        };
+    }
+
+    const revisao = document.getElementById('revisao');
+    if (!revisao.value) {
+        return {
+            valido: false,
+            mensagem: 'Selecione o tipo de revisão antes de escolher a data.',
+            campo: revisao
+        };
+    }
+
+    return { valido: true, mensagem: '', campo: null };
+}
+
 // Atualizar duração na seleção de revisão
 function atualizarDuracao() {
     const revisao = parseInt(document.getElementById('revisao').value);
@@ -316,7 +425,7 @@ function carregarHorariosDisponiveis() {
     const container = document.getElementById('horariosContainer');
 
     if (!data || !revisao) {
-        container.innerHTML = '<p class="horarios-placeholder">Selecione uma data e revisão</p>';
+        container.innerHTML = '<p class="horarios-placeholder">Selecione uma data</p>';
         return;
     }
 
