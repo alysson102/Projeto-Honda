@@ -2274,7 +2274,9 @@ body.is-submitting-agendamento {
 }
 
 .profile-hero {
-  background: linear-gradient(118deg, rgba(127, 0, 0, 0.96) 0%, rgba(191, 28, 28, 0.94) 48%, rgba(241, 69, 69, 0.92) 100%);
+  background: linear-gradient(270deg, #7f0000, #b71c1c, #c62828, #f14545);
+  background-size: 400% 400%;
+  animation: animarFundo_profile 12s ease infinite;
   border-radius: 20px;
   padding: 26px;
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -2287,6 +2289,22 @@ body.is-submitting-agendamento {
   gap: 22px;
   align-items: center;
 }
+
+
+@keyframes animarFundo_profile{
+  0%{
+    background-position: 0% 50%;
+  }
+
+  50%{
+    background-position: 100% 50%;
+  }
+
+  100%{
+    background-position: 0% 50%;
+  }
+    }
+
 
 .profile-hero::after {
   content: "";
@@ -2313,6 +2331,59 @@ body.is-submitting-agendamento {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.profile-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(183, 28, 28, 0.12);
+  color: rgba(127, 0, 0, 0.55);
+}
+
+.profile-avatar-placeholder svg {
+  width: 60%;
+  height: 60%;
+}
+
+.profile-avatar-delete-form {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.profile-avatar-delete-form .profile-btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.profile-avatar-delete-form .profile-btn-danger svg {
+  flex-shrink: 0;
+  position: relative;
+  top: -1px;
+}
+
+.profile-avatar-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.22);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.profile-avatar-delete-btn:hover {
+  background: rgba(0, 0, 0, 0.38);
 }
 
 .profile-hero-content h1 {

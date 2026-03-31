@@ -123,7 +123,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
     </div>
 
     <div id="formContainer">
-        <form id="agendamentoForm" class="form-agendamento" method="POST" action="<?= e(url('/agendamento')) ?>">
+        <form id="agendamentoForm" class="form-agendamento" method="POST" action="<?= e(url('/agendamento')) ?>" novalidate>
             <?= Csrf::field() ?>
 
             <!-- Dados do Cliente -->

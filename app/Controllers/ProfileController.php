@@ -215,6 +215,44 @@ final class ProfileController extends Controller
         $this->redirect('/perfil');
     }
 
+    public function deletePhoto(): void
+    {
+        $authUser = Auth::user();
+        if (!is_array($authUser) || !isset($authUser['id'])) {
+            $this->redirect('/');
+            return;
+        }
+
+        $currentPhoto = isset($authUser['profile_photo']) && is_string($authUser['profile_photo'])
+            ? trim($authUser['profile_photo'])
+            : '';
+
+        if ($currentPhoto === '') {
+            Session::flash('error', 'Nenhuma foto de perfil para remover.');
+            $this->redirect('/perfil');
+            return;
+        }
+
+        $userModel = new User();
+        if (!$userModel->updateProfilePhoto((int) $authUser['id'], null)) {
+            Session::flash('error', 'Não foi possível remover a foto de perfil.');
+            $this->redirect('/perfil');
+            return;
+        }
+
+        if (str_starts_with($currentPhoto, '/assets/imagens/perfis/')) {
+            $filePath = base_path('public' . $currentPhoto);
+            if (is_file($filePath)) {
+                @unlink($filePath);
+            }
+        }
+
+        $_SESSION['user']['profile_photo'] = null;
+
+        Session::flash('success', 'Foto de perfil removida com sucesso.');
+        $this->redirect('/perfil');
+    }
+
     public function deleteAppointment(): void
     {
         $authUser = Auth::user();

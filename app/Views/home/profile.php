@@ -23,8 +23,19 @@ $statusLabelMap = [
     <div class="profile-shell">
         <div class="profile-hero">
             <div class="profile-hero-avatar-wrap">
-                <img src="<?= e($profilePhotoUrl) ?>" alt="Foto de perfil de <?= e((string) $user['name']) ?>" class="profile-hero-avatar" data-profile-preview>
+                <?php $hasPhoto = isset($user['profile_photo']) && is_string($user['profile_photo']) && $user['profile_photo'] !== ''; ?>
+                <?php if ($hasPhoto): ?>
+                    <img src="<?= e($profilePhotoUrl) ?>" alt="Foto de perfil de <?= e((string) $user['name']) ?>" class="profile-hero-avatar" data-profile-preview>
+                <?php else: ?>
+                    <div class="profile-avatar-placeholder" aria-label="Sem foto de perfil">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <circle cx="12" cy="8" r="4" fill="currentColor"/>
+                            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                <?php endif; ?>
             </div>
+
 
             <div class="profile-hero-content">
                 <h1>Perfil</h1>
@@ -33,16 +44,16 @@ $statusLabelMap = [
                 <div class="profile-stats">
                     <div class="profile-stat-card">
                         <strong><?= e((string) $totalAgendamentos) ?></strong>
-                        <span>Agendamentos</span>
+                        <span>Agendamento</span>
                     </div>
-                    <div class="profile-stat-card">
-                        <strong><?= e((string) $user['id']) ?></strong>
+                    <!--<div class="profile-stat-card">
+                        <strong><//?= e((string) $user['id']) ?></strong>
                         <span>ID do Cliente</span>
-                    </div>
-                    <div class="profile-stat-card">
-                        <strong><?= e((string) mb_strtoupper((string) mb_substr($user['name'], 0, 2))) ?></strong>
+                    </div>-->
+                   <!-- <div class="profile-stat-card">
+                        <strong><//?= e((string) mb_strtoupper((string) mb_substr($user['name'], 0, 2))) ?></strong>
                         <span>Identificacao</span>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -85,6 +96,18 @@ $statusLabelMap = [
 
                     <button class="profile-btn profile-btn-secondary" type="submit">Atualizar foto</button>
                 </form>
+
+                <?php if ($hasPhoto): ?>
+                <form action="<?= e(url('/perfil/foto/excluir')) ?>" method="post" class="profile-avatar-delete-form" onsubmit="return confirm('Deseja remover sua foto de perfil?');">
+                    <?= App\Core\Csrf::field() ?>
+                    <button type="submit" class="profile-btn profile-btn-danger" title="Remover foto">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Remover foto
+                    </button>
+                </form>
+                <?php endif; ?>
             </section>
 
             <section class="profile-card profile-card-appointments">

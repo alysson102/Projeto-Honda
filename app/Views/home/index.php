@@ -4,7 +4,7 @@
 		<div class="card">
 			<img src="<?= e(url('/assets/imagens/agendamentos.png')) ?>">
 			<div class="card-content">
-				<h3 class="card-title-label">Agendamento</h3>
+				<h3 class="card-title-label">Agendamentos</h3>
 			</div>
 		</div>
 	</a>

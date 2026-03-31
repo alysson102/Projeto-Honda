@@ -174,7 +174,16 @@ document.addEventListener('DOMContentLoaded', function() {
         formulario.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            if (!validarFormulario()) {
+            let formularioValido = false;
+            try {
+                formularioValido = validarFormulario();
+            } catch (err) {
+                console.error('Erro na validação do formulário:', err);
+                alert('❌ Erro ao validar o formulário. Verifique todos os campos e tente novamente.');
+                return;
+            }
+
+            if (!formularioValido) {
                 return;
             }
 
@@ -222,66 +231,97 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Destaca o campo inválido e foca nele
+function mostrarErroField(el) {
+    // Marca borda do campo
+    el.style.outline = '2px solid #c62828';
+    el.style.outlineOffset = '2px';
+
+    // Remove ao corrigir
+    el.addEventListener('input', function limpar() {
+        el.style.outline = '';
+        el.style.outlineOffset = '';
+        el.removeEventListener('input', limpar);
+    }, { once: true });
+    el.addEventListener('change', function limpar() {
+        el.style.outline = '';
+        el.style.outlineOffset = '';
+        el.removeEventListener('change', limpar);
+    }, { once: true });
+
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.focus();
+}
+
 // Validar formulário
 function validarFormulario() {
-    const nome = document.getElementById('nome').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const telefone = document.getElementById('telefone').value.trim();
-    const marca = document.getElementById('marca').value.trim();
-    const ano = document.getElementById('ano').value;
-    const chassi = document.getElementById('chassi').value.trim();
-    const placa = document.getElementById('placa').value.trim();
-    const revisao = document.getElementById('revisao').value;
-    const data = document.getElementById('data').value;
-    const horario = document.getElementById('horario').value;
+    const nomeEl     = document.getElementById('nome');
+    const emailEl    = document.getElementById('email');
+    const telefoneEl = document.getElementById('telefone');
+    const marcaEl    = document.getElementById('marca');
+    const anoEl      = document.getElementById('ano');
+    const chassiEl   = document.getElementById('chassi');
+    const placaEl    = document.getElementById('placa');
+    const revisaoEl  = document.getElementById('revisao');
+    const dataEl     = document.getElementById('data');
+    const horario    = document.getElementById('horario').value;
 
-    if (!nome || nome.length < 3) {
-        alert('❌ Por favor, insira um nome válido (mínimo 3 caracteres)');
+    if (!nomeEl.value.trim() || nomeEl.value.trim().length < 3) {
+        mostrarErroField(nomeEl);
         return false;
     }
 
-    if (!email.includes('@')) {
-        alert('❌ Por favor, insira um e-mail válido');
+    if (!emailEl.value.trim() || !emailEl.value.includes('@')) {
+        mostrarErroField(emailEl);
         return false;
     }
 
-    if (telefone.length < 14) {
-        alert('❌ Por favor, insira um telefone válido com DDD');
+    if (telefoneEl.value.trim().length < 14) {
+        mostrarErroField(telefoneEl);
         return false;
     }
 
-    if (!marca || marca.length < 3) {
-        alert('❌ Por favor, insira a marca/modelo válida');
+    if (!marcaEl.value.trim() || marcaEl.value.trim().length < 3) {
+        mostrarErroField(marcaEl);
         return false;
     }
 
-    if (!ano || ano < 1990 || ano > 2100) {
-        alert('❌ Por favor, insira um ano válido');
+    if (!anoEl.value || parseInt(anoEl.value) < 1990 || parseInt(anoEl.value) > 2100) {
+        mostrarErroField(anoEl);
         return false;
     }
 
-    if (!chassi || chassi.length < 5) {
-        alert('❌ Por favor, insira o chassis válido (mínimo 5 caracteres)');
+    if (!chassiEl.value.trim() || chassiEl.value.trim().length < 5) {
+        mostrarErroField(chassiEl);
         return false;
     }
 
-    if (!placa || placa.length < 7) {
-        alert('❌ Por favor, insira a placa válida');
+    if (!placaEl.value.trim() || placaEl.value.trim().length < 7) {
+        mostrarErroField(placaEl);
         return false;
     }
 
-    if (!revisao) {
-        alert('❌ Por favor, selecione um tipo de revisão');
+    if (!revisaoEl.value) {
+        mostrarErroField(revisaoEl);
         return false;
     }
 
-    if (!data) {
-        alert('❌ Por favor, selecione uma data');
+    if (!dataEl.value) {
+        mostrarErroField(dataEl);
         return false;
     }
 
     if (!horario) {
-        alert('❌ Por favor, selecione um horário');
+        const container = document.getElementById('horariosContainer');
+        if (container) {
+            container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            container.style.outline = '2px solid #c62828';
+            container.style.outlineOffset = '2px';
+            setTimeout(() => {
+                container.style.outline = '';
+                container.style.outlineOffset = '';
+            }, 1500);
+        }
         return false;
     }
 

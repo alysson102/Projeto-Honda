@@ -26,5 +26,6 @@ return static function (Router $router): void {
     $router->get('/perfil', [ProfileController::class, 'index'], [AuthMiddleware::class]);
     $router->post('/perfil/atualizar', [ProfileController::class, 'update'], [AuthMiddleware::class, CsrfMiddleware::class]);
     $router->post('/perfil/foto', [ProfileController::class, 'updatePhoto'], [AuthMiddleware::class, CsrfMiddleware::class]);
+    $router->post('/perfil/foto/excluir', [ProfileController::class, 'deletePhoto'], [AuthMiddleware::class, CsrfMiddleware::class]);
     $router->post('/perfil/agendamentos/excluir', [ProfileController::class, 'deleteAppointment'], [AuthMiddleware::class, CsrfMiddleware::class]);
 };
