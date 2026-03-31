@@ -224,7 +224,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
             <div class="form-section">
                 <h3 class="section-title">📅 Data e Horário</h3>
 
-                <div class="form-row">
+                <div class="form-row form-row-date">
                     <div class="form-group">
                         <input type="date" id="data" name="data" required placeholder=" ">
                         <label for="data" class="form-label">Data <span class="field-required">*</span></label>

@@ -1670,6 +1670,18 @@ body.page-index {
     grid-template-columns: 1fr 1fr 1fr;
 }
 
+.form-row.form-row-date {
+    grid-template-columns: max-content;
+}
+
+.form-row.form-row-date #data {
+    max-width: 200px;
+}
+
+.form-row.form-row-date .help-text {
+    white-space: nowrap;
+}
+
 .form-group {
     display: flex;
     flex-direction: column;
