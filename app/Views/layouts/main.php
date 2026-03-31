@@ -82,7 +82,7 @@ if ($currentRequestPath === '/' && Auth::check()) {
                     <a class="<?= $contactActive ? 'is-active' : '' ?>" href="<?= e(url('/contact')) ?>" <?= $contactActive ? 'aria-current="page"' : '' ?>>Contato</a>
     
                     <?php if (Auth::check()): ?>
-                        <a class="nav-profile-link <?= $profileActive ? 'is-active' : '' ?>" href="<?= e(url('/perfil')) ?>" <?= $profileActive ? 'aria-current="page"' : '' ?>>Meu Perfil</a>
+                        <a class="nav-profile-link <?= $profileActive ? 'is-active' : '' ?>" href="<?= e(url('/perfil')) ?>" <?= $profileActive ? 'aria-current="page"' : '' ?>>Perfil</a>
                         <form action="<?= e(url('/logout')) ?>" method="post" class="nav-logout-form">
                             <?= App\Core\Csrf::field() ?>
                             <button type="submit" class="nav-logout-btn">Sair</button>

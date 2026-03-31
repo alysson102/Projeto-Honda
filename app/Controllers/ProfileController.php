@@ -44,7 +44,7 @@ final class ProfileController extends Controller
         $agendamentos = $agendamentoModel->findByUserContext((int) $user['id'], (string) $user['email']);
 
         $this->view('home/profile', [
-            'title' => 'Meu Perfil',
+            'title' => 'Perfil',
             'user' => $user,
             'agendamentos' => $agendamentos,
         ]);

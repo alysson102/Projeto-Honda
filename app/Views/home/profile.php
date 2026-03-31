@@ -27,7 +27,7 @@ $statusLabelMap = [
             </div>
 
             <div class="profile-hero-content">
-                <h1>Meu Perfil</h1>
+                <h1>Perfil</h1>
                 <p>Gerencie seus dados e acompanhe todos os seus agendamentos em um unico painel.</p>
 
                 <div class="profile-stats">
@@ -90,7 +90,6 @@ $statusLabelMap = [
             <section class="profile-card profile-card-appointments">
                 <header class="profile-card-header">
                     <h2>Meus Agendamentos</h2>
-                    <p>Lista separada dos servicos ja cadastrados.</p>
                 </header>
 
                 <?php if ($agendamentos === []): ?>

@@ -85,7 +85,7 @@ final class AgendamentoController extends Controller
             $this->enviarEmailConfirmacao($dados, $agendamentoId);
 
             Session::flash('success', '✅ Agendamento realizado com sucesso! Você receberá uma confirmação por e-mail.');
-            $this->redirect('/agendamento');
+            $this->redirect(Auth::check() ? '/perfil' : '/agendamento');
         } catch (\Exception $e) {
             error_log('Erro ao criar agendamento: ' . $e->getMessage());
             Session::flash('error', '❌ Erro ao processar agendamento. Tente novamente.');
