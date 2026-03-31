@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `name`       VARCHAR(120)  NOT NULL,
     `email`      VARCHAR(180)  NOT NULL,
     `telefone`   VARCHAR(255)   NOT NULL,
+  `profile_photo` VARCHAR(255) NULL,
     `password`   VARCHAR(255)  NOT NULL,
     `created_at` TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),

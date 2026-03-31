@@ -318,6 +318,22 @@
     updateCarousel();
   } 
 
+  const profilePhotoInput = document.getElementById('profile-photo-input');
+  const profilePreview = document.querySelector('[data-profile-preview]');
+
+  if (profilePhotoInput instanceof HTMLInputElement && profilePreview instanceof HTMLImageElement) {
+    profilePhotoInput.addEventListener('change', () => {
+      const file = profilePhotoInput.files && profilePhotoInput.files[0] ? profilePhotoInput.files[0] : null;
+      if (!file) {
+        return;
+      }
+
+      const objectUrl = URL.createObjectURL(file);
+      profilePreview.src = objectUrl;
+      profilePreview.addEventListener('load', () => URL.revokeObjectURL(objectUrl), { once: true });
+    });
+  }
+
 
 })();
 

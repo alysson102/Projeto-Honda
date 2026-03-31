@@ -69,6 +69,7 @@ final class Auth
             'name' => $user['name'],
             'email' => $user['email'],
             'telefone' => $user['telefone'],
+            'profile_photo' => $user['profile_photo'] ?? null,
         ];
 
         return [

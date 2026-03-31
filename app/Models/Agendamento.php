@@ -233,4 +233,42 @@ final class Agendamento extends Model
 
         return $stmt->fetchAll() ?: [];
     }
+
+    public function findByUserContext(int $userId, string $email): array
+    {
+        $stmt = $this->db->prepare(
+            'SELECT * FROM agendamentos
+            WHERE user_id = :user_id
+               OR (user_id IS NULL AND email = :email)
+            ORDER BY data_agendamento DESC, horario_inicio DESC'
+        );
+
+        $stmt->execute([
+            'user_id' => $userId,
+            'email' => mb_strtolower(trim($email)),
+        ]);
+
+        return $stmt->fetchAll() ?: [];
+    }
+
+    public function deleteByIdAndUserContext(int $id, int $userId, string $email): bool
+    {
+        $stmt = $this->db->prepare(
+            'DELETE FROM agendamentos
+            WHERE id = :id
+              AND (
+                    user_id = :user_id
+                 OR (user_id IS NULL AND email = :email)
+              )
+            LIMIT 1'
+        );
+
+        $stmt->execute([
+            'id' => $id,
+            'user_id' => $userId,
+            'email' => mb_strtolower(trim($email)),
+        ]);
+
+        return $stmt->rowCount() === 1;
+    }
 }

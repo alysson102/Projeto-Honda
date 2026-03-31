@@ -30,8 +30,9 @@ $homeActive = $isActive('/');
 $aboutActive = $isActive('/about');
 $contactActive = $isActive('/contact');
 $registerActive = $isActive('/register');
+$profileActive = $isActive('/perfil');
 $isRegisterPage = $registerActive;
-$shouldApplyMobileFooterSpacing = in_array($currentRequestPath, ['/register', '/about', '/contact', '/agendamento'], true);
+$shouldApplyMobileFooterSpacing = in_array($currentRequestPath, ['/register', '/about', '/contact', '/agendamento', '/perfil'], true);
 $bodyClasses = [$isGuestLandingPage ? 'page-home' : 'page-inner'];
 
 if ($shouldApplyMobileFooterSpacing) {
@@ -81,6 +82,7 @@ if ($currentRequestPath === '/' && Auth::check()) {
                     <a class="<?= $contactActive ? 'is-active' : '' ?>" href="<?= e(url('/contact')) ?>" <?= $contactActive ? 'aria-current="page"' : '' ?>>Contato</a>
     
                     <?php if (Auth::check()): ?>
+                        <a class="nav-profile-link <?= $profileActive ? 'is-active' : '' ?>" href="<?= e(url('/perfil')) ?>" <?= $profileActive ? 'aria-current="page"' : '' ?>>Meu Perfil</a>
                         <form action="<?= e(url('/logout')) ?>" method="post" class="nav-logout-form">
                             <?= App\Core\Csrf::field() ?>
                             <button type="submit" class="nav-logout-btn">Sair</button>
