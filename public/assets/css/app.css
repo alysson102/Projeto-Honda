@@ -2587,6 +2587,55 @@ body.is-submitting-agendamento {
   margin: 0;
 }
 
+/* Modal de confirmação de cancelamento */
+.profile-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.55);
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-modal-overlay.is-open {
+  display: flex;
+}
+
+.profile-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 28px 24px;
+  max-width: 380px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: modalEntrada 0.2s ease;
+}
+
+@keyframes modalEntrada {
+  from { transform: scale(0.92); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.profile-modal-msg {
+  font-size: 17px;
+  font-weight: 700;
+  color: #2c1a1a;
+  margin: 0 0 24px;
+  line-height: 1.45;
+}
+
+.profile-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.profile-modal-actions .profile-btn {
+  min-width: 90px;
+}
+
 @media (max-width: 980px) {
   .profile-hero {
     grid-template-columns: 1fr;

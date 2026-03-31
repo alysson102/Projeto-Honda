@@ -315,12 +315,17 @@ function validarFormulario() {
         const container = document.getElementById('horariosContainer');
         if (container) {
             container.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            container.style.outline = '2px solid #c62828';
-            container.style.outlineOffset = '2px';
-            setTimeout(() => {
-                container.style.outline = '';
-                container.style.outlineOffset = '';
-            }, 1500);
+            const toastId = 'horario-toast-error';
+            if (!document.getElementById(toastId)) {
+                const toast = document.createElement('p');
+                toast.id = toastId;
+                toast.className = 'horarios-error';
+                toast.style.cssText = 'margin-bottom:8px;transition:opacity 0.5s ease;background:#c62828;color:#fff;padding:8px 14px;border-radius:8px;font-weight:600;';
+                toast.textContent = '⚠️ Selecione um horário disponível antes de continuar.';
+                container.insertAdjacentElement('beforebegin', toast);
+                setTimeout(() => { toast.style.opacity = '0'; }, 2000);
+                setTimeout(() => { toast.remove(); }, 2500);
+            }
         }
         return false;
     }

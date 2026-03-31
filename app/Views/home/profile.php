@@ -98,7 +98,7 @@ $statusLabelMap = [
                 </form>
 
                 <?php if ($hasPhoto): ?>
-                <form action="<?= e(url('/perfil/foto/excluir')) ?>" method="post" class="profile-avatar-delete-form" onsubmit="return confirm('Deseja remover sua foto de perfil?');">
+                <form action="<?= e(url('/perfil/foto/excluir')) ?>" method="post" class="profile-avatar-delete-form">
                     <?= App\Core\Csrf::field() ?>
                     <button type="submit" class="profile-btn profile-btn-danger" title="Remover foto">
                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -139,10 +139,10 @@ $statusLabelMap = [
                                     <span class="profile-status-chip <?= e($statusClass) ?>"><?= e($statusLabel) ?></span>
                                 </div>
 
-                                <form action="<?= e(url('/perfil/agendamentos/excluir')) ?>" method="post" class="profile-appointment-actions" onsubmit="return confirm('Deseja realmente excluir este agendamento? Esta acao nao pode ser desfeita.');">
+                                <form action="<?= e(url('/perfil/agendamentos/excluir')) ?>" method="post" class="profile-appointment-actions profile-cancel-form">
                                     <?= App\Core\Csrf::field() ?>
                                     <input type="hidden" name="agendamento_id" value="<?= e((string) ($agendamento['id'] ?? 0)) ?>">
-                                    <button type="submit" class="profile-btn profile-btn-danger">Excluir</button>
+                                    <button type="button" class="profile-btn profile-btn-danger profile-cancelar-btn">Cancelar</button>
                                 </form>
                             </article>
                         <?php endforeach; ?>
@@ -152,3 +152,14 @@ $statusLabelMap = [
         </div>
     </div>
 </section>
+
+<!-- Modal de confirmação de cancelamento -->
+<div id="modal-cancelar" class="profile-modal-overlay">
+    <div class="profile-modal" role="dialog" aria-modal="true">
+        <p class="profile-modal-msg">Deseja realmente cancelar seu agendamento?</p>
+        <div class="profile-modal-actions">
+            <button class="profile-btn profile-btn-danger" id="modal-cancelar-sim">Sim</button>
+            <button class="profile-btn profile-btn-secondary" id="modal-cancelar-nao">Não</button>
+        </div>
+    </div>
+</div>

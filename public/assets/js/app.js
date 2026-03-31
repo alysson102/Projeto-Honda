@@ -334,6 +334,60 @@
     });
   }
 
+  // Modal de cancelamento de agendamento
+  const modalCancelar = document.getElementById('modal-cancelar');
+  if (modalCancelar) {
+    let formPendente = null;
+
+    document.querySelectorAll('.profile-cancelar-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        formPendente = btn.closest('form');
+        modalCancelar.classList.add('is-open');
+      });
+    });
+
+    const btnSim = document.getElementById('modal-cancelar-sim');
+    if (btnSim) {
+      btnSim.addEventListener('click', function () {
+        modalCancelar.classList.remove('is-open');
+        if (formPendente) formPendente.submit();
+        formPendente = null;
+      });
+    }
+
+    const btnNao = document.getElementById('modal-cancelar-nao');
+    if (btnNao) {
+      btnNao.addEventListener('click', function () {
+        modalCancelar.classList.remove('is-open');
+        formPendente = null;
+      });
+    }
+
+    modalCancelar.addEventListener('click', function (e) {
+      if (e.target === modalCancelar) {
+        modalCancelar.classList.remove('is-open');
+        formPendente = null;
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modalCancelar.classList.contains('is-open')) {
+        modalCancelar.classList.remove('is-open');
+        formPendente = null;
+      }
+    });
+
+    // Confirmar remoção de foto
+    const deletePhotoForm = document.querySelector('.profile-avatar-delete-form');
+    if (deletePhotoForm) {
+      deletePhotoForm.addEventListener('submit', function (e) {
+        if (!window.confirm('Deseja remover sua foto de perfil?')) {
+          e.preventDefault();
+        }
+      });
+    }
+  }
+
 
 })();
 
