@@ -232,15 +232,16 @@ nav.nav a.is-active::after{
   }
 
 .logo{
-    width: clamp(220px, 26vw, 300px);
+    width: clamp(200px, 25vw, 280px);
     float: left;
-    margin-top: -40px;
+    margin-top: -33px;
     margin-left: -40px;
 }
 
 .logo img{
     width:100%;
     height: 100%;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
 }
 
 section.baner{
@@ -1653,6 +1654,17 @@ body.page-index {
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 2px solid rgba(183, 28, 28, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.title-icon {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    position: relative;
+    top: -2px;
 }
 
 .form-row {
@@ -2288,6 +2300,9 @@ body.is-submitting-agendamento {
   grid-template-columns: 140px 1fr;
   gap: 22px;
   align-items: center;
+  will-change: background-position;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 

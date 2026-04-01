@@ -136,7 +136,7 @@ $statusLabelMap = [
                                     <h3><?= e((string) ($agendamento['marca_modelo'] ?? 'Motocicleta')) ?></h3>
                                     <p>Data: <strong><?= e($dateBr) ?></strong> as <strong><?= e($hora) ?></strong></p>
                                     <p>Placa: <strong><?= e((string) ($agendamento['placa'] ?? '-')) ?></strong> | Revisao: <strong><?= e((string) ($agendamento['tipo_revisao'] ?? '-')) ?> km</strong></p>
-                                    <span class="profile-status-chip <?= e($statusClass) ?>"><?= e($statusLabel) ?></span>
+                                    <p>Chassi: <strong><?= e((string) ($agendamento['chassi'] ?? '-')) ?></strong></p>
                                 </div>
 
                                 <form action="<?= e(url('/perfil/agendamentos/excluir')) ?>" method="post" class="profile-appointment-actions profile-cancel-form">

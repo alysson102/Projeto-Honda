@@ -128,7 +128,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 
             <!-- Dados do Cliente -->
             <div class="form-section">
-                <h3 class="section-title">💼 Informações do Cliente</h3>
+                <h3 class="section-title"><span class="title-icon">💼</span> Informações do Cliente</h3>
 
                 <div class="form-row">
                     <div class="form-group">
@@ -151,7 +151,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 
             <!-- Dados da Motocicleta -->
             <div class="form-section">
-                <h3 class="section-title">🏍️ Informações da Motocicleta</h3>
+                <h3 class="section-title"><span class="title-icon">🏍️</span> Informações da Motocicleta</h3>
 
                 <div class="form-row">
                     <div class="form-group">
@@ -201,7 +201,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 
             <!-- Tipo de Revisão -->
             <div class="form-section">
-                <h3 class="section-title">🔧 Tipo de Revisão</h3>
+                <h3 class="section-title"><span class="title-icon">🔧</span> Tipo de Revisão</h3>
 
                 <div class="form-row full">
                     <div class="form-group">
@@ -222,7 +222,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 
             <!-- Data e Horário -->
             <div class="form-section">
-                <h3 class="section-title">📅 Data e Horário</h3>
+                <h3 class="section-title"><span class="title-icon">📅</span> Data e Horário</h3>
 
                 <div class="form-row form-row-date">
                     <div class="form-group">
@@ -245,7 +245,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 
             <!-- Observações -->
             <div class="form-section">
-                <h3 class="section-title">📝 Observações</h3>
+                <h3 class="section-title"><span class="title-icon">📝</span> Observações</h3>
 
                 <div class="form-row full">
                     <div class="form-group">
