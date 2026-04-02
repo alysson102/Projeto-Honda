@@ -281,15 +281,19 @@
       isMouseDown = false;
     });
 
-    if (mobileBookingLink instanceof HTMLAnchorElement) {
-      mobileBookingLink.addEventListener('click', (event) => {
+    const handleMobileCarouselLink = (link) => {
+      if (!(link instanceof HTMLAnchorElement)) {
+        return;
+      }
+
+      link.addEventListener('click', (event) => {
         if (!mobileCarouselQuery.matches) {
           return;
         }
 
         event.preventDefault();
 
-        const href = mobileBookingLink.getAttribute('href') ?? '';
+        const href = link.getAttribute('href') ?? '';
         let destinationUrl;
 
         try {
@@ -298,22 +302,24 @@
           return;
         }
 
-        // Redireciona apenas para o mesmo dominio para evitar navegao insegura.
+        // Redireciona apenas para o mesmo dominio para evitar navegacao insegura.
         if (destinationUrl.origin !== window.location.origin) {
           return;
         }
 
-        const bookingCard = mobileBookingLink.closest('.item');
-
-        if (bookingCard) {
-          bookingCard.classList.add('is-redirecting');
+        const card = link.closest('.item');
+        if (card) {
+          card.classList.add('is-redirecting');
         }
 
         window.setTimeout(() => {
           window.location.assign(`${destinationUrl.pathname}${destinationUrl.search}${destinationUrl.hash}`);
         }, 550);
       }, { passive: false });
-    }
+    };
+
+    handleMobileCarouselLink(mobileBookingLink);
+    handleMobileCarouselLink(carousel.querySelector('a[data-mobile-redirect="pecas"]'));
 
     updateCarousel();
   } 

@@ -44,6 +44,14 @@ final class HomeController extends Controller
         ]);
     }
 
+    public function pecas(): void
+    {
+        $this->view('home/pecas', [
+            'title' => 'Peças Originais',
+            'user' => Auth::user(),
+        ]);
+    }
+
     public function contact(): void
     {
         $this->view('home/contact', [
