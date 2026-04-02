@@ -643,6 +643,7 @@ main {
   border-radius: 12px;
   padding: 18px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  animation: animarListra 12s ease infinite;
 }
 
 .info-card h2 {
@@ -654,6 +655,13 @@ main {
   color: #1f1f1f;
   line-height: 1.6;
   margin-bottom: 8px;
+}
+
+@keyframes animarListra {
+  0%   { border-color: #7f0000; }
+  33%  { border-color: #c62828; }
+  66%  { border-color: #f14545; }
+  100% { border-color: #7f0000; }
 }
 
 /* --- Fundador --- */
@@ -669,6 +677,7 @@ main {
   box-shadow: 0 12px 28px rgba(127, 0, 0, 0.18);
   padding: 36px 32px;
   text-align: center;
+  animation: animarListra 12s ease infinite;
 }
 
 .about-founder-avatar-wrap {
@@ -679,6 +688,7 @@ main {
   border: 5px solid #b71c1c;
   box-shadow: 0 8px 24px rgba(127, 0, 0, 0.35);
   flex-shrink: 0;
+  animation: animarListra 12s ease infinite;
 }
 
 .about-founder-avatar {
@@ -705,7 +715,9 @@ main {
   content: "";
   display: block;
   height: 3px;
-  background: linear-gradient(90deg, #b71c1c, #f14545);
+  background: linear-gradient(270deg, #7f0000, #b71c1c, #c62828, #f14545);
+  background-size: 400% 400%;
+  animation: animarFundo_head 12s ease infinite;
   border-radius: 999px;
   margin-top: 4px;
 }
