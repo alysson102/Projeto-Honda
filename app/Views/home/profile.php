@@ -17,6 +17,9 @@ $statusLabelMap = [
     'concluido' => 'Concluido',
     'cancelado' => 'Cancelado',
 ];
+
+$temAgendamentoCancelavel = false;
+$hoje = new \DateTimeImmutable('today');
 ?>
 
 <section class="profile-page">
@@ -130,6 +133,12 @@ $statusLabelMap = [
                                 $dateObj = \DateTime::createFromFormat('Y-m-d', $dateRaw);
                                 $dateBr = $dateObj ? $dateObj->format('d/m/Y') : $dateRaw;
                                 $hora = substr((string) ($agendamento['horario_inicio'] ?? ''), 0, 5);
+                                $dataAgendamento = $dateObj ? \DateTimeImmutable::createFromMutable($dateObj)->setTime(0, 0) : null;
+                                $agendamentoPassou = $dataAgendamento instanceof \DateTimeImmutable && $dataAgendamento < $hoje;
+
+                                if (!$agendamentoPassou) {
+                                    $temAgendamentoCancelavel = true;
+                                }
                             ?>
                             <article class="profile-appointment-item">
                                 <div class="profile-appointment-main">
@@ -142,7 +151,11 @@ $statusLabelMap = [
                                 <form action="<?= e(url('/perfil/agendamentos/excluir')) ?>" method="post" class="profile-appointment-actions profile-cancel-form">
                                     <?= App\Core\Csrf::field() ?>
                                     <input type="hidden" name="agendamento_id" value="<?= e((string) ($agendamento['id'] ?? 0)) ?>">
-                                    <button type="button" class="profile-btn profile-btn-danger profile-cancelar-btn">Cancelar</button>
+                                    <?php if ($agendamentoPassou): ?>
+                                        <button type="submit" class="profile-btn profile-btn-danger">Excluir</button>
+                                    <?php else: ?>
+                                        <button type="button" class="profile-btn profile-btn-danger profile-cancelar-btn">Cancelar</button>
+                                    <?php endif; ?>
                                 </form>
                             </article>
                         <?php endforeach; ?>
@@ -153,6 +166,7 @@ $statusLabelMap = [
     </div>
 </section>
 
+<?php if ($temAgendamentoCancelavel): ?>
 <!-- Modal de confirmação de cancelamento -->
 <div id="modal-cancelar" class="profile-modal-overlay">
     <div class="profile-modal" role="dialog" aria-modal="true">
@@ -163,3 +177,4 @@ $statusLabelMap = [
         </div>
     </div>
 </div>
+<?php endif; ?>

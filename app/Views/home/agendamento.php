@@ -138,28 +138,9 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
         <form id="agendamentoForm" class="form-agendamento" method="POST" action="<?= e(url('/agendamento')) ?>" novalidate>
             <?= Csrf::field() ?>
 
-            <!-- Dados do Cliente -->
-            <div class="form-section">
-                <h3 class="section-title"><span class="title-icon">💼</span> Informações do Cliente</h3>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <input type="text" id="nome" name="nome" required placeholder=" " value="<?= e($usuarioNome) ?>">
-                        <label for="nome" class="form-label">Nome Completo <span class="field-required">*</span></label>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" required placeholder=" " value="<?= e($usuarioEmail) ?>">
-                        <label for="email" class="form-label">E-mail <span class="field-required">*</span></label>
-                    </div>
-                </div>
-
-                <div class="form-row form-row-center">
-                    <div class="form-group">
-                        <input type="tel" id="telefone" name="telefone" required placeholder=" " pattern="[0-9\-\(\)\s]{10,}" maxlength="15" value="<?= e($usuarioTelefone) ?>">
-                        <label for="telefone" class="form-label">Telefone <span class="field-required">*</span></label>
-                    </div>
-                </div>
-            </div>
+            <input type="hidden" id="nome" name="nome" value="<?= e($usuarioNome) ?>">
+            <input type="hidden" id="email" name="email" value="<?= e($usuarioEmail) ?>">
+            <input type="hidden" id="telefone" name="telefone" value="<?= e($usuarioTelefone) ?>">
 
             <!-- Dados da Motocicleta -->
             <div class="form-section">
