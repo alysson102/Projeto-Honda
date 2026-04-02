@@ -395,6 +395,33 @@
   }
 
 
+  // Tabs de peças originais
+  const pecasTabs = document.querySelector('.pecas-tabs');
+  if (pecasTabs) {
+    pecasTabs.addEventListener('click', (event) => {
+      const btn = event.target.closest('.pecas-tab-btn');
+      if (!btn) return;
+
+      const tabId = btn.getAttribute('data-tab');
+      if (!tabId) return;
+
+      document.querySelectorAll('.pecas-tab-btn').forEach((b) => {
+        b.classList.remove('is-active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      document.querySelectorAll('.pecas-painel').forEach((p) => {
+        p.classList.remove('is-active');
+      });
+
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-selected', 'true');
+
+      const painel = document.getElementById('tab-' + tabId);
+      if (painel) painel.classList.add('is-active');
+    });
+  }
+
 })();
 
 
