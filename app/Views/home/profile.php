@@ -129,12 +129,37 @@ $hoje = new \DateTimeImmutable('today');
                                 $statusRaw = is_string($agendamento['status'] ?? null) ? $agendamento['status'] : 'pendente';
                                 $statusLabel = $statusLabelMap[$statusRaw] ?? 'Pendente';
                                 $statusClass = 'status-' . preg_replace('/[^a-z]/', '', mb_strtolower($statusRaw));
-                                $dateRaw = (string) ($agendamento['data_agendamento'] ?? '');
-                                $dateObj = \DateTime::createFromFormat('Y-m-d', $dateRaw);
+                                $dateRaw = trim((string) ($agendamento['data_agendamento'] ?? ''));
+                                $datePrefix = substr($dateRaw, 0, 10);
+                                $hojeYmd = $hoje->format('Y-m-d');
+
+                                $dateObj = null;
+                                $agendamentoPassou = false;
+
+                                if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $datePrefix) === 1) {
+                                    $agendamentoPassou = $datePrefix < $hojeYmd;
+                                    $dateObj = \DateTime::createFromFormat('Y-m-d', $datePrefix) ?: null;
+                                } else {
+                                    $dateObj = \DateTime::createFromFormat('Y-m-d', $dateRaw)
+                                        ?: \DateTime::createFromFormat('Y-m-d H:i:s', $dateRaw)
+                                        ?: \DateTime::createFromFormat('Y-m-d H:i', $dateRaw)
+                                        ?: \DateTime::createFromFormat('d/m/Y', $dateRaw);
+
+                                    if (!$dateObj && $dateRaw !== '') {
+                                        $timestamp = strtotime($dateRaw);
+                                        if ($timestamp !== false) {
+                                            $dateObj = (new \DateTime())->setTimestamp($timestamp);
+                                        }
+                                    }
+
+                                    $dataAgendamento = $dateObj
+                                        ? \DateTimeImmutable::createFromMutable($dateObj)->setTime(0, 0)
+                                        : null;
+                                    $agendamentoPassou = $dataAgendamento instanceof \DateTimeImmutable && $dataAgendamento < $hoje;
+                                }
+
                                 $dateBr = $dateObj ? $dateObj->format('d/m/Y') : $dateRaw;
                                 $hora = substr((string) ($agendamento['horario_inicio'] ?? ''), 0, 5);
-                                $dataAgendamento = $dateObj ? \DateTimeImmutable::createFromMutable($dateObj)->setTime(0, 0) : null;
-                                $agendamentoPassou = $dataAgendamento instanceof \DateTimeImmutable && $dataAgendamento < $hoje;
 
                                 if (!$agendamentoPassou) {
                                     $temAgendamentoCancelavel = true;
