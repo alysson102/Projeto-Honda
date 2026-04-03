@@ -1422,6 +1422,15 @@ section.register-section{
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .about-founder-text {
+    padding: 0;
+    margin: 0 -18px;
+  }
+
+  .about-founder-text p {
+    padding: 0;
+  }
+
   .info-hero h1,
   .info-card h2 {
     font-size: clamp(18px, 5vw, 24px);
