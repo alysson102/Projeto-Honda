@@ -86,7 +86,7 @@ $categorias = [
 <section class="info-page info-pecas">
 
     <div class="info-hero">
-        <h1>🏍️ Peças Originais Honda</h1>
+        <h1><span class="moto-animada" aria-hidden="true">🏍️</span> <span class="pecas-title-text">Peças Originais Honda</span></h1>
         <p>Encontre as peças ideais para a sua moto. Todas com procedência e qualidade Honda.</p>
     </div>
 

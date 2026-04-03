@@ -1678,7 +1678,9 @@ body.page-index {
 }
 
 .pecas-tab-btn.is-active {
-  background: linear-gradient(135deg, #8f0000, #c62828);
+  background: linear-gradient(270deg, #7f0000, #b71c1c, #c62828, #f14545);
+  background-size: 400% 400%;
+  animation: animarFundo_head 12s ease infinite;
   border-color: transparent;
   color: #fff;
   box-shadow: 0 4px 14px rgba(143, 0, 0, 0.35);
@@ -1710,9 +1712,10 @@ body.page-index {
 }
 
 .peca-card {
+  position: relative;
+  overflow: hidden;
   background: #fff;
   border: 1px solid #e9e9e9;
-  border-top: 4px solid #b71c1c;
   border-radius: 14px;
   padding: 20px 18px 16px;
   display: flex;
@@ -1722,14 +1725,30 @@ body.page-index {
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
+.peca-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(270deg, #7f0000, #b71c1c, #c62828, #f14545);
+  background-size: 400% 400%;
+  animation: animarFundo_head 12s ease infinite;
+}
+
 .peca-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 28px rgba(143, 0, 0, 0.13);
 }
 
 .peca-card-indisponivel {
-  border-top-color: #bdbdbd;
   opacity: 0.75;
+}
+
+.peca-card-indisponivel::before {
+  background: #bdbdbd;
+  animation: none;
 }
 
 .peca-card-header {
@@ -1774,7 +1793,9 @@ body.page-index {
   display: inline-block;
   margin-top: 4px;
   padding: 9px 0;
-  background: linear-gradient(135deg, #8f0000, #c62828);
+  background: linear-gradient(270deg, #7f0000, #b71c1c, #c62828, #f14545);
+  background-size: 400% 400%;
+  animation: animarFundo_head 12s ease infinite;
   color: #fff;
   text-align: center;
   border-radius: 8px;
@@ -1786,6 +1807,47 @@ body.page-index {
 
 .peca-btn:hover {
   opacity: 0.88;
+}
+
+.info-pecas .info-hero h1 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.info-pecas .info-hero {
+  position: relative;
+  overflow: hidden;
+  border-left: none;
+}
+
+.info-pecas .info-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(270deg, #7f0000, #b71c1c, #c62828, #f14545);
+  background-size: 400% 400%;
+  animation: animarFundo_head 12s ease infinite;
+}
+
+.info-pecas .info-hero h1 .pecas-title-text {
+  background: linear-gradient(270deg, #7f0000, #b71c1c, #c62828, #f14545);
+  background-size: 400% 400%;
+  animation: animarFundo_head 12s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.info-pecas .info-hero h1 .moto-animada {
+  top: -4px;
+  line-height: 1;
+  margin-right: 2px;
+  filter: drop-shadow(2px 1px 3px rgba(110, 110, 110, 0.28));
 }
 
 .peca-btn-disabled {
