@@ -11,6 +11,7 @@
 :root {
   --topbar-height: 97px;
   --mobile-topbar-height: 84px;
+  --desktop-header-edge-spacing: 40px;
 }
 
 /*estilo de fundo animado neon*/
@@ -111,7 +112,7 @@ header.topbar {
 
 nav.nav{
     float: right;
-    margin-right: 40px;
+  margin-right: var(--desktop-header-edge-spacing);
     margin-top: 38px;
     display: flex;
     align-items: center;
@@ -235,7 +236,7 @@ nav.nav a.is-active::after{
     width: clamp(200px, 25vw, 280px);
     float: left;
     margin-top: -33px;
-    margin-left: -40px;
+  margin-left: calc(-1 * var(--desktop-header-edge-spacing));
 }
 
 .logo img{
@@ -1167,20 +1168,20 @@ section.register-section{
   }
 
   .logo {
-    width: clamp(210px, 36vw, 240px);
+    width: clamp(242px, 45vw, 288px);
     float: none;
-    margin-top: clamp(18px, 2.6vw, 28px);
-    margin-left: -20px;
+    margin-top: clamp(20px, 3vw, 30px);
+    margin-left: -28px;
   }
 
   .logo img {
-    transform: translateX(-18px);
+    transform: translate(-26px, 4px);
   }
 
   .menu-toggle {
     display: inline-flex;
     margin-top: 8px;
-    margin-right: -8px;
+    margin-right: 6px;
   }
 
   nav.nav {
@@ -1586,17 +1587,18 @@ section.register-section{
   }
 
   .logo {
-    margin-left: -16px;
+    width: clamp(224px, 64vw, 260px);
+    margin-left: -22px;
   }
 
   .logo img {
-    transform: translateX(-14px);
+    transform: translate(-22px, 3px);
   }
 
   .menu-toggle {
     width: 40px;
     height: 40px;
-    margin-right: -6px;
+    margin-right: 4px;
   }
 
   main {
