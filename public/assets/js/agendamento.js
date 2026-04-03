@@ -171,6 +171,44 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form submission
     const formulario = document.getElementById('agendamentoForm');
     if (formulario) {
+        formulario.addEventListener('reset', function() {
+            // Aguarda o reset nativo concluir antes de sincronizar a UI.
+            requestAnimationFrame(() => {
+                const horariosContainer = document.getElementById('horariosContainer');
+                const horarioInput = document.getElementById('horario');
+                const duracaoInfo = document.getElementById('duracaoInfo');
+                const placaWarning = document.getElementById('placaWarning');
+                const marcaSelect = document.getElementById('marca');
+                const revisaoSelectElement = document.getElementById('revisao');
+
+                if (horarioInput) {
+                    horarioInput.value = '';
+                }
+
+                if (horariosContainer) {
+                    horariosContainer.innerHTML = '<p class="horarios-placeholder">Selecione uma data</p>';
+                }
+
+                if (duracaoInfo) {
+                    duracaoInfo.classList.add('duracao-info-hidden');
+                }
+
+                if (placaWarning) {
+                    placaWarning.classList.add('placa-warning-hidden');
+                }
+
+                if (marcaSelect) {
+                    sincronizarEstadoSelect(marcaSelect);
+                    marcaSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    marcaSelect.focus();
+                }
+
+                if (revisaoSelectElement) {
+                    sincronizarEstadoSelect(revisaoSelectElement);
+                }
+            });
+        });
+
         formulario.addEventListener('submit', function(e) {
             e.preventDefault();
             
