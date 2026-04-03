@@ -1436,6 +1436,11 @@ section.register-section{
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .about-founder-title {
+    margin-left: -22px;
+    margin-right: -22px;
+  }
+
   .about-founder-text {
     padding: 0;
     margin: 0 -18px;
