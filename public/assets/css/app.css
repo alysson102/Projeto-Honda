@@ -1151,7 +1151,7 @@ section.register-section{
 @media screen and (max-width: 1024px) {
   header.topbar {
     height: 90px;
-    padding: 8px 10px;
+    padding: 8px clamp(10px, 3vw, 14px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1167,16 +1167,20 @@ section.register-section{
   }
 
   .logo {
-    width: clamp(230px, 25vw, 230px);
+    width: clamp(210px, 36vw, 240px);
     float: none;
-    margin-top: 28px;
-    margin-left: -50px;
+    margin-top: clamp(18px, 2.6vw, 28px);
+    margin-left: -20px;
+  }
+
+  .logo img {
+    transform: translateX(-18px);
   }
 
   .menu-toggle {
     display: inline-flex;
     margin-top: 8px;
-    margin-right: 7px;
+    margin-right: -8px;
   }
 
   nav.nav {
@@ -1431,6 +1435,255 @@ section.register-section{
   }
 }
 
+@media screen and (max-width: 480px) {
+  nav.nav {
+    padding: 10px;
+  }
+
+  nav.nav a,
+  .nav-logout-btn {
+    font-size: 16px;
+    padding: 11px 10px;
+  }
+
+  main {
+    padding: 28px 10px;
+  }
+
+  .info-page {
+    max-width: 100%;
+  }
+
+  .info-hero {
+    padding: 16px 4%;
+  }
+
+  .info-hero h1 {
+    white-space: normal;
+    line-height: 1.2;
+  }
+
+  .info-card {
+    padding: 16px 10px;
+  }
+
+  .about-founder {
+    padding: 26px 12px;
+    gap: 18px;
+  }
+
+  .about-founder-title {
+    font-size: 22px;
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  .about-founder-text {
+    margin: 0 -12px;
+  }
+
+  .form-register {
+    height: auto;
+    min-height: 0;
+  }
+
+  .form-register form {
+    top: auto;
+    transform: none;
+    padding: 18px 12px;
+  }
+
+  .form-register .register-field,
+  .form-register .password-field {
+    width: 100%;
+    margin: 16px auto;
+  }
+
+  .form-register form .register-submit {
+    width: 100%;
+    max-width: none;
+  }
+
+  .form-login {
+    min-height: 300px;
+    padding: 20px 0;
+  }
+
+  .form-login-conteudo {
+    padding: 16px 12px;
+  }
+
+  .form-login-conteudo form .login-submit {
+    width: 100%;
+    max-width: none;
+  }
+
+  .form-login-conteudo .login-access-links {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .cards-container {
+    padding: 30px 10px;
+  }
+
+  .containerk {
+    width: min(78vw, 210px);
+  }
+
+  .pecas-tabs {
+    gap: 6px;
+  }
+
+  .pecas-tab-btn {
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+
+  .pecas-tab-icon {
+    font-size: 16px;
+  }
+
+  .peca-card {
+    padding: 16px 12px 14px;
+  }
+
+  .profile-page {
+    max-width: 100%;
+  }
+
+  .profile-hero {
+    padding: 14px;
+  }
+
+  .profile-hero-content h1 {
+    font-size: 24px;
+  }
+
+  .profile-card {
+    padding: 14px;
+  }
+
+  .profile-form-field input {
+    font-size: 16px;
+  }
+
+  .profile-btn {
+    width: 100%;
+  }
+
+  .profile-modal {
+    width: min(95vw, 340px);
+    padding: 20px 14px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  header.topbar {
+    height: 82px;
+    padding: 6px clamp(10px, 3vw, 12px);
+  }
+
+  .logo {
+    margin-left: -16px;
+  }
+
+  .logo img {
+    transform: translateX(-14px);
+  }
+
+  .menu-toggle {
+    width: 40px;
+    height: 40px;
+    margin-right: -6px;
+  }
+
+  main {
+    padding: 24px 8px;
+  }
+
+  .page-inner main {
+    margin-top: 82px;
+    min-height: calc(100vh - 154px);
+  }
+
+  .footer {
+    min-height: 82px;
+    font-size: 13px;
+  }
+
+  .info-hero h1,
+  .info-card h2 {
+    font-size: clamp(17px, 6.1vw, 20px);
+    white-space: normal;
+  }
+
+  .about-founder-title {
+    margin-left: -6px;
+    margin-right: -6px;
+  }
+
+  .about-founder-text {
+    margin: 0 -8px;
+  }
+
+  .form-login-conteudo form h2,
+  .form-register form h2 {
+    font-size: 23px;
+  }
+
+  .form-login-conteudo .email-row,
+  .form-login-conteudo .password-field,
+  .form-register .register-field,
+  .form-register .password-field {
+    margin: 14px auto;
+  }
+
+  .form-login-conteudo .login-access-link {
+    font-size: 12px;
+  }
+
+  .pecas-tab-nome {
+    font-size: 11px;
+  }
+
+  .peca-card {
+    padding: 14px 10px 12px;
+  }
+
+  .profile-hero-content p {
+    font-size: 14px;
+  }
+
+  .profile-modal-msg {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .agendamento-header h1 {
+    font-size: 17px;
+  }
+
+  .form-group .form-label {
+    font-size: 9px;
+  }
+
+  .horario-btn {
+    font-size: 11px;
+  }
+
+  .pecas-tab-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .profile-hero-content h1 {
+    font-size: 22px;
+  }
+}
+
 @media screen and (max-width: 900px) {
   .info-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -1460,11 +1713,37 @@ section.register-section{
   }
 
   .info-hero h1 {
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .info-hero p {
     font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .info-card {
+    padding: 16px 10px;
+  }
+
+  .about-founder-title {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  .about-founder-text {
+    margin: 0 -12px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .about-founder-title {
+    margin-left: -6px;
+    margin-right: -6px;
+  }
+
+  .about-founder-text {
+    margin: 0 -8px;
   }
 }
 
@@ -2712,34 +2991,198 @@ body.is-submitting-agendamento {
 
 /* Responsividade - Agendamentos */
 @media (max-width: 768px) {
+  .agendamento-container {
+    padding: 8px 10px;
+  }
+
     .form-row {
         grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
     }
 
     .form-row.three-cols {
         grid-template-columns: 1fr;
     }
 
+  .form-row.form-row-date {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row.form-row-date #data {
+    max-width: none;
+    width: 100%;
+  }
+
+  .form-row.form-row-date .help-text {
+    white-space: normal;
+    line-height: 1.45;
+  }
+
     .form-agendamento {
-        padding: 20px;
+    padding: 18px 14px;
+    border-radius: 12px;
     }
 
     .agendamento-header h1 {
         font-size: 24px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
     }
 
+  .section-title {
+    font-size: 16px;
+    margin-bottom: 14px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px;
+    min-height: 46px;
+    padding: 14px 12px 10px;
+  }
+
+  .form-group textarea {
+    min-height: 96px;
+  }
+
+  .form-group .form-label {
+    left: 12px;
+  }
+
     .horarios-grid {
-        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .horario-btn {
+    min-height: 42px;
+    padding: 9px 8px;
     }
 
     .form-actions {
         grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 24px;
     }
 
     .btn-submit,
     .btn-reset {
         grid-column: auto;
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    font-size: 15px;
     }
+}
+
+@media (max-width: 480px) {
+  .agendamento-container {
+    padding: 6px 6px;
+  }
+
+  .agendamento-header {
+    margin-bottom: 12px;
+  }
+
+  .agendamento-header h1 {
+    font-size: 20px;
+  }
+
+  .form-agendamento {
+    padding: 14px 10px;
+    border-radius: 10px;
+  }
+
+  .form-section {
+    margin-bottom: 22px;
+  }
+
+  .form-group .form-label {
+    font-size: 11px;
+  }
+
+  .help-text {
+    font-size: 11px;
+    gap: 4px;
+  }
+
+  .horarios-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .horario-btn {
+    font-size: 12px;
+  }
+
+  .horarios-placeholder {
+    min-width: 0;
+    width: 100%;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .agendamento-container {
+    padding: 4px;
+  }
+
+  .agendamento-header h1 {
+    font-size: 18px;
+    line-height: 1.22;
+  }
+
+  .form-agendamento {
+    padding: 12px 8px;
+    border-radius: 8px;
+  }
+
+  .section-title {
+    font-size: 15px;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 13px 10px 9px;
+    min-height: 44px;
+  }
+
+  .form-group .form-label {
+    left: 10px;
+    max-width: calc(100% - 20px);
+    font-size: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .form-group .horarios-label {
+    font-size: 12px;
+  }
+
+  .help-text {
+    font-size: 10px;
+    line-height: 1.35;
+  }
+
+  .horarios-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .horario-btn {
+    min-height: 40px;
+    font-size: 12px;
+  }
+
+  .btn-submit,
+  .btn-reset {
+    min-height: 44px;
+    font-size: 14px;
+  }
 }
 
 .profile-page {

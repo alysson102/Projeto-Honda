@@ -50,7 +50,7 @@ if ($currentRequestPath === '/' && Auth::check()) {
     <title><?= e($title) ?> - <?= e((string) config('app.name')) ?></title>
     <link rel="stylesheet" href="<?= e(url('/assets/css/app.css')) ?>">
     <meta name="author" content="Alysson Souza" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 	<meta name="keywords" content="palavras-chave,do,site">
 	<meta name="description" content="Descrição do website">
 
