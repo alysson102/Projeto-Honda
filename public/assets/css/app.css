@@ -400,6 +400,11 @@ section.baner{
   transition: top 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1), color 150ms cubic-bezier(0.4, 0, 0.2, 1), font-size 150ms cubic-bezier(0.4, 0, 0.2, 1), background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.form-register .register-field .user-ani,
+.form-register .password-field .user-ani {
+  font-size: 14px;
+}
+
 .form-login-conteudo .email-row input:focus + .user-ani,
 .form-login-conteudo .email-row input:not(:placeholder-shown) + .user-ani,
 .form-login-conteudo .email-row input:-webkit-autofill + .user-ani,
@@ -417,6 +422,15 @@ section.baner{
   color: #ffe9e9;
   background: linear-gradient(270deg, #7f0000, #b71c1c, #c62828, #f14545);
   font-size: 15px;
+}
+
+.form-register .register-field input:focus + .user-ani,
+.form-register .register-field input:not(:placeholder-shown) + .user-ani,
+.form-register .register-field input:-webkit-autofill + .user-ani,
+.form-register .password-field input:focus ~ .user-ani,
+.form-register .password-field input:not(:placeholder-shown) ~ .user-ani,
+.form-register .password-field input:-webkit-autofill ~ .user-ani {
+  font-size: 13px;
 }
 
 .form-login-conteudo .email-row input::placeholder {
