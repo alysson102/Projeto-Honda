@@ -10,9 +10,25 @@ final class User extends Model
 {
     public function findByEmail(string $email): ?array
     {
-        $stmt = $this->db->prepare('SELECT id, name, email, telefone, profile_photo, password FROM users WHERE email = :email LIMIT 1');
-        $stmt->execute(['email' => mb_strtolower(trim($email))]);
-        $user = $stmt->fetch();
+        $normalizedEmail = mb_strtolower(trim($email));
+
+        try {
+            $stmt = $this->db->prepare('SELECT id, name, email, telefone, profile_photo, password FROM users WHERE email = :email LIMIT 1');
+            $stmt->execute(['email' => $normalizedEmail]);
+            $user = $stmt->fetch();
+        } catch (\Throwable $exception) {
+            if (!$this->isMissingProfilePhotoColumnError($exception)) {
+                throw $exception;
+            }
+
+            $stmt = $this->db->prepare('SELECT id, name, email, telefone, password FROM users WHERE email = :email LIMIT 1');
+            $stmt->execute(['email' => $normalizedEmail]);
+            $user = $stmt->fetch();
+
+            if (is_array($user)) {
+                $user['profile_photo'] = null;
+            }
+        }
 
         return $user ?: null;
     }
@@ -43,9 +59,23 @@ final class User extends Model
 
     public function findById(int $id): ?array
     {
-        $stmt = $this->db->prepare('SELECT id, name, email, telefone, profile_photo, created_at FROM users WHERE id = :id LIMIT 1');
-        $stmt->execute(['id' => $id]);
-        $user = $stmt->fetch();
+        try {
+            $stmt = $this->db->prepare('SELECT id, name, email, telefone, profile_photo, created_at FROM users WHERE id = :id LIMIT 1');
+            $stmt->execute(['id' => $id]);
+            $user = $stmt->fetch();
+        } catch (\Throwable $exception) {
+            if (!$this->isMissingProfilePhotoColumnError($exception)) {
+                throw $exception;
+            }
+
+            $stmt = $this->db->prepare('SELECT id, name, email, telefone, created_at FROM users WHERE id = :id LIMIT 1');
+            $stmt->execute(['id' => $id]);
+            $user = $stmt->fetch();
+
+            if (is_array($user)) {
+                $user['profile_photo'] = null;
+            }
+        }
 
         return $user ?: null;
     }
@@ -77,11 +107,24 @@ final class User extends Model
 
     public function updateProfilePhoto(int $userId, ?string $profilePhoto): bool
     {
-        $stmt = $this->db->prepare('UPDATE users SET profile_photo = :profile_photo WHERE id = :id');
+        try {
+            $stmt = $this->db->prepare('UPDATE users SET profile_photo = :profile_photo WHERE id = :id');
 
-        return $stmt->execute([
-            'profile_photo' => $profilePhoto,
-            'id' => $userId,
-        ]);
+            return $stmt->execute([
+                'profile_photo' => $profilePhoto,
+                'id' => $userId,
+            ]);
+        } catch (\Throwable $exception) {
+            if ($this->isMissingProfilePhotoColumnError($exception)) {
+                return false;
+            }
+
+            throw $exception;
+        }
+    }
+
+    private function isMissingProfilePhotoColumnError(\Throwable $exception): bool
+    {
+        return str_contains($exception->getMessage(), "Unknown column 'profile_photo'");
     }
 }
