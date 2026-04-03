@@ -1178,6 +1178,11 @@ section.register-section{
     transform: translate(-26px, 4px);
   }
 
+  .logo,
+  .logo img {
+    pointer-events: none;
+  }
+
   .menu-toggle {
     display: inline-flex;
     margin-top: 8px;
@@ -1377,6 +1382,10 @@ section.register-section{
 
   .page-mobile-footer-spacing .footer {
     margin-top: 50px;
+  }
+
+  body.page-pecas .footer {
+    margin-top: 84px;
   }
 
   .info-hero,
@@ -1677,7 +1686,7 @@ section.register-section{
   }
 
   .pecas-tab-btn {
-    width: 100%;
+    width: auto;
     justify-content: center;
   }
 
@@ -2214,6 +2223,34 @@ body.page-index {
 }
 
 @media screen and (max-width: 900px) {
+  .pecas-tabs {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding: 10px 2px 8px;
+    margin: 0 0 24px;
+    scroll-padding-inline: 2px;
+  }
+
+  .info-pecas .pecas-tabs {
+    position: sticky;
+    top: calc(var(--mobile-topbar-height) + env(safe-area-inset-top) + 12px);
+    z-index: 30;
+    background: linear-gradient(180deg, #f7f7f7 78%, rgba(247, 247, 247, 0));
+    border-radius: 12px;
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.06);
+    touch-action: pan-x;
+  }
+
+  .pecas-tab-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    touch-action: manipulation;
+  }
+
   .pecas-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2239,6 +2276,7 @@ body.page-index {
 
   .pecas-tabs {
     gap: 8px;
+    justify-content: flex-start;
   }
 
   .pecas-tab-btn {
@@ -3595,5 +3633,11 @@ body.is-submitting-agendamento {
 
   .profile-appointment-actions .profile-btn {
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  body.page-pecas .footer {
+    margin-top: 96px;
   }
 }

@@ -33,6 +33,7 @@ $registerActive = $isActive('/register');
 $profileActive = $isActive('/perfil');
 $isRegisterPage = $registerActive;
 $shouldApplyMobileFooterSpacing = in_array($currentRequestPath, ['/register', '/about', '/contact', '/agendamento', '/perfil'], true);
+$isPecasPage = $currentRequestPath === '/pecas';
 $bodyClasses = [$isGuestLandingPage ? 'page-home' : 'page-inner'];
 
 if ($shouldApplyMobileFooterSpacing) {
@@ -41,6 +42,10 @@ if ($shouldApplyMobileFooterSpacing) {
 
 if ($currentRequestPath === '/' && Auth::check()) {
     $bodyClasses[] = 'page-index';
+}
+
+if ($isPecasPage) {
+    $bodyClasses[] = 'page-pecas';
 }
 ?>
 <!doctype html>
