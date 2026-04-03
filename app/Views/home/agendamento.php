@@ -124,7 +124,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 
 <div class="agendamento-container">
     <div class="agendamento-header">
-        <h1><span class="moto-animada">🏍️</span> Agendamento de Serviços</h1>
+        <h1><span class="moto-animada"><span class="moto-animada-glyph">🏍️</span></span> Agendamento de Serviços</h1>
     </div>
 
     <div id="successMessage" class="success-message success-message-hidden">
@@ -144,7 +144,7 @@ $revisoesDuasHoras = [12000, 18000, 24000, 30000, 36000, 42000, 48000, 54000];
 
             <!-- Dados da Motocicleta -->
             <div class="form-section">
-                <h3 class="section-title"><span class="title-icon">🏍️</span> Informações da Motocicleta</h3>
+                <h3 class="section-title section-title-centered">Informações da Motocicleta</h3>
 
                 <div class="form-row">
                     <div class="form-group">

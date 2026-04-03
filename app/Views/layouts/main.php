@@ -47,6 +47,10 @@ if ($currentRequestPath === '/' && Auth::check()) {
 if ($isPecasPage) {
     $bodyClasses[] = 'page-pecas';
 }
+
+if ($currentRequestPath === '/agendamento') {
+    $bodyClasses[] = 'page-agendamento';
+}
 ?>
 <!doctype html>
 <html lang="pt-BR">

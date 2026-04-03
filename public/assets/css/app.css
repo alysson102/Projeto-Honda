@@ -1162,6 +1162,10 @@ section.register-section{
     margin-top: 40px;
   }
 
+  body.page-pecas section.info-page {
+    margin-top: 20px;
+  }
+
 
   section.register-section{
     margin-top: 50px;
@@ -1386,6 +1390,11 @@ section.register-section{
 
   body.page-pecas .footer {
     margin-top: 84px;
+  }
+
+  body.page-agendamento main {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .info-hero,
@@ -2163,6 +2172,8 @@ body.page-index {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  position: relative;
+  left: -4px;
 }
 
 .info-pecas .info-hero h1 .pecas-gear-icon {
@@ -2291,10 +2302,17 @@ body.page-index {
 
 /* Animação da motocicleta acelerando com fumaça */
 .moto-animada {
-    display: inline-block;
-    animation: motoAcelera 2s ease-in-out infinite;
+  display: inline-flex;
+  align-items: center;
     position: relative;
-    top: -3px;
+  top: 0;
+  transform: translateY(-2px);
+}
+
+.moto-animada-glyph {
+  display: inline-block;
+  line-height: 1;
+  animation: motoAcelera 2s ease-in-out infinite;
 }
 
 .moto-animada::after {
@@ -2436,6 +2454,10 @@ body.page-index {
     display: flex;
     align-items: center;
     gap: 6px;
+}
+
+.section-title-centered {
+    justify-content: center;
 }
 
 .title-icon {
@@ -3032,7 +3054,7 @@ body.is-submitting-agendamento {
 /* Responsividade - Agendamentos */
 @media (max-width: 768px) {
   .agendamento-container {
-    padding: 8px 10px;
+    padding: 6px 2px;
   }
 
     .form-row {
@@ -3060,7 +3082,7 @@ body.is-submitting-agendamento {
   }
 
     .form-agendamento {
-    padding: 18px 14px;
+    padding: 26px 20px;
     border-radius: 12px;
     }
 
@@ -3068,7 +3090,26 @@ body.is-submitting-agendamento {
         font-size: 24px;
     line-height: 1.25;
     overflow-wrap: anywhere;
+    position: relative;
+    display: inline-block;
+    padding-left: 34px;
+    white-space: nowrap;
     }
+
+  .agendamento-header h1 .moto-animada {
+    font-size: 1.35em;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-62%);
+    display: inline-block;
+    line-height: 1;
+    vertical-align: top;
+  }
+
+  .agendamento-header h1 .moto-animada-glyph {
+    animation: motoAcelera 2s ease-in-out infinite;
+  }
 
   .section-title {
     font-size: 16px;
@@ -3079,8 +3120,8 @@ body.is-submitting-agendamento {
   .form-group select,
   .form-group textarea {
     font-size: 16px;
-    min-height: 46px;
-    padding: 14px 12px 10px;
+    min-height: 44px;
+    padding: 13px 11px 9px;
   }
 
   .form-group textarea {
@@ -3119,7 +3160,7 @@ body.is-submitting-agendamento {
 
 @media (max-width: 480px) {
   .agendamento-container {
-    padding: 6px 6px;
+    padding: 2px 0;
   }
 
   .agendamento-header {
@@ -3131,8 +3172,15 @@ body.is-submitting-agendamento {
   }
 
   .form-agendamento {
-    padding: 14px 10px;
+    padding: 18px 14px;
     border-radius: 10px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    min-height: 43px;
+    padding: 12px 10px 8px;
   }
 
   .form-section {
@@ -3166,7 +3214,7 @@ body.is-submitting-agendamento {
 
 @media (max-width: 360px) {
   .agendamento-container {
-    padding: 4px;
+    padding: 0;
   }
 
   .agendamento-header h1 {
@@ -3175,7 +3223,7 @@ body.is-submitting-agendamento {
   }
 
   .form-agendamento {
-    padding: 12px 8px;
+    padding: 16px 12px;
     border-radius: 8px;
   }
 
@@ -3188,8 +3236,8 @@ body.is-submitting-agendamento {
   .form-group input,
   .form-group select,
   .form-group textarea {
-    padding: 13px 10px 9px;
-    min-height: 44px;
+    padding: 12px 9px 8px;
+    min-height: 42px;
   }
 
   .form-group .form-label {
