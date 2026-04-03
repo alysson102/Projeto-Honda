@@ -116,10 +116,37 @@ final class User extends Model
             ]);
         } catch (\Throwable $exception) {
             if ($this->isMissingProfilePhotoColumnError($exception)) {
-                return false;
+                if (!$this->ensureProfilePhotoColumnExists()) {
+                    return false;
+                }
+
+                $stmt = $this->db->prepare('UPDATE users SET profile_photo = :profile_photo WHERE id = :id');
+
+                return $stmt->execute([
+                    'profile_photo' => $profilePhoto,
+                    'id' => $userId,
+                ]);
             }
 
             throw $exception;
+        }
+    }
+
+    private function ensureProfilePhotoColumnExists(): bool
+    {
+        try {
+            $stmt = $this->db->query("SHOW COLUMNS FROM users LIKE 'profile_photo'");
+            $column = $stmt->fetch();
+
+            if (is_array($column)) {
+                return true;
+            }
+
+            $this->db->exec('ALTER TABLE users ADD COLUMN profile_photo VARCHAR(255) NULL AFTER telefone');
+
+            return true;
+        } catch (\Throwable) {
+            return false;
         }
     }
 

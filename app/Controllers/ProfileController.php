@@ -193,7 +193,7 @@ final class ProfileController extends Controller
 
         if (!$userModel->updateProfilePhoto((int) $authUser['id'], $publicPath)) {
             @unlink($destinationPath);
-            Session::flash('error', 'Não foi possível atualizar sua foto no perfil.');
+            Session::flash('error', 'Não foi possível atualizar sua foto no perfil. Se o problema persistir, execute a migração da coluna profile_photo.');
             $this->redirect('/perfil');
             return;
         }
