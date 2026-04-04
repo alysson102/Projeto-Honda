@@ -57,6 +57,8 @@ if ($currentRequestPath === '/agendamento') {
 <head>
     <meta charset="UTF-8">
     <title><?= e($title) ?> - <?= e((string) config('app.name')) ?></title>
+    <link rel="icon" type="image/png" href="<?= e(url('/assets/imagens/icon-link.png')) ?>">
+    <link rel="shortcut icon" href="<?= e(url('/assets/imagens/icon-link.png')) ?>">
     <link rel="stylesheet" href="<?= e(url('/assets/css/app.css')) ?>">
     <meta name="author" content="Alysson Souza" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">

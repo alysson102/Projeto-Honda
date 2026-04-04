@@ -52,7 +52,7 @@ header.topbar {
     top: 0;
     left: 0;
     z-index: 1000;
-    border-bottom: 1px solid white;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.9);
 }
 
 
@@ -208,8 +208,8 @@ nav.nav a.is-active::after{
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.95);
+    height: 0.5px;
+    background: rgba(255, 255, 255, 0.9);
 }
 
 @keyframes animarFundo_footer{
@@ -274,6 +274,17 @@ section.baner{
     float: right;
     height: 675px;
     text-align: center;
+    position: relative;
+}
+
+.form-login::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0.5px;
+    background: rgba(255, 255, 255, 0.9);
 }
 
 
