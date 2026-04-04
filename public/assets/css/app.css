@@ -545,7 +545,7 @@ section.baner{
   grid-template-columns: repeat(2, max-content);
   justify-content: center;
   align-items: center;
-  gap: 14px 36px;
+  gap: 12px 24px;
 }
 
 .form-login-conteudo .login-access-link {
@@ -554,7 +554,12 @@ section.baner{
   font-size: 14px;
   font-weight: 600;
   line-height: 1.3;
-  padding-bottom: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 8px 0 6px;
+  text-align: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.55);
   transition: opacity 0.2s ease, text-decoration-color 0.2s ease;
 }
@@ -1533,14 +1538,23 @@ section.register-section{
   }
 
   .form-login-conteudo form .login-submit {
-    width: 100%;
-    max-width: none;
+    width: 72%;
+    max-width: 220px;
+    display: block;
+    margin: 10px auto 0;
   }
 
   .form-login-conteudo .login-access-links {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: repeat(2, max-content);
+    gap: 8px 18px;
     margin-top: 28px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-login-conteudo .login-access-link {
+    width: auto;
+    justify-self: center;
   }
 
   .cards-container {
