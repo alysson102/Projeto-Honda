@@ -643,6 +643,13 @@ body.page-home main {
   margin: 0 auto;
 }
 
+.info-about,
+.info-contact,
+.register-section {
+  min-height: calc(100vh - var(--topbar-height) + 80px);
+  padding-bottom: clamp(96px, 14vh, 180px);
+}
+
 .info-hero {
   font-size: 18px;
   border-left: 5px solid #b71c1c;
@@ -1421,6 +1428,13 @@ section.register-section{
     margin-top: 50px;
   }
 
+  .info-about,
+  .info-contact,
+  .register-section {
+    min-height: calc(100vh - var(--mobile-topbar-height) + 40px);
+    padding-bottom: 120px;
+  }
+
   body.page-pecas .footer {
     margin-top: 84px;
   }
@@ -1819,6 +1833,17 @@ body {
 
 body.page-index {
   background: #0a0a0a;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.page-index main {
+  flex: 1 0 auto;
+}
+
+body.page-index .footer {
+  margin-top: auto;
 }
 
 /* container */
@@ -2184,6 +2209,10 @@ body.page-index {
 
 .peca-btn:hover {
   opacity: 0.88;
+}
+
+.info-pecas {
+  padding-bottom: clamp(120px, 16vh, 220px);
 }
 
 .info-pecas .info-hero h1 {
@@ -3324,9 +3353,32 @@ body.is-submitting-agendamento {
   }
 }
 
+.page-agendamento .agendamento-container {
+  padding-bottom: clamp(120px, 16vh, 220px);
+}
+
+@media (max-width: 768px) {
+  .page-agendamento .agendamento-container {
+    padding-bottom: 130px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-agendamento .agendamento-container {
+    padding-bottom: 120px;
+  }
+}
+
+@media (max-width: 360px) {
+  .page-agendamento .agendamento-container {
+    padding-bottom: 110px;
+  }
+}
+
 .profile-page {
   max-width: 1160px;
   margin: 0 auto;
+  padding-bottom: clamp(120px, 16vh, 220px);
 }
 
 .profile-shell {
