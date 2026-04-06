@@ -57,7 +57,10 @@ if ($currentRequestPath === '/agendamento') {
 <head>
     <meta charset="UTF-8">
     <title><?= e($title) ?> - <?= e((string) config('app.name')) ?></title>
+    <link rel="icon" type="image/png" sizes="192x192" href="<?= e(url('/assets/imagens/favicon3.png')) ?>">
+    <link rel="icon" type="image/png" sizes="64x64" href="<?= e(url('/assets/imagens/favicon3.png')) ?>">
     <link rel="icon" type="image/png" sizes="32x32" href="<?= e(url('/assets/imagens/favicon3.png')) ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= e(url('/assets/imagens/favicon3.png')) ?>">
     <meta name="theme-color" content="#b30000">
     <link rel="stylesheet" href="<?= e(url('/assets/css/app.css')) ?>">
     <meta name="author" content="Alysson Souza" />
