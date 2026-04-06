@@ -398,6 +398,8 @@
   // Tabs de peças originais
   const pecasTabs = document.querySelector('.pecas-tabs');
   if (pecasTabs) {
+    const pecasMobileQuery = window.matchMedia('(max-width: 900px)');
+
     pecasTabs.addEventListener('click', (event) => {
       const btn = event.target.closest('.pecas-tab-btn');
       if (!btn) return;
@@ -416,9 +418,28 @@
 
       btn.classList.add('is-active');
       btn.setAttribute('aria-selected', 'true');
+      btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 
       const painel = document.getElementById('tab-' + tabId);
-      if (painel) painel.classList.add('is-active');
+      if (painel) {
+        painel.classList.add('is-active');
+
+        if (pecasMobileQuery.matches) {
+          window.requestAnimationFrame(() => {
+            const firstCard = painel.querySelector('.peca-card');
+            const targetElement = firstCard || painel;
+            const topbar = document.querySelector('.topbar');
+            const topbarHeight = topbar instanceof HTMLElement ? topbar.offsetHeight : 0;
+            const tabsHeight = pecasTabs instanceof HTMLElement ? pecasTabs.offsetHeight : 0;
+            const targetTop = window.scrollY + targetElement.getBoundingClientRect().top - topbarHeight - tabsHeight - 12;
+
+            window.scrollTo({
+              top: Math.max(0, targetTop),
+              behavior: 'smooth',
+            });
+          });
+        }
+      }
     });
   }
 

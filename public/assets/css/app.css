@@ -2316,14 +2316,14 @@ body.page-index .footer {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
-    padding: 10px 2px 8px;
-    margin: 0 0 24px;
+    padding: 6px 2px 8px;
+    margin: 0 0 18px;
     scroll-padding-inline: 2px;
   }
 
   .info-pecas .pecas-tabs {
     position: sticky;
-    top: calc(var(--mobile-topbar-height) + env(safe-area-inset-top) + 12px);
+    top: calc(var(--mobile-topbar-height) + env(safe-area-inset-top) + 2px);
     z-index: 30;
     background: linear-gradient(180deg, #f7f7f7 78%, rgba(247, 247, 247, 0));
     border-radius: 12px;
