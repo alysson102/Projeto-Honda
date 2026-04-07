@@ -1,5 +1,7 @@
 <?php
 $title = 'Peças Originais';
+$whatsappNumero = '5582987229890';
+$mensagemWhatsappBase = 'Olá! Tenho interesse nesta peça Honda:';
 
 $categorias = [
     [
@@ -134,9 +136,11 @@ $categorias = [
                         <h3 class="peca-nome"><?= e($peca['nome']) ?></h3>
                         <span class="peca-codigo">Cód: <?= e($peca['codigo']) ?></span>
                         <a
-                            href="<?= e(url('/contact')) ?>"
+                            href="<?= $peca['disponivel']
+                                ? e('https://wa.me/' . $whatsappNumero . '?text=' . rawurlencode($mensagemWhatsappBase . ' ' . $peca['nome'] . '.'))
+                                : '#' ?>"
                             class="peca-btn<?= !$peca['disponivel'] ? ' peca-btn-disabled' : '' ?>"
-                            <?= !$peca['disponivel'] ? 'aria-disabled="true" tabindex="-1"' : '' ?>
+                            <?= !$peca['disponivel'] ? 'aria-disabled="true" tabindex="-1"' : 'target="_blank" rel="noopener noreferrer"' ?>
                         >
                             <?= $peca['disponivel'] ? 'Solicitar Peça' : 'Avisar quando disponível' ?>
                         </a>
