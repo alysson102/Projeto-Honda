@@ -318,8 +318,9 @@
       }, { passive: false });
     };
 
-    handleMobileCarouselLink(mobileBookingLink);
-    handleMobileCarouselLink(carousel.querySelector('a[data-mobile-redirect="pecas"]'));
+    carousel.querySelectorAll('a[data-mobile-redirect]').forEach((link) => {
+      handleMobileCarouselLink(link);
+    });
 
     updateCarousel();
   } 

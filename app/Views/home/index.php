@@ -18,7 +18,7 @@
 		</div>
 	</a>
 
-	<a class="card-link" href="<?= e(url('/pecas')) ?>">
+	<a class="card-link" href="<?= e(url('/info-revisoes')) ?>">
 		<div class="card">
 			<img src="<?= e(url('/assets/imagens/info-revisao.png')) ?>">
 			<div class="card-content">
@@ -35,7 +35,7 @@
   <div class="carousel" id="carousel">
 		<div class="item"><a href="<?= e(url('/agendamento')) ?>" data-mobile-redirect="agendamento"><img src="<?= e(url('/assets/imagens/agen-retrato.png')) ?>"><span class="item-label">Agendamento</span></a></div>
 		<div class="item"><a href="<?= e(url('/pecas')) ?>" data-mobile-redirect="pecas"><img src="<?= e(url('/assets/imagens/pecas-retrato.png')) ?>"><span class="item-label">Peças Originais</span></a></div>
-		<div class="item"><a href="<?= e(url('/pecas')) ?>" data-mobile-redirect="pecas"><img src="<?= e(url('/assets/imagens/info-revisao-retrato.jpeg')) ?>"><span class="item-label item-label--revisoes">Informações sobre as revisões</span></a></div>
+		<div class="item"><a href="<?= e(url('/info-revisoes')) ?>" data-mobile-redirect="info-revisoes"><img src="<?= e(url('/assets/imagens/info-revisao-retrato.jpeg')) ?>"><span class="item-label item-label--revisoes">Informações sobre as revisões</span></a></div>
 	
 	<div class="item active"></div>
     <div class="item"></div>

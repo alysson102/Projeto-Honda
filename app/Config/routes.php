@@ -16,6 +16,7 @@ return static function (Router $router): void {
     $router->post('/api/verificar-disponibilidade', [\App\Controllers\AgendamentoController::class, 'verificarDisponibilidade'], [AuthMiddleware::class, CsrfMiddleware::class]);
     $router->get('/about', [HomeController::class, 'about']);
     $router->get('/pecas', [HomeController::class, 'pecas']);
+    $router->get('/info-revisoes', [HomeController::class, 'infoRevisoes']);
     $router->get('/contact', [HomeController::class, 'contact']);
     $router->get('/register', [HomeController::class, 'register']);
     $router->post('/register', [AuthController::class, 'register'], [CsrfMiddleware::class]);

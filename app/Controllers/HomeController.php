@@ -52,6 +52,14 @@ final class HomeController extends Controller
         ]);
     }
 
+    public function infoRevisoes(): void
+    {
+        $this->view('home/info-revisoes', [
+            'title' => 'Informações sobre as revisões',
+            'user' => Auth::user(),
+        ]);
+    }
+
     public function contact(): void
     {
         $this->view('home/contact', [

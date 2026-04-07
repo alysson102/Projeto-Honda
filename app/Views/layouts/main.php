@@ -32,7 +32,7 @@ $contactActive = $isActive('/contact');
 $registerActive = $isActive('/register');
 $profileActive = $isActive('/perfil');
 $isRegisterPage = $registerActive;
-$shouldApplyMobileFooterSpacing = in_array($currentRequestPath, ['/register', '/about', '/contact', '/agendamento', '/perfil'], true);
+$shouldApplyMobileFooterSpacing = in_array($currentRequestPath, ['/register', '/about', '/contact', '/agendamento', '/perfil', '/info-revisoes'], true);
 $isPecasPage = $currentRequestPath === '/pecas';
 $bodyClasses = [$isGuestLandingPage ? 'page-home' : 'page-inner'];
 

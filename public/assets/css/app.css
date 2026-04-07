@@ -645,6 +645,7 @@ body.page-home main {
 
 .info-about,
 .info-contact,
+.info-revisoes,
 .register-section {
   min-height: calc(100vh - var(--topbar-height) + 80px);
   padding-bottom: clamp(96px, 14vh, 180px);
@@ -707,6 +708,411 @@ body.page-home main {
   33%  { border-color: #c62828; }
   66%  { border-color: #f14545; }
   100% { border-color: #7f0000; }
+}
+
+.info-revisoes {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.revisoes-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top right, rgba(183, 28, 28, 0.14), transparent 34%),
+    linear-gradient(135deg, #ffffff 0%, #fff7f7 100%);
+}
+
+.revisoes-kicker,
+.revisoes-section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(183, 28, 28, 0.1);
+  color: #8f0000;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.revisoes-kicker {
+  margin-bottom: 12px;
+}
+
+.revisoes-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.revisoes-hero-badges span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(183, 28, 28, 0.14);
+  box-shadow: 0 8px 20px rgba(127, 0, 0, 0.08);
+  font-weight: 700;
+  color: #5f0b0b;
+}
+
+.revisoes-highlight-grid,
+.revisoes-timeline,
+.revisoes-faq,
+.revisoes-marcos-grid,
+.revisoes-note-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.revisoes-highlight-card,
+.revisoes-step-card,
+.revisoes-faq-card,
+.revisoes-care-card,
+.revisoes-note-panel,
+.revisoes-cta {
+  background: #fff;
+  border: 1px solid rgba(183, 28, 28, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(127, 0, 0, 0.1);
+}
+
+.revisoes-highlight-card {
+  padding: 18px;
+  border-top: 4px solid #b71c1c;
+  background: linear-gradient(180deg, #ffffff 0%, #fff8f8 100%);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.revisoes-highlight-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 32px rgba(127, 0, 0, 0.14);
+}
+
+.revisoes-highlight-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #b71c1c, #d64343);
+  color: #fff;
+  font-size: 1.3rem;
+  box-shadow: 0 10px 22px rgba(183, 28, 28, 0.24);
+}
+
+.revisoes-highlight-card h2,
+.revisoes-step-card h3,
+.revisoes-faq-card h3,
+.revisoes-care-card h2,
+.revisoes-cta h2 {
+  color: #8f0000;
+}
+
+.revisoes-highlight-card p,
+.revisoes-step-card p,
+.revisoes-faq-card p,
+.revisoes-care-card p,
+.revisoes-cta p {
+  margin: 0;
+  line-height: 1.65;
+  color: #2b2b2b;
+}
+
+.revisoes-section-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.revisoes-highlight-grid--premium {
+  margin-top: 4px;
+}
+
+.revisoes-hero {
+  border-left-width: 6px;
+  box-shadow: 0 18px 40px rgba(127, 0, 0, 0.16);
+}
+
+.revisoes-step-card,
+.revisoes-note-panel,
+.revisoes-care-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.revisoes-step-card::after,
+.revisoes-note-panel::after,
+.revisoes-care-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(183, 28, 28, 0.03), transparent 45%);
+  pointer-events: none;
+}
+
+.revisoes-step-card h3,
+.revisoes-note-panel h2,
+.revisoes-care-card h2 {
+  position: relative;
+  z-index: 1;
+}
+
+.revisoes-step-card p,
+.revisoes-note-panel p,
+.revisoes-care-card p,
+.revisoes-list {
+  position: relative;
+  z-index: 1;
+}
+
+.revisoes-section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.revisoes-section-head h2 {
+  margin: 0;
+  color: #8f0000;
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+}
+
+.revisoes-section-head p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.revisoes-step-card {
+  padding: 18px;
+}
+
+.revisoes-step-card--marco {
+  background: linear-gradient(180deg, #fff 0%, #fff7f7 100%);
+}
+
+.revisoes-marco-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #b71c1c, #d84343);
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  box-shadow: 0 10px 18px rgba(183, 28, 28, 0.22);
+}
+
+.revisoes-step-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.revisoes-step-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(183, 28, 28, 0.1);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.revisoes-step-top h3 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+}
+
+.revisoes-step-top p {
+  color: #6b2a2a;
+  font-size: 0.96rem;
+}
+
+.revisoes-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.revisoes-list li {
+  position: relative;
+  padding-left: 18px;
+  line-height: 1.6;
+  color: #222;
+}
+
+.revisoes-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  color: #b71c1c;
+  font-size: 1.2rem;
+}
+
+.revisoes-list--compact {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.revisoes-care-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 16px;
+}
+
+.revisoes-care-card {
+  padding: 20px;
+}
+
+.revisoes-note-panel {
+  padding: 20px;
+  border-left: 5px solid #b71c1c;
+  background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+}
+
+.revisoes-note-panel--soft {
+  background: linear-gradient(135deg, #fffdfd 0%, #fff8f8 100%);
+}
+
+.revisoes-note-panel h2 {
+  margin: 10px 0 10px;
+  color: #8f0000;
+}
+
+.revisoes-note-panel p {
+  margin: 0 0 12px;
+  line-height: 1.7;
+  color: #2b2b2b;
+}
+
+.revisoes-care-card--alert {
+  background: linear-gradient(135deg, #fffafa 0%, #fff3f3 100%);
+}
+
+.revisoes-faq-card {
+  padding: 18px;
+  border-left: 4px solid #b71c1c;
+}
+
+.revisoes-faq-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.02rem;
+}
+
+.revisoes-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px;
+  background: linear-gradient(135deg, #ffffff 0%, #fff2f2 100%);
+  border-left: 5px solid #b71c1c;
+}
+
+.revisoes-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 190px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #b71c1c, #d32f2f);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  box-shadow: 0 14px 26px rgba(183, 28, 28, 0.24);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.revisoes-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px rgba(183, 28, 28, 0.3);
+}
+
+@media screen and (max-width: 900px) {
+  .revisoes-care-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .revisoes-cta {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .revisoes-cta-btn {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .revisoes-hero,
+  .revisoes-section-head,
+  .revisoes-highlight-card,
+  .revisoes-step-card,
+  .revisoes-care-card,
+  .revisoes-faq-card,
+  .revisoes-cta {
+    text-align: center;
+  }
+
+  .revisoes-hero-badges {
+    justify-content: center;
+  }
+
+  .revisoes-step-top {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .revisoes-list li {
+    text-align: left;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .revisoes-kicker,
+  .revisoes-section-kicker {
+    font-size: 0.72rem;
+    padding: 6px 10px;
+  }
+
+  .revisoes-highlight-card,
+  .revisoes-step-card,
+  .revisoes-faq-card,
+  .revisoes-care-card,
+  .revisoes-cta {
+    padding: 16px 12px;
+    border-radius: 14px;
+  }
+
+  .revisoes-hero-badges span {
+    width: 100%;
+  }
+
+  .revisoes-list--compact {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* --- Fundador --- */
@@ -1430,6 +1836,7 @@ section.register-section{
 
   .info-about,
   .info-contact,
+  .info-revisoes,
   .register-section {
     min-height: calc(100vh - var(--mobile-topbar-height) + 40px);
     padding-bottom: 120px;
