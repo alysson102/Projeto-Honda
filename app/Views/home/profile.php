@@ -42,12 +42,12 @@ $hoje = new \DateTimeImmutable('today');
 
             <div class="profile-hero-content">
                 <h1>Perfil</h1>
-                <p>Gerencie seus dados e acompanhe todos os seus agendamentos em um unico painel.</p>
+                <p>Gerencie seus dados e acompanhe todos os seus agendamentos em um único painel.</p>
 
                 <div class="profile-stats">
                     <div class="profile-stat-card">
                         <strong><?= e((string) $totalAgendamentos) ?></strong>
-                        <span>Agendamento</span>
+                        <span>Agendamentos</span>
                     </div>
                     <!--<div class="profile-stat-card">
                         <strong><//?= e((string) $user['id']) ?></strong>
@@ -64,8 +64,8 @@ $hoje = new \DateTimeImmutable('today');
         <div class="profile-content-grid">
             <section class="profile-card">
                 <header class="profile-card-header">
-                    <h2>Informacoes do Cliente</h2>
-                    <p>Atualize seus dados com seguranca.</p>
+                    <h2>Suas informações</h2>
+                    <p>Atualize seus dados com segurança.</p>
                 </header>
 
                 <form action="<?= e(url('/perfil/atualizar')) ?>" method="post" class="profile-form">
