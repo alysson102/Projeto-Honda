@@ -2035,6 +2035,12 @@ body.page-index .footer {
   .containerk .item img {
     pointer-events: none;
   }
+
+  .card-title-label--revisoes,
+  .item-label--revisoes {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
 }
 
 @media screen and (max-width: 480px) {
