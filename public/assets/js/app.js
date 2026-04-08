@@ -444,6 +444,175 @@
     });
   }
 
+  // --- Modal Revisão ---
+  const pillBtn    = document.getElementById('revisoes-pill-btn');
+  const modalOverlay = document.getElementById('revisoes-modal-overlay');
+  const modalClose = document.getElementById('revisoes-modal-close');
+
+  if (pillBtn && modalOverlay && modalClose) {
+    const openModal = () => {
+      modalOverlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      modalClose.focus();
+    };
+
+    const closeModal = () => {
+      modalOverlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+      pillBtn.focus();
+    };
+
+    pillBtn.addEventListener('click', openModal);
+    pillBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); }
+    });
+
+    modalClose.addEventListener('click', closeModal);
+
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalOverlay.classList.contains('is-open')) closeModal();
+    });
+  }
+  // --- /Modal Revisão ---
+
+  // --- Calculadora de Revisões ---
+  const calcBtn     = document.getElementById('calc-btn');
+  const calcEntrega = document.getElementById('calc-entrega');
+  const calcKmInput = document.getElementById('calc-km');
+  const calcResults = document.getElementById('calc-results');
+  const calcError   = document.getElementById('calc-error');
+  const calcCard1   = document.getElementById('calc-card-1');
+  const calcCard2   = document.getElementById('calc-card-2');
+
+  if (calcBtn && calcEntrega && calcResults && calcCard1 && calcCard2) {
+
+    // Define hoje como data máxima do input de entrega
+    calcEntrega.max = new Date().toISOString().split('T')[0];
+
+    calcBtn.addEventListener('click', () => {
+      if (!calcEntrega.value) {
+        calcError.textContent = 'Informe a data de entrega da motocicleta.';
+        calcError.hidden = false;
+        calcResults.hidden = true;
+        return;
+      }
+
+      calcError.hidden = true;
+
+      const entrega = new Date(calcEntrega.value + 'T00:00:00');
+      const hoje    = new Date();
+      hoje.setHours(0, 0, 0, 0);
+      const kmAtual = calcKmInput && calcKmInput.value !== '' ? parseInt(calcKmInput.value) : null;
+
+      const prazo1 = adicionarMeses(entrega, 6);
+      const prazo2 = adicionarMeses(entrega, 12);
+
+      calcCard1.className = 'revisoes-calc-result-card ' + calcStatusClass(prazo1, hoje, 900, 1100, kmAtual);
+      calcCard1.innerHTML = calcCardHTML('1ª Revisão Gratuita', prazo1, hoje, 900, 1100, kmAtual);
+
+      calcCard2.className = 'revisoes-calc-result-card ' + calcStatusClass(prazo2, hoje, 5400, 6600, kmAtual);
+      calcCard2.innerHTML = calcCardHTML('2ª Revisão Gratuita', prazo2, hoje, 5400, 6600, kmAtual);
+
+      calcResults.hidden = false;
+    });
+  }
+
+  function adicionarMeses(data, meses) {
+    const d = new Date(data);
+    d.setMonth(d.getMonth() + meses);
+    return d;
+  }
+
+  function diffDias(a, b) {
+    return Math.round((b - a) / (1000 * 60 * 60 * 24));
+  }
+
+  function formatarData(d) {
+    return d.toLocaleDateString('pt-BR');
+  }
+
+  function calcStatusClass(prazo, hoje, kmMin, kmMax, kmAtual) {
+    const dias       = diffDias(hoje, prazo);
+    const kmPassou   = kmAtual !== null && kmAtual > kmMax;
+    const kmNaFaixa  = kmAtual !== null && kmAtual >= kmMin && kmAtual <= kmMax;
+    const prazoVenc  = dias < 0;
+
+    if (prazoVenc || kmPassou) return 'status-danger';
+    if (kmNaFaixa || dias <= 30 || (kmAtual !== null && kmAtual >= kmMin - 150)) return 'status-warn';
+    return 'status-ok';
+  }
+
+  function calcCardHTML(titulo, prazo, hoje, kmMin, kmMax, kmAtual) {
+    const dias      = diffDias(hoje, prazo);
+    const kmPassou  = kmAtual !== null && kmAtual > kmMax;
+    const kmNaFaixa = kmAtual !== null && kmAtual >= kmMin && kmAtual <= kmMax;
+    const prazoVenc = dias < 0;
+
+    // Badge de status
+    let label, badgeClass;
+    if (prazoVenc && kmPassou) {
+      label = 'Vencido'; badgeClass = 'danger';
+    } else if (prazoVenc) {
+      label = 'Prazo vencido'; badgeClass = 'danger';
+    } else if (kmPassou) {
+      label = 'Km ultrapassado'; badgeClass = 'danger';
+    } else if (kmNaFaixa) {
+      label = 'Faça agora!'; badgeClass = 'warn';
+    } else if (dias <= 30) {
+      label = 'Quase no prazo'; badgeClass = 'warn';
+    } else {
+      label = 'Dentro do prazo'; badgeClass = 'ok';
+    }
+
+    // Texto de dias
+    let diasTexto;
+    if (dias < 0)     diasTexto = 'Venceu há ' + Math.abs(dias) + ' dias';
+    else if (dias === 0) diasTexto = 'Vence hoje!';
+    else              diasTexto = dias + ' dias restantes';
+
+    // Linha de km atual (se informado)
+    let kmLinhaHTML = '';
+    if (kmAtual !== null) {
+      let kmDesc;
+      if (kmAtual < kmMin) {
+        kmDesc = 'Faltam ' + (kmMin - kmAtual).toLocaleString('pt-BR') + ' km para o início da faixa';
+      } else if (kmAtual <= kmMax) {
+        kmDesc = 'Você está na faixa ideal — agende já!';
+      } else {
+        kmDesc = 'Passou ' + (kmAtual - kmMax).toLocaleString('pt-BR') + ' km do limite';
+      }
+      kmLinhaHTML = '<div class="revisoes-calc-row">'
+        + '<span class="revisoes-calc-row-label">Situação do km</span>'
+        + '<span class="revisoes-calc-row-value">' + kmDesc + '</span>'
+        + '</div>';
+    }
+
+    return '<div class="revisoes-calc-card-title">'
+      + '<span>' + titulo + '</span>'
+      + '<span class="revisoes-calc-badge ' + badgeClass + '">' + label + '</span>'
+      + '</div>'
+      + '<div class="revisoes-calc-rows">'
+      + '  <div class="revisoes-calc-row">'
+      + '    <span class="revisoes-calc-row-label">Prazo limite</span>'
+      + '    <span class="revisoes-calc-row-value">' + formatarData(prazo) + '</span>'
+      + '  </div>'
+      + '  <div class="revisoes-calc-row">'
+      + '    <span class="revisoes-calc-row-label">Tempo restante</span>'
+      + '    <span class="revisoes-calc-row-value">' + diasTexto + '</span>'
+      + '  </div>'
+      + '  <div class="revisoes-calc-row">'
+      + '    <span class="revisoes-calc-row-label">Faixa de km ideal</span>'
+      + '    <span class="revisoes-calc-row-value">' + kmMin.toLocaleString('pt-BR') + ' – ' + kmMax.toLocaleString('pt-BR') + ' km</span>'
+      + '  </div>'
+      + kmLinhaHTML
+      + '</div>';
+  }
+  // --- /Calculadora de Revisões ---
+
 })();
 
 

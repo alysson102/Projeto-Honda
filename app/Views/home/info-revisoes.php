@@ -19,6 +19,55 @@ $observacoesImportantes = [
 ];
 ?>
 
+<div class="revisoes-pill-fixo" role="button" aria-haspopup="dialog" aria-label="Calcule o tempo da sua revisão" id="revisoes-pill-btn" tabindex="0">
+    <div class="revisoes-pill-fixo-link">
+        <span class="revisoes-pill-fixo-icon" aria-hidden="true">⏱️</span>
+        <span>Calcule o tempo da sua revisão</span>
+        <span class="revisoes-pill-fixo-arrow" aria-hidden="true">→</span>
+    </div>
+</div>
+
+<!-- Modal revisão -->
+<!-- Modal revisão -->
+<div class="revisoes-modal-overlay" id="revisoes-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="revisoes-modal-titulo">
+    <div class="revisoes-modal">
+        <button class="revisoes-modal-close" id="revisoes-modal-close" aria-label="Fechar">✕</button>
+        <div class="revisoes-modal-header">
+            <span class="revisoes-modal-icon" aria-hidden="true">⏱️</span>
+            <h2 id="revisoes-modal-titulo">Calculadora de Revisões</h2>
+        </div>
+        <div class="revisoes-modal-body">
+            <div class="revisoes-calc">
+
+                <div class="revisoes-calc-form">
+                    <div class="revisoes-calc-field">
+                        <label for="calc-entrega">Data de entrega da moto</label>
+                        <input type="date" id="calc-entrega">
+                    </div>
+                    <div class="revisoes-calc-field">
+                        <label for="calc-km">Quilometragem atual <span class="revisoes-calc-optional">(opcional)</span></label>
+                        <input type="number" id="calc-km" placeholder="Ex: 750" min="0" step="1">
+                    </div>
+                    <button type="button" id="calc-btn" class="revisoes-calc-btn">
+                        <span aria-hidden="true">⚙️</span> Calcular
+                    </button>
+                </div>
+
+                <p class="revisoes-calc-hint" id="calc-error" hidden></p>
+
+                <div class="revisoes-calc-results" id="calc-results" hidden>
+                    <div class="revisoes-calc-result-card" id="calc-card-1"></div>
+                    <div class="revisoes-calc-result-card" id="calc-card-2"></div>
+                    <p class="revisoes-calc-disclaimer">
+                        ⚠️ Vale o que ocorrer primeiro: prazo ou quilometragem.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <section class="info-page info-revisoes">
     <div class="info-hero revisoes-hero">
         
