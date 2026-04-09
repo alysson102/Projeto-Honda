@@ -129,8 +129,7 @@ $observacoesImportantes = [
     </section>
 
     <section class="revisoes-section-card">
-        <div class="revisoes-section-head">
-            <span class="revisoes-section-kicker">Prazos e tolerâncias</span>
+        <div class="revisoes-section-head revisoes-section-head--desktop-center">
             <h2>Quilometragem e prazo das revisões gratuitas</h2>
             <p>
                 Confira abaixo como ficam os intervalos das duas primeiras revisões com mão de obra gratuita.

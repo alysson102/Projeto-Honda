@@ -711,9 +711,22 @@ body.page-home main {
 }
 
 .info-revisoes {
+  --revisoes-accent-gradient: linear-gradient(135deg, #8f0000 0%, #b71c1c 38%, #d84343 72%, #f14545 100%);
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+@keyframes revisoesAccentFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .revisoes-hero {
@@ -740,6 +753,10 @@ body.page-home main {
 }
 
 .revisoes-kicker {
+  margin-bottom: 12px;
+}
+
+.revisoes-care-card .revisoes-section-kicker {
   margin-bottom: 12px;
 }
 
@@ -786,10 +803,24 @@ body.page-home main {
 }
 
 .revisoes-highlight-card {
+  position: relative;
+  overflow: hidden;
   padding: 18px;
-  border-top: 4px solid #b71c1c;
+  border-top: 4px solid transparent;
   background: linear-gradient(180deg, #ffffff 0%, #fff8f8 100%);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.revisoes-highlight-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--revisoes-accent-gradient);
+  background-size: 200% 200%;
+  animation: revisoesAccentFlow 8s ease infinite;
 }
 
 .revisoes-highlight-card:hover {
@@ -805,7 +836,9 @@ body.page-home main {
   height: 48px;
   margin-bottom: 12px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #b71c1c, #d64343);
+  background: var(--revisoes-accent-gradient);
+  background-size: 200% 200%;
+  animation: revisoesAccentFlow 8s ease infinite;
   color: #fff;
   font-size: 1.3rem;
   box-shadow: 0 10px 22px rgba(183, 28, 28, 0.24);
@@ -891,6 +924,24 @@ body.page-home main {
 .revisoes-section-head p {
   margin: 0;
   line-height: 1.7;
+}
+
+@media screen and (min-width: 768px) {
+  .revisoes-section-head--desktop-center {
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    max-width: 760px;
+    margin: 0 auto 28px;
+  }
+
+  .revisoes-section-head--desktop-center h2 {
+    max-width: 680px;
+  }
+
+  .revisoes-section-head--desktop-center p {
+    max-width: 640px;
+  }
 }
 
 .revisoes-step-card {
@@ -984,9 +1035,25 @@ body.page-home main {
 }
 
 .revisoes-note-panel {
+  position: relative;
+  overflow: hidden;
   padding: 20px;
-  border-left: 5px solid #b71c1c;
+  border-left: 5px solid transparent;
   background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+}
+
+.revisoes-note-panel::before,
+.revisoes-faq-card::before,
+.revisoes-cta::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--revisoes-accent-gradient);
+  background-size: 200% 200%;
+  animation: revisoesAccentFlow 8s ease infinite;
 }
 
 .revisoes-note-panel--soft {
@@ -1009,8 +1076,14 @@ body.page-home main {
 }
 
 .revisoes-faq-card {
+  position: relative;
+  overflow: hidden;
   padding: 18px;
-  border-left: 4px solid #b71c1c;
+  border-left: 4px solid transparent;
+}
+
+.revisoes-faq-card::before {
+  width: 4px;
 }
 
 .revisoes-faq-card h3 {
@@ -1019,13 +1092,15 @@ body.page-home main {
 }
 
 .revisoes-cta {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
   padding: 22px;
   background: linear-gradient(135deg, #ffffff 0%, #fff2f2 100%);
-  border-left: 5px solid #b71c1c;
+  border-left: 5px solid transparent;
 }
 
 .revisoes-cta-btn {
@@ -1072,21 +1147,48 @@ body.page-home main {
   .revisoes-step-card,
   .revisoes-care-card,
   .revisoes-faq-card,
-  .revisoes-cta {
+  .revisoes-cta,
+  .revisoes-note-panel {
     text-align: center;
+  }
+
+  .revisoes-section-head,
+  .revisoes-section-head.revisoes-section-head--desktop-center,
+  .revisoes-step-top {
+    align-items: center;
   }
 
   .revisoes-hero-badges {
     justify-content: center;
   }
 
+  .revisoes-kicker,
+  .revisoes-section-kicker,
+  .revisoes-highlight-icon,
+  .revisoes-marco-badge {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .revisoes-step-top {
     flex-direction: column;
-    align-items: center;
+    text-align: center;
+  }
+
+  .revisoes-list {
+    justify-items: center;
   }
 
   .revisoes-list li {
-    text-align: left;
+    max-width: 32rem;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .revisoes-list li::before {
+    position: static;
+    display: inline-block;
+    margin-right: 6px;
   }
 }
 
