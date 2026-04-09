@@ -952,6 +952,250 @@ body.page-home main {
   background: linear-gradient(180deg, #fff 0%, #fff7f7 100%);
 }
 
+.revisoes-controle-grid {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.72fr) repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.revisoes-controle-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+  padding: 18px 14px 12px;
+  border: 1.5px solid rgba(30, 30, 30, 0.78);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fcfcfc 0%, #f3f3f3 100%);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.revisoes-controle-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--revisoes-accent-gradient);
+  background-size: 200% 200%;
+  animation: revisoesAccentFlow 8s ease infinite;
+}
+
+.revisoes-controle-card--compact {
+  min-height: 220px;
+}
+
+.revisoes-controle-top {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.revisoes-controle-top strong {
+  display: block;
+  color: #111;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 800;
+}
+
+.revisoes-controle-top small {
+  display: block;
+  margin-top: 2px;
+  color: #3c3c3c;
+  font-size: 0.82rem;
+}
+
+.revisoes-controle-top h3 {
+  margin: 10px 0 0;
+  color: #111;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.revisoes-controle-card--compact .revisoes-controle-top h3 {
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+.revisoes-controle-fields {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.revisoes-controle-field {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  color: #1f1f1f;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.revisoes-controle-field span:first-child {
+  white-space: nowrap;
+}
+
+.revisoes-controle-line {
+  display: block;
+  flex: 1;
+  min-width: 36px;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.75);
+  transform: translateY(-2px);
+}
+
+.revisoes-controle-field--date {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.revisoes-controle-date-place {
+  font-family: "Courier New", monospace;
+  letter-spacing: 0.04em;
+}
+
+.revisoes-controle-assinatura {
+  margin-top: auto;
+  height: 38px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #f7f7f7 0%, #ececec 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.revisoes-controle-rodape {
+  margin: 6px 0 0;
+  color: #303030;
+  font-size: 0.63rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.revisoes-periodicas-board {
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(183, 28, 28, 0.12);
+  background: linear-gradient(180deg, #ffffff 0%, #fbf5f5 100%);
+  box-shadow: 0 12px 28px rgba(127, 0, 0, 0.08);
+}
+
+.revisoes-periodicas-board__header {
+  position: relative;
+  overflow: hidden;
+  padding: 12px 16px;
+  background: var(--revisoes-accent-gradient);
+  background-size: 200% 200%;
+  animation: revisoesAccentFlow 8s ease infinite;
+}
+
+.revisoes-periodicas-board__header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.18), rgba(255, 255, 255, 0.04));
+  pointer-events: none;
+}
+
+.revisoes-periodicas-board__header h3 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-weight: 800;
+}
+
+.revisoes-periodicas-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px;
+}
+
+.revisoes-periodicas-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 170px;
+  padding: 10px 8px;
+  border: 1.4px solid rgba(40, 40, 40, 0.72);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fdfdfd 0%, #f2f2f2 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.revisoes-periodicas-card__top {
+  text-align: center;
+}
+
+.revisoes-periodicas-card__top strong,
+.revisoes-periodicas-card__top span,
+.revisoes-periodicas-card__top small {
+  display: block;
+}
+
+.revisoes-periodicas-card__top strong {
+  color: #111;
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+.revisoes-periodicas-card__top span {
+  color: #111;
+  font-size: 0.94rem;
+}
+
+.revisoes-periodicas-card__top small {
+  margin-top: 2px;
+  color: #333;
+  font-size: 0.68rem;
+}
+
+.revisoes-periodicas-card__top h4 {
+  margin: 8px 0 0;
+  color: #111;
+  font-size: 0.96rem;
+  font-weight: 500;
+}
+
+.revisoes-periodicas-card__fields {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.revisoes-periodicas-card__field {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  color: #151515;
+  font-size: 0.82rem;
+  line-height: 1.2;
+}
+
+.revisoes-periodicas-card__field--triple {
+  align-items: center;
+}
+
+.revisoes-periodicas-card__line {
+  flex: 1;
+  min-width: 18px;
+  border-bottom: 1px solid rgba(20, 20, 20, 0.72);
+}
+
+.revisoes-periodicas-card__date {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  border-bottom: 1px solid rgba(20, 20, 20, 0.72);
+}
+
 .revisoes-marco-badge {
   display: inline-flex;
   align-items: center;
@@ -1128,6 +1372,14 @@ body.page-home main {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .revisoes-controle-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .revisoes-periodicas-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .revisoes-cta {
     flex-direction: column;
     align-items: stretch;
@@ -1210,6 +1462,15 @@ body.page-home main {
 
   .revisoes-hero-badges span {
     width: 100%;
+  }
+
+  .revisoes-periodicas-grid {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px;
+  }
+
+  .revisoes-periodicas-card {
+    min-height: auto;
   }
 
   .revisoes-list--compact {
