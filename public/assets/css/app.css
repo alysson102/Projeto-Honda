@@ -4700,6 +4700,10 @@ body.is-submitting-agendamento {
   gap: 18px;
 }
 
+#meus-agendamentos {
+  scroll-margin-top: calc(var(--topbar-height) + 24px);
+}
+
 .profile-card {
   background: #fff;
   border-radius: 16px;

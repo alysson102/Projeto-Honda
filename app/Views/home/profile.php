@@ -113,7 +113,7 @@ $hoje = new \DateTimeImmutable('today');
                 <?php endif; ?>
             </section>
 
-            <section class="profile-card profile-card-appointments">
+            <section class="profile-card profile-card-appointments" id="meus-agendamentos">
                 <header class="profile-card-header">
                     <h2>Meus Agendamentos</h2>
                 </header>

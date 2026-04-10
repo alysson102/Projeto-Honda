@@ -5,6 +5,27 @@ let REVISOES_DUAS_HORAS = [];
 let API_VERIFICAR_DISPONIBILIDADE = '/api/verificar-disponibilidade';
 let REDIRECT_APOS_ENVIO = '/';
 
+function obterRedirectAposEnvio() {
+    const isMobile = window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
+    if (!isMobile) {
+        return REDIRECT_APOS_ENVIO;
+    }
+
+    try {
+        const url = new URL(REDIRECT_APOS_ENVIO, window.location.origin);
+        if (url.pathname.endsWith('/perfil')) {
+            url.hash = 'meus-agendamentos';
+            return url.toString();
+        }
+    } catch (error) {
+        if (REDIRECT_APOS_ENVIO.includes('/perfil')) {
+            return REDIRECT_APOS_ENVIO.replace(/#.*$/, '') + '#meus-agendamentos';
+        }
+    }
+
+    return REDIRECT_APOS_ENVIO;
+}
+
 // Inicializar quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', function() {
     // Mantém o label do select no topo quando há valor escolhido
@@ -249,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     setTimeout(() => {
-                        window.location.href = REDIRECT_APOS_ENVIO;
+                        window.location.href = obterRedirectAposEnvio();
                     }, 1200);
                 } else {
                     throw new Error('Erro na resposta do servidor');
