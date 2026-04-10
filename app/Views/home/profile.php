@@ -5,7 +5,7 @@
 
 $profilePhotoPath = isset($user['profile_photo']) && is_string($user['profile_photo']) && $user['profile_photo'] !== ''
     ? $user['profile_photo']
-    : '/assets/imagens/logo_site10.png';
+    : '/assets/imagens/optimized/logo_site10_opt.png';
 
 $profilePhotoUrl = url($profilePhotoPath);
 $formattedPhone = old('telefone', (string) ($user['telefone'] ?? ''));

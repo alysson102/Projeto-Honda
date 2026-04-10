@@ -16,7 +16,7 @@
 
     <div class="about-founder">
         <div class="about-founder-avatar-wrap">
-            <img src="<?= e(url('/assets/imagens/Senhor-soichiro.jpg')) ?>" alt="Soichiro Honda" class="about-founder-avatar">
+            <img src="<?= e(url('/assets/imagens/Senhor-soichiro.jpg')) ?>" alt="Soichiro Honda" class="about-founder-avatar" width="1200" height="645" loading="lazy" decoding="async">
         </div>
 
         <div class="about-founder-content">

@@ -57,10 +57,14 @@ if ($currentRequestPath === '/agendamento') {
 <head>
     <meta charset="UTF-8">
     <title><?= e($title) ?> - <?= e((string) config('app.name')) ?></title>
-    <link rel="icon" type="image/png" sizes="192x192" href="<?= e(url('/assets/imagens/favicon3.png')) ?>">
-    <link rel="icon" type="image/png" sizes="64x64" href="<?= e(url('/assets/imagens/favicon3.png')) ?>">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?= e(url('/assets/imagens/favicon3.png')) ?>">
-    <link rel="apple-touch-icon" sizes="180x180" href="<?= e(url('/assets/imagens/favicon3.png')) ?>">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?= e(url('/assets/imagens/favicon-192.png')) ?>">
+    <link rel="icon" type="image/png" sizes="64x64" href="<?= e(url('/assets/imagens/favicon-64.png')) ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= e(url('/assets/imagens/favicon-32.png')) ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= e(url('/assets/imagens/apple-touch-icon.png')) ?>">
+    <link rel="preload" as="image" href="<?= e(url('/assets/imagens/optimized/logo_site10_opt.png')) ?>" fetchpriority="high">
+    <?php if ($isGuestLandingPage): ?>
+        <link rel="preload" as="image" href="<?= e(url('/assets/imagens/optimized/baner_04_q88.jpg')) ?>" fetchpriority="high">
+    <?php endif; ?>
     <meta name="theme-color" content="#b30000">
     <link rel="stylesheet" href="<?= e(url('/assets/css/app.css')) ?>">
     <meta name="author" content="Alysson Souza" />
@@ -75,7 +79,7 @@ if ($currentRequestPath === '/agendamento') {
     
 
             <div class="logo">
-                <img src="<?= e(url('/assets/imagens/logo_site10.png')) ?>" alt="logo_site"></img>
+                <img src="<?= e(url('/assets/imagens/optimized/logo_site10_opt.png')) ?>" alt="Logo Atlântica Motos" width="560" height="373" loading="eager" decoding="async" fetchpriority="high"></img>
             </div>
 
             <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-controls="site-menu" aria-expanded="false">
@@ -113,7 +117,7 @@ if ($currentRequestPath === '/agendamento') {
     <?php if ($isGuestLandingPage): ?>
         <section class="baner">
             <div class="ban-lef">
-                <img src="<?= e(url('/assets/imagens/baner_04.png')) ?>" />
+                <img src="<?= e(url('/assets/imagens/optimized/baner_04_q88.jpg')) ?>" alt="Banner Atlântica Motos" width="1400" height="933" loading="eager" decoding="async" fetchpriority="high" />
             </div>
 
             <div class="form-login">
