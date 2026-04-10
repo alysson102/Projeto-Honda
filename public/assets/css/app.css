@@ -1645,9 +1645,12 @@ body.page-home main {
 
 .revisoes-modal-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 8px;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .revisoes-modal-icon {
@@ -1660,6 +1663,7 @@ body.page-home main {
   font-weight: 700;
   color: #fff;
   line-height: 1.3;
+  text-align: center;
 }
 
 .revisoes-modal-body {
@@ -1759,15 +1763,25 @@ body.page-home main {
 
 .revisoes-calc-hint {
   font-size: 0.82rem;
-  color: #ef9a9a;
+  color: #ffcdd2;
   margin-bottom: 10px;
   text-align: center;
+  background: rgba(244, 67, 54, 0.12);
+  border: 1px solid rgba(239, 154, 154, 0.28);
+  border-radius: 10px;
+  padding: 10px 12px;
 }
 
 .revisoes-calc-results {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.revisoes-calc-results[hidden],
+.revisoes-calc-result-card[hidden],
+.revisoes-calc-hint[hidden] {
+  display: none !important;
 }
 
 .revisoes-calc-result-card {
@@ -1832,12 +1846,74 @@ body.page-home main {
   text-align: right;
 }
 
+.revisoes-calc-row-value--stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.revisoes-calc-agendar-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #b71c1c, #f14545);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.revisoes-calc-agendar-link:hover {
+  filter: brightness(1.08);
+}
+
 .revisoes-calc-disclaimer {
   font-size: 0.76rem;
   color: rgba(255, 255, 255, 0.38);
   text-align: center;
   margin-top: 4px;
   line-height: 1.5;
+}
+
+.revisoes-calc-garantia-alert {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.revisoes-calc-garantia-alert--risk {
+  background: rgba(255, 152, 0, 0.12);
+  border: 1px solid rgba(255, 183, 77, 0.35);
+  color: #ffe0b2;
+}
+
+.revisoes-calc-garantia-alert--loss {
+  background: rgba(244, 67, 54, 0.12);
+  border: 1px solid rgba(239, 154, 154, 0.35);
+  color: #ffcdd2;
+}
+
+.revisoes-calc-garantia-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin: 10px auto 0;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #25d366;
+  color: #062b13;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.revisoes-calc-garantia-link:hover {
+  filter: brightness(1.05);
 }
 
 @media (max-width: 480px) {
@@ -1849,6 +1925,10 @@ body.page-home main {
   .revisoes-calc-row-value {
     text-align: left;
     color: rgba(255, 255, 255, 0.9);
+  }
+
+  .revisoes-calc-row-value--stack {
+    align-items: flex-start;
   }
 }
 /* --- /Calculadora Revisão --- */

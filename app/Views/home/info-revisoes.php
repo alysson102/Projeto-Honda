@@ -1,4 +1,8 @@
 <?php
+$consultorWhatsappNumero = '5582987229890';
+$mensagemConsultorRevisao = 'Olá! Preciso avaliar a situação da garantia da revisão da minha motocicleta.';
+$consultorWhatsappLink = 'https://wa.me/' . $consultorWhatsappNumero . '?text=' . rawurlencode($mensagemConsultorRevisao);
+
 $revisoesComMaoDeObraGratuita = [
     [
         'titulo' => '1ª revisão gratuita',
@@ -66,8 +70,8 @@ $revisoesPeriodicas = [
                         <input type="date" id="calc-entrega">
                     </div>
                     <div class="revisoes-calc-field">
-                        <label for="calc-km">Quilometragem atual <span class="revisoes-calc-optional">(opcional)</span></label>
-                        <input type="number" id="calc-km" placeholder="Ex: 750" min="0" step="1">
+                        <label for="calc-km">Quilometragem atual</label>
+                        <input type="number" id="calc-km" placeholder="Ex: 750" min="0" step="1" required>
                     </div>
                     <button type="button" id="calc-btn" class="revisoes-calc-btn">
                         <span aria-hidden="true">⚙️</span> Calcular
@@ -76,7 +80,7 @@ $revisoesPeriodicas = [
 
                 <p class="revisoes-calc-hint" id="calc-error" hidden></p>
 
-                <div class="revisoes-calc-results" id="calc-results" hidden>
+                <div class="revisoes-calc-results" id="calc-results" data-consultor-link="<?= e($consultorWhatsappLink) ?>" data-agendamento-link="<?= e(url('/agendamento')) ?>" hidden>
                     <div class="revisoes-calc-result-card" id="calc-card-1"></div>
                     <div class="revisoes-calc-result-card" id="calc-card-2"></div>
                     <p class="revisoes-calc-disclaimer">

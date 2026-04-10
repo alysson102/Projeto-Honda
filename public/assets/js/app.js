@@ -501,21 +501,52 @@
         return;
       }
 
+      if (!calcKmInput || calcKmInput.value === '') {
+        calcError.textContent = 'Informe a quilometragem atual da motocicleta.';
+        calcError.hidden = false;
+        calcResults.hidden = true;
+        return;
+      }
+
       calcError.hidden = true;
 
       const entrega = new Date(calcEntrega.value + 'T00:00:00');
-      const hoje    = new Date();
+      const hoje = new Date();
       hoje.setHours(0, 0, 0, 0);
-      const kmAtual = calcKmInput && calcKmInput.value !== '' ? parseInt(calcKmInput.value) : null;
+
+      const kmInformado = calcKmInput && calcKmInput.value !== ''
+        ? Number.parseInt(calcKmInput.value, 10)
+        : null;
+      const kmAtual = Number.isNaN(kmInformado) ? null : kmInformado;
+      const consultorLink = calcResults.dataset.consultorLink || '';
+      const agendamentoLink = calcResults.dataset.agendamentoLink || '';
 
       const prazo1 = adicionarMeses(entrega, 6);
       const prazo2 = adicionarMeses(entrega, 12);
+      const status1 = calcStatusClass(prazo1, hoje, 900, 1100, kmAtual);
+      const status2 = calcStatusClass(prazo2, hoje, 5400, 6600, kmAtual);
+      const revisao1Vencida = calcRevisaoVencida(prazo1, hoje, 1100, kmAtual);
+      const revisao2Vencida = calcRevisaoVencida(prazo2, hoje, 6600, kmAtual);
+      const ambasEmDia = !revisao1Vencida && !revisao2Vencida;
+      const mostrarCard1 = ambasEmDia || revisao1Vencida;
+      const mostrarCard2 = ambasEmDia || revisao2Vencida;
 
-      calcCard1.className = 'revisoes-calc-result-card ' + calcStatusClass(prazo1, hoje, 900, 1100, kmAtual);
-      calcCard1.innerHTML = calcCardHTML('1ª Revisão Gratuita', prazo1, hoje, 900, 1100, kmAtual);
+      calcCard1.hidden = !mostrarCard1;
+      calcCard2.hidden = !mostrarCard2;
 
-      calcCard2.className = 'revisoes-calc-result-card ' + calcStatusClass(prazo2, hoje, 5400, 6600, kmAtual);
-      calcCard2.innerHTML = calcCardHTML('2ª Revisão Gratuita', prazo2, hoje, 5400, 6600, kmAtual);
+      if (mostrarCard1) {
+        calcCard1.className = 'revisoes-calc-result-card ' + status1;
+        calcCard1.innerHTML = calcCardHTML('1ª Revisão Gratuita', prazo1, hoje, 900, 1100, kmAtual, consultorLink, agendamentoLink);
+      } else {
+        calcCard1.innerHTML = '';
+      }
+
+      if (mostrarCard2) {
+        calcCard2.className = 'revisoes-calc-result-card ' + status2;
+        calcCard2.innerHTML = calcCardHTML('2ª Revisão Gratuita', prazo2, hoje, 5400, 6600, kmAtual, consultorLink, agendamentoLink);
+      } else {
+        calcCard2.innerHTML = '';
+      }
 
       calcResults.hidden = false;
     });
@@ -536,19 +567,77 @@
   }
 
   function calcStatusClass(prazo, hoje, kmMin, kmMax, kmAtual) {
-    const dias       = diffDias(hoje, prazo);
-    const kmPassou   = kmAtual !== null && kmAtual > kmMax;
-    const kmNaFaixa  = kmAtual !== null && kmAtual >= kmMin && kmAtual <= kmMax;
-    const prazoVenc  = dias < 0;
+    const dias = diffDias(hoje, prazo);
+    const kmPassou = kmAtual !== null && kmAtual > kmMax;
+    const kmNaFaixa = kmAtual !== null && kmAtual >= kmMin && kmAtual <= kmMax;
+    const prazoVenc = dias < 0;
 
     if (prazoVenc || kmPassou) return 'status-danger';
     if (kmNaFaixa || dias <= 30 || (kmAtual !== null && kmAtual >= kmMin - 150)) return 'status-warn';
     return 'status-ok';
   }
 
-  function calcCardHTML(titulo, prazo, hoje, kmMin, kmMax, kmAtual) {
-    const dias      = diffDias(hoje, prazo);
-    const kmPassou  = kmAtual !== null && kmAtual > kmMax;
+  function calcRevisaoVencida(prazo, hoje, kmMax, kmAtual) {
+    const dias = diffDias(hoje, prazo);
+    const prazoVenc = dias < 0;
+    const kmPassou = kmAtual !== null && kmAtual > kmMax;
+
+    return prazoVenc || kmPassou;
+  }
+
+  function calcGarantiaHTML(diasAtraso, kmExcedente, consultorLink) {
+    const ultrapassouPrazo = diasAtraso > 0;
+    const ultrapassouKm = kmExcedente > 0;
+
+    if (!ultrapassouPrazo && !ultrapassouKm) {
+      return '';
+    }
+
+    const perdeuGarantia = diasAtraso > 0 || kmExcedente > 100;
+    const detalhes = [];
+
+    if (ultrapassouPrazo) {
+      detalhes.push(diasAtraso + ' ' + (diasAtraso === 1 ? 'dia' : 'dias') + ' além do prazo');
+    }
+
+    if (ultrapassouKm) {
+      detalhes.push(kmExcedente.toLocaleString('pt-BR') + ' km acima do limite');
+    }
+
+    const detalheTexto = detalhes.length > 0 ? ' (' + detalhes.join(' e ') + ').' : '.';
+
+    if (perdeuGarantia) {
+      let motivoPerda;
+
+      if (ultrapassouPrazo && kmExcedente > 100) {
+        motivoPerda = 'o prazo da revisão foi ultrapassado e a quilometragem excedeu a tolerância máxima de 100 km';
+      } else if (ultrapassouPrazo) {
+        motivoPerda = 'o prazo da revisão foi ultrapassado';
+      } else {
+        motivoPerda = 'a quilometragem excedeu a tolerância máxima de 100 km';
+      }
+
+      return '<div class="revisoes-calc-garantia-alert revisoes-calc-garantia-alert--loss">'
+        + '<strong>Perda da garantia:</strong> ' + motivoPerda + detalheTexto
+        + '</div>';
+    }
+
+    const consultorLinkHTML = consultorLink
+      ? '<a class="revisoes-calc-garantia-link" href="' + consultorLink + '" target="_blank" rel="noopener noreferrer">Falar com o consultor no WhatsApp</a>'
+      : '';
+
+    return '<div class="revisoes-calc-garantia-alert revisoes-calc-garantia-alert--risk">'
+      + '<strong>Risco de perda da garantia:</strong> a revisão ultrapassou a quilometragem prevista, mas ainda está dentro da tolerância de até 100 km' + detalheTexto
+      + ' É necessário falar com o consultor de peças da Honda para avaliar a situação.'
+      + consultorLinkHTML
+      + '</div>';
+  }
+
+  function calcCardHTML(titulo, prazo, hoje, kmMin, kmMax, kmAtual, consultorLink = '', agendamentoLink = '') {
+    const dias = diffDias(hoje, prazo);
+    const diasAtraso = Math.max(0, -dias);
+    const kmExcedente = kmAtual !== null && kmAtual > kmMax ? kmAtual - kmMax : 0;
+    const kmPassou = kmExcedente > 0;
     const kmNaFaixa = kmAtual !== null && kmAtual >= kmMin && kmAtual <= kmMax;
     const prazoVenc = dias < 0;
 
@@ -570,26 +659,41 @@
 
     // Texto de dias
     let diasTexto;
-    if (dias < 0)     diasTexto = 'Venceu há ' + Math.abs(dias) + ' dias';
+    if (dias < 0) {
+      const diasVencidos = Math.abs(dias);
+      diasTexto = 'Venceu há ' + diasVencidos + ' ' + (diasVencidos === 1 ? 'dia' : 'dias');
+    }
     else if (dias === 0) diasTexto = 'Vence hoje!';
-    else              diasTexto = dias + ' dias restantes';
+    else diasTexto = dias + ' ' + (dias === 1 ? 'dia restante' : 'dias restantes');
 
     // Linha de km atual (se informado)
     let kmLinhaHTML = '';
     if (kmAtual !== null) {
       let kmDesc;
+      let kmAcaoHTML = '';
+
       if (kmAtual < kmMin) {
         kmDesc = 'Faltam ' + (kmMin - kmAtual).toLocaleString('pt-BR') + ' km para o início da faixa';
       } else if (kmAtual <= kmMax) {
-        kmDesc = 'Você está na faixa ideal — agende já!';
+        kmDesc = 'Você está na faixa ideal.';
+        kmAcaoHTML = agendamentoLink
+          ? '<a class="revisoes-calc-agendar-link" href="' + agendamentoLink + '">Agende já!</a>'
+          : '';
       } else {
         kmDesc = 'Passou ' + (kmAtual - kmMax).toLocaleString('pt-BR') + ' km do limite';
       }
+
+      const kmRowClass = kmAcaoHTML !== ''
+        ? 'revisoes-calc-row-value revisoes-calc-row-value--stack'
+        : 'revisoes-calc-row-value';
+
       kmLinhaHTML = '<div class="revisoes-calc-row">'
         + '<span class="revisoes-calc-row-label">Situação do km</span>'
-        + '<span class="revisoes-calc-row-value">' + kmDesc + '</span>'
+        + '<span class="' + kmRowClass + '">' + kmDesc + kmAcaoHTML + '</span>'
         + '</div>';
     }
+
+    const garantiaHTML = calcGarantiaHTML(diasAtraso, kmExcedente, consultorLink);
 
     return '<div class="revisoes-calc-card-title">'
       + '<span>' + titulo + '</span>'
@@ -609,7 +713,8 @@
       + '    <span class="revisoes-calc-row-value">' + kmMin.toLocaleString('pt-BR') + ' – ' + kmMax.toLocaleString('pt-BR') + ' km</span>'
       + '  </div>'
       + kmLinhaHTML
-      + '</div>';
+      + '</div>'
+      + garantiaHTML;
   }
   // --- /Calculadora de Revisões ---
 
