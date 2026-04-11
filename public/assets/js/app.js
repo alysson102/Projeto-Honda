@@ -640,6 +640,8 @@
     const kmPassou = kmExcedente > 0;
     const kmNaFaixa = kmAtual !== null && kmAtual >= kmMin && kmAtual <= kmMax;
     const prazoVenc = dias < 0;
+    const prazoNaFaixa = !prazoVenc && dias <= 30;
+    const avisoSomentePorPrazo = prazoNaFaixa && !kmNaFaixa && !kmPassou;
 
     // Badge de status
     let label, badgeClass;
@@ -649,10 +651,8 @@
       label = 'Prazo vencido'; badgeClass = 'danger';
     } else if (kmPassou) {
       label = 'Km ultrapassado'; badgeClass = 'danger';
-    } else if (kmNaFaixa) {
+    } else if (kmNaFaixa || prazoNaFaixa) {
       label = 'Faça agora!'; badgeClass = 'warn';
-    } else if (dias <= 30) {
-      label = 'Quase no prazo'; badgeClass = 'warn';
     } else {
       label = 'Dentro do prazo'; badgeClass = 'ok';
     }
@@ -666,9 +666,34 @@
     else if (dias === 0) diasTexto = 'Vence hoje!';
     else diasTexto = dias + ' ' + (dias === 1 ? 'dia restante' : 'dias restantes');
 
-    // Linha de km atual (se informado)
+    let prazoDesc = 'Dentro do prazo.';
+    let prazoAcaoHTML = '';
+
+    if (prazoVenc) {
+      prazoDesc = 'Prazo vencido.';
+    } else if (avisoSomentePorPrazo) {
+      prazoDesc = dias <= 3
+        ? '<span class="revisoes-calc-inline-warning"><span class="revisoes-calc-inline-alert">Atenção</span><span>prazo próximo do vencimento.</span></span>'
+        : 'Você está na faixa ideal.';
+      prazoAcaoHTML = agendamentoLink
+        ? '<a class="revisoes-calc-agendar-link" href="' + agendamentoLink + '">Agende já!</a>'
+        : '';
+    } else if (prazoNaFaixa) {
+      prazoDesc = 'Muito perto de vencer.';
+    }
+
+    const prazoRowClass = prazoAcaoHTML !== ''
+      ? 'revisoes-calc-row-value revisoes-calc-row-value--stack'
+      : 'revisoes-calc-row-value';
+
+    const prazoLinhaHTML = '<div class="revisoes-calc-row">'
+      + '<span class="revisoes-calc-row-label">Situação do prazo</span>'
+      + '<span class="' + prazoRowClass + '">' + prazoDesc + prazoAcaoHTML + '</span>'
+      + '</div>';
+
+    // Linha de km atual (se informado e sem alerta somente por prazo)
     let kmLinhaHTML = '';
-    if (kmAtual !== null) {
+    if (kmAtual !== null && !avisoSomentePorPrazo) {
       let kmDesc;
       let kmAcaoHTML = '';
 
@@ -712,6 +737,7 @@
       + '    <span class="revisoes-calc-row-label">Faixa de km ideal</span>'
       + '    <span class="revisoes-calc-row-value">' + kmMin.toLocaleString('pt-BR') + ' – ' + kmMax.toLocaleString('pt-BR') + ' km</span>'
       + '  </div>'
+      + prazoLinhaHTML
       + kmLinhaHTML
       + '</div>'
       + garantiaHTML;

@@ -1846,6 +1846,27 @@ body.page-home main {
   text-align: right;
 }
 
+.revisoes-calc-inline-warning {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.revisoes-calc-inline-alert {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(198, 40, 40, 0.14);
+  border: 1px solid rgba(198, 40, 40, 0.26);
+  color: #ffb3b3;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
 .revisoes-calc-row-value--stack {
   display: flex;
   flex-direction: column;

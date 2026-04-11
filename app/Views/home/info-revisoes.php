@@ -47,8 +47,7 @@ $revisoesPeriodicas = [
 <div class="revisoes-pill-fixo" role="button" aria-haspopup="dialog" aria-label="Calcule o tempo da sua revisão" id="revisoes-pill-btn" tabindex="0">
     <div class="revisoes-pill-fixo-link">
         <span class="revisoes-pill-fixo-icon" aria-hidden="true">⏱️</span>
-        <span>Calcule o tempo da sua revisão</span>
-        <span class="revisoes-pill-fixo-arrow" aria-hidden="true">→</span>
+        <span>Calcule o tempo e km da sua revisão</span>
     </div>
 </div>
 
