@@ -29,8 +29,6 @@
 </section>
 
 
-<!-- CAROUSEL QUE GIRA PARA PARA CIMA E PARA BAIXO -->
-
 <div class="containerk">
   <div class="carousel" id="carousel">
 		<div class="item"><a href="<?= e(url('/agendamento')) ?>" data-mobile-redirect="agendamento"><img src="<?= e(url('/assets/imagens/optimized/agen-retrato_q88.jpg')) ?>" alt="Agendamento" width="720" height="1080" loading="lazy" decoding="async"><span class="item-label">Agendamento</span></a></div>

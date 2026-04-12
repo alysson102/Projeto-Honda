@@ -3103,8 +3103,247 @@ body.page-index .footer {
 
 .card-link {
   display: block;
+  position: relative;
   text-decoration: none;
   color: inherit;
+  border-radius: 24px;
+  isolation: isolate;
+  --electric-red: rgba(255, 88, 88, 0.98);
+  --electric-core: rgba(255, 247, 247, 0.99);
+  --electric-base: rgba(255, 116, 116, 0.54);
+  --electric-glow: rgba(255, 62, 62, 0.72);
+  --electric-fray: rgba(255, 214, 214, 0.92);
+  --electric-haze: rgba(255, 72, 72, 0.2);
+}
+
+.electric-frame {
+  position: absolute;
+  inset: -4px;
+  border-radius: 24px;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.96;
+}
+
+.electric-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 134, 134, 0.48);
+  box-shadow:
+    inset 0 0 14px rgba(255, 78, 78, 0.16),
+    0 0 12px rgba(255, 62, 62, 0.24),
+    0 0 28px rgba(255, 42, 42, 0.22),
+    0 0 42px rgba(255, 30, 30, 0.12);
+  opacity: 0.78;
+  animation: electricBorderPulse 1.9s steps(3, end) infinite;
+}
+
+.electric-frame::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 2px;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 9px,
+      rgba(255, 246, 246, 0.92) 9px 10px,
+      rgba(255, 108, 108, 0.96) 10px 13px,
+      transparent 13px 23px,
+      rgba(255, 198, 198, 0.72) 23px 24px,
+      transparent 24px 36px),
+    repeating-linear-gradient(0deg,
+      transparent 0 10px,
+      rgba(255, 244, 244, 0.88) 10px 11px,
+      rgba(255, 112, 112, 0.94) 11px 14px,
+      transparent 14px 26px,
+      rgba(255, 194, 194, 0.7) 26px 27px,
+      transparent 27px 38px),
+    linear-gradient(90deg,
+      rgba(255, 206, 206, 0.12) 0%,
+      rgba(255, 250, 250, 0.92) 20%,
+      rgba(255, 92, 92, 0.96) 50%,
+      rgba(255, 250, 250, 0.92) 80%,
+      rgba(255, 206, 206, 0.12) 100%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  mix-blend-mode: screen;
+  opacity: 0.92;
+  background-size: 160px 160px, 160px 160px, 100% 100%;
+  filter: blur(0.24px) drop-shadow(0 0 10px rgba(255, 84, 84, 0.62)) drop-shadow(0 0 22px rgba(255, 44, 44, 0.34)) drop-shadow(0 0 38px rgba(255, 28, 28, 0.18));
+  animation: electricBorderNoise 560ms steps(6, end) infinite, electricBorderJitter 190ms steps(2, end) infinite, electricBorderPulse 2.1s ease-in-out infinite;
+}
+
+.electric-line {
+  position: absolute;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0.95;
+}
+
+.electric-line::before,
+.electric-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.electric-line::before {
+  background: linear-gradient(90deg, rgba(255, 188, 188, 0.16) 0%, rgba(255, 248, 248, 0.96) 18%, rgba(255, 88, 88, 0.94) 52%, rgba(255, 248, 248, 0.96) 82%, rgba(255, 188, 188, 0.16) 100%);
+  opacity: 0.74;
+  filter: drop-shadow(0 0 5px rgba(255, 88, 88, 0.56)) drop-shadow(0 0 12px rgba(255, 48, 48, 0.24));
+}
+
+.electric-line::after {
+  background: repeating-linear-gradient(90deg,
+    transparent 0 8px,
+    rgba(255, 247, 247, 0.96) 8px 9px,
+    rgba(255, 104, 104, 0.96) 9px 12px,
+    transparent 12px 20px,
+    rgba(255, 186, 186, 0.78) 20px 21px,
+    transparent 21px 31px);
+  filter: blur(0.46px) drop-shadow(0 0 7px var(--electric-glow)) drop-shadow(0 0 16px rgba(255, 32, 32, 0.42));
+  mix-blend-mode: screen;
+}
+
+.electric-line > i {
+  display: none;
+}
+
+.electric-line--top,
+.electric-line--bottom {
+  left: 10px;
+  right: 10px;
+  height: 2px;
+}
+
+.electric-line--left,
+.electric-line--right {
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+}
+
+.electric-line--top {
+  top: 0;
+  border-radius: 999px;
+}
+
+.electric-line--top::after,
+.electric-line--bottom::after {
+  animation: electricNoiseShiftX 680ms steps(7, end) infinite, electricSparkFlash 1.08s steps(4, end) infinite;
+}
+
+.electric-line--top::before {
+  animation: electricStaticFlicker 1.02s steps(4, end) infinite, electricBorderJitter 240ms steps(2, end) infinite;
+}
+
+.electric-line--right {
+  right: 0;
+  border-radius: 999px;
+}
+
+.electric-line--right::before,
+.electric-line--left::before,
+.electric-line--right::after,
+.electric-line--left::after {
+  background-size: 100% 40px;
+}
+
+.electric-line--right::before,
+.electric-line--left::before {
+  background: linear-gradient(180deg, rgba(255, 188, 188, 0.16) 0%, rgba(255, 248, 248, 0.96) 18%, rgba(255, 88, 88, 0.94) 52%, rgba(255, 248, 248, 0.96) 82%, rgba(255, 188, 188, 0.16) 100%);
+}
+
+.electric-line--right::after,
+.electric-line--left::after {
+  background: repeating-linear-gradient(180deg,
+    transparent 0 8px,
+    rgba(255, 247, 247, 0.96) 8px 9px,
+    rgba(255, 104, 104, 0.96) 9px 12px,
+    transparent 12px 20px,
+    rgba(255, 186, 186, 0.78) 20px 21px,
+    transparent 21px 31px);
+  filter: blur(0.6px) drop-shadow(0 0 7px var(--electric-glow)) drop-shadow(0 0 16px rgba(255, 32, 32, 0.42));
+}
+
+.electric-line--right::before,
+.electric-line--left::before {
+  filter: drop-shadow(0 0 5px rgba(255, 88, 88, 0.56)) drop-shadow(0 0 12px rgba(255, 48, 48, 0.24));
+}
+
+.electric-line--right::after {
+  animation: electricNoiseShiftY 720ms steps(7, end) infinite 0.12s, electricSparkFlash 1.05s steps(4, end) infinite 0.08s;
+}
+
+.electric-line--right::before {
+  animation: electricStaticFlicker 1.16s steps(4, end) infinite 0.1s, electricBorderJitter 250ms steps(2, end) infinite 0.04s;
+}
+
+.electric-line--bottom {
+  bottom: 0;
+  border-radius: 999px;
+}
+
+.electric-line--bottom::after {
+  animation: electricNoiseShiftX 760ms steps(7, end) infinite reverse, electricSparkFlash 1.16s steps(4, end) infinite 0.12s;
+}
+
+.electric-line--bottom::before {
+  animation: electricStaticFlicker 1.14s steps(4, end) infinite 0.22s, electricBorderJitter 260ms steps(2, end) infinite 0.08s;
+}
+
+.electric-line--left {
+  left: 0;
+  border-radius: 999px;
+}
+
+.electric-line--left::after {
+  animation: electricNoiseShiftY 690ms steps(7, end) infinite reverse, electricSparkFlash 1.12s steps(4, end) infinite 0.16s;
+}
+
+.electric-line--left::before {
+  animation: electricStaticFlicker 1.12s steps(4, end) infinite 0.18s, electricBorderJitter 230ms steps(2, end) infinite 0.1s;
+}
+
+.electric-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 250, 250, 0.98) 0%, rgba(255, 116, 116, 0.9) 30%, rgba(255, 56, 56, 0.38) 58%, rgba(255, 56, 56, 0) 76%);
+  filter: blur(0.18px) drop-shadow(0 0 8px rgba(255, 82, 82, 0.8)) drop-shadow(0 0 18px rgba(255, 36, 36, 0.44));
+  animation: electricCornerPulse 1.12s steps(4, end) infinite, electricBorderJitter 220ms steps(2, end) infinite;
+}
+
+.electric-corner--top-left {
+  top: -6px;
+  left: -6px;
+}
+
+.electric-corner--top-right {
+  top: -6px;
+  right: -6px;
+  animation-delay: 0.25s;
+}
+
+.electric-corner--bottom-right {
+  right: -6px;
+  bottom: -6px;
+  animation-delay: 0.5s;
+}
+
+.electric-corner--bottom-left {
+  bottom: -6px;
+  left: -6px;
+  animation-delay: 0.75s;
 }
 
 /* card */
@@ -3115,11 +3354,15 @@ body.page-index .footer {
   border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
+  z-index: 1;
 
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(15px);
 
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 108, 108, 0.26);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 14px 32px rgba(0, 0, 0, 0.2);
 
   transform: translateY(80px);
   opacity: 0;
@@ -3187,10 +3430,12 @@ body.page-index .footer {
 }
 
 .card:hover .card-title-label,
+.card-link:focus-visible .card-title-label,
 .card-link:hover .card-title-label {
   color: #fff;
-  background: rgba(176, 36, 36, 0.58);
-  border-color: rgba(176, 36, 36, 0.62);
+  background: rgba(168, 28, 28, 0.56);
+  border-color: rgba(255, 95, 95, 0.52);
+  box-shadow: 0 0 18px rgba(255, 86, 86, 0.18);
 }
 
 /* botão neon */
@@ -3215,9 +3460,37 @@ body.page-index .footer {
 .card:hover {
   transform: scale(1.05) translateY(-10px);
   box-shadow:
-    0 0 10px #ff1744,
-    0 0 30px #ff1744,
-    0 0 60px rgba(255, 23, 68, 0.6);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 0 1px rgba(255, 102, 102, 0.28),
+    0 0 16px rgba(255, 74, 74, 0.26),
+    0 0 28px rgba(255, 62, 62, 0.14),
+    0 18px 42px rgba(0, 0, 0, 0.3);
+}
+
+.card-link:hover .electric-line,
+.card-link:focus-visible .electric-line {
+  opacity: 1;
+}
+
+.card-link:hover .electric-frame::before,
+.card-link:focus-visible .electric-frame::before {
+  border-color: rgba(255, 156, 156, 0.58);
+  box-shadow:
+    inset 0 0 18px rgba(255, 84, 84, 0.2),
+    0 0 16px rgba(255, 58, 58, 0.32),
+    0 0 30px rgba(255, 38, 38, 0.24),
+    0 0 48px rgba(255, 26, 26, 0.16);
+}
+
+.card-link:hover .electric-frame::after,
+.card-link:focus-visible .electric-frame::after {
+  opacity: 1;
+  filter: blur(0.24px) drop-shadow(0 0 14px rgba(255, 100, 100, 0.72)) drop-shadow(0 0 28px rgba(255, 46, 46, 0.5)) drop-shadow(0 0 46px rgba(255, 28, 28, 0.24));
+}
+
+.card-link:hover .electric-corner,
+.card-link:focus-visible .electric-corner {
+  filter: blur(0.18px) drop-shadow(0 0 11px rgba(255, 82, 82, 0.9)) drop-shadow(0 0 24px rgba(255, 36, 36, 0.56));
 }
 
 .card:hover img {
@@ -3241,6 +3514,189 @@ body.page-index .footer {
 
 .card:hover::before {
   opacity: 1;
+}
+
+@keyframes electricTravelX {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 48px 0;
+  }
+}
+
+@keyframes electricTravelXReverse {
+  0% {
+    background-position: 48px 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes electricTravelY {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 0 48px;
+  }
+}
+
+@keyframes electricTravelYReverse {
+  0% {
+    background-position: 0 48px;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes electricLineFlash {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+
+  14% {
+    opacity: 1;
+  }
+
+  15% {
+    opacity: 0.58;
+  }
+
+  37% {
+    opacity: 0.98;
+  }
+
+  38% {
+    opacity: 0.62;
+  }
+
+  61% {
+    opacity: 1;
+  }
+
+  62% {
+    opacity: 0.68;
+  }
+}
+
+@keyframes electricSecondaryFlash {
+  0%,
+  100% {
+    opacity: 0.44;
+  }
+
+  24% {
+    opacity: 0.82;
+  }
+
+  25% {
+    opacity: 0.42;
+  }
+
+  56% {
+    opacity: 0.78;
+  }
+
+  57% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes electricCornerPulse {
+  0%,
+  100% {
+    opacity: 0.54;
+    transform: scale(0.88);
+  }
+
+  25% {
+    opacity: 0.96;
+    transform: scale(1.04);
+  }
+
+  26% {
+    opacity: 0.52;
+    transform: scale(0.9);
+  }
+
+  62% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  63% {
+    opacity: 0.56;
+    transform: scale(0.92);
+  }
+}
+
+@keyframes electricNoiseShiftX {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 42px 0;
+  }
+}
+
+@keyframes electricNoiseShiftY {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 0 42px;
+  }
+}
+
+@keyframes electricBorderNoise {
+  0% {
+    background-position: 0 0, 0 0, 0 0;
+  }
+
+  100% {
+    background-position: 44px 0, 0 44px, 0 0;
+  }
+}
+
+@keyframes electricSparkFlash {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  16% {
+    opacity: 1;
+  }
+
+  17% {
+    opacity: 0.52;
+  }
+
+  49% {
+    opacity: 0.96;
+  }
+
+  50% {
+    opacity: 0.58;
+  }
+
+  74% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0.64;
+  }
 }
 
 @media screen and (max-width: 560px) {
@@ -3280,6 +3736,29 @@ body.page-index .footer {
 
   .containerk .item img {
     pointer-events: none;
+  }
+
+  .containerk .item {
+    border: 1px solid rgba(255, 102, 102, 0.28);
+    box-shadow:
+      0 0 0 1px rgba(255, 94, 94, 0.18),
+      0 0 16px rgba(255, 84, 84, 0.18),
+      0 18px 36px rgba(0, 0, 0, 0.24);
+  }
+
+  .containerk .item::before {
+    opacity: 0.34;
+    background:
+      radial-gradient(circle at 18% 22%, rgba(255, 114, 114, 0.4) 0%, rgba(255, 114, 114, 0) 30%),
+      radial-gradient(circle at 82% 78%, rgba(255, 78, 78, 0.3) 0%, rgba(255, 78, 78, 0) 28%),
+      conic-gradient(from 0deg, rgba(255, 255, 255, 0) 0deg, rgba(255, 86, 86, 0.72) 72deg, rgba(255, 255, 255, 0) 145deg, rgba(255, 92, 92, 0.64) 250deg, rgba(255, 255, 255, 0) 360deg);
+    animation: cardRingRotate 8s linear infinite;
+  }
+
+  .containerk .item::after {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.1) 48%, rgba(0, 0, 0, 0.52) 100%),
+      linear-gradient(135deg, rgba(255, 110, 110, 0.08), rgba(255, 110, 110, 0) 35%, rgba(255, 72, 72, 0.12) 100%);
   }
 
   .card-title-label--revisoes,
@@ -5046,5 +5525,47 @@ body.is-submitting-agendamento {
 @media screen and (max-width: 540px) {
   body.page-pecas .footer {
     margin-top: 96px;
+  }
+}
+
+@keyframes electricBorderJitter {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(0.35px, -0.2px);
+  }
+
+  50% {
+    transform: translate(-0.3px, 0.24px);
+  }
+
+  75% {
+    transform: translate(0.25px, 0.15px);
+  }
+}
+
+@keyframes electricBorderPulse {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+
+  22% {
+    opacity: 0.98;
+  }
+
+  23% {
+    opacity: 0.7;
+  }
+
+  58% {
+    opacity: 1;
+  }
+
+  59% {
+    opacity: 0.76;
   }
 }
