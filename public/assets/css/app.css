@@ -5276,15 +5276,39 @@ body.is-submitting-agendamento {
   padding: 12px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 4px;
+}
+
+.profile-stat-card-link {
+  color: #fff;
+  text-decoration: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+.profile-stat-card-link:link,
+.profile-stat-card-link:visited,
+.profile-stat-card-link:active {
+  color: #fff;
+  text-decoration: none;
+}
+
+.profile-stat-card-link:hover,
+.profile-stat-card-link:focus-visible {
+  text-decoration: none;
+  border-color: rgba(255, 255, 255, 0.42);
 }
 
 .profile-stat-card strong {
   font-size: 22px;
+  color: #fff;
 }
 
 .profile-stat-card span {
   font-size: 13px;
+  color: #fff;
   opacity: 0.9;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -5517,6 +5541,11 @@ body.is-submitting-agendamento {
 }
 
 @media (max-width: 640px) {
+  .profile-stat-card-link {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
   .profile-hero {
     padding: 18px;
   }

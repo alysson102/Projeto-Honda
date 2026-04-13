@@ -10,6 +10,7 @@ $profilePhotoPath = isset($user['profile_photo']) && is_string($user['profile_ph
 $profilePhotoUrl = url($profilePhotoPath);
 $formattedPhone = old('telefone', (string) ($user['telefone'] ?? ''));
 $totalAgendamentos = count($agendamentos);
+$agendamentosLabel = $totalAgendamentos === 1 ? 'Agendamento' : 'Agendamentos';
 
 $statusLabelMap = [
     'pendente' => 'Pendente',
@@ -45,10 +46,10 @@ $hoje = new \DateTimeImmutable('today');
                 <p>Gerencie seus dados e acompanhe todos os seus agendamentos em um único painel.</p>
 
                 <div class="profile-stats">
-                    <div class="profile-stat-card">
+                    <a href="#meus-agendamentos" class="profile-stat-card profile-stat-card-link" aria-label="Ir para meus agendamentos">
                         <strong><?= e((string) $totalAgendamentos) ?></strong>
-                        <span>Agendamentos</span>
-                    </div>
+                        <span><?= e($agendamentosLabel) ?></span>
+                    </a>
                     <!--<div class="profile-stat-card">
                         <strong><//?= e((string) $user['id']) ?></strong>
                         <span>ID do Cliente</span>
