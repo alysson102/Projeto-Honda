@@ -1716,7 +1716,8 @@ body.page-home main {
   color: rgba(255, 255, 255, 0.38);
 }
 
-.revisoes-calc-field input {
+.revisoes-calc-field input,
+.revisoes-calc-field select {
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 10px;
@@ -1730,9 +1731,24 @@ body.page-home main {
   width: 100%;
 }
 
-.revisoes-calc-field input:focus {
+.revisoes-calc-field select {
+  background: rgba(183, 28, 28, 0.14);
+  border-color: rgba(241, 69, 69, 0.18);
+}
+
+.revisoes-calc-field select option {
+  background: #6f1414;
+  color: #fff;
+}
+
+.revisoes-calc-field select option:disabled {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.revisoes-calc-field input:focus,
+.revisoes-calc-field select:focus {
   border-color: #f14545;
-  background: rgba(241, 69, 69, 0.08);
+  background: rgba(241, 69, 69, 0.1);
 }
 
 .revisoes-calc-btn {

@@ -482,13 +482,13 @@
   // --- Calculadora de Revisões ---
   const calcBtn     = document.getElementById('calc-btn');
   const calcEntrega = document.getElementById('calc-entrega');
+  const calcRevisao = document.getElementById('calc-revisao');
   const calcKmInput = document.getElementById('calc-km');
   const calcResults = document.getElementById('calc-results');
   const calcError   = document.getElementById('calc-error');
-  const calcCard1   = document.getElementById('calc-card-1');
-  const calcCard2   = document.getElementById('calc-card-2');
+  const calcCard    = document.getElementById('calc-card');
 
-  if (calcBtn && calcEntrega && calcResults && calcCard1 && calcCard2) {
+  if (calcBtn && calcEntrega && calcRevisao && calcResults && calcCard) {
 
     // Define hoje como data máxima do input de entrega
     calcEntrega.max = new Date().toISOString().split('T')[0];
@@ -508,6 +508,13 @@
         return;
       }
 
+      if (!calcRevisao.value) {
+        calcError.textContent = 'Selecione qual revisão deseja calcular.';
+        calcError.hidden = false;
+        calcResults.hidden = true;
+        return;
+      }
+
       calcError.hidden = true;
 
       const entrega = new Date(calcEntrega.value + 'T00:00:00');
@@ -521,35 +528,57 @@
       const consultorLink = calcResults.dataset.consultorLink || '';
       const agendamentoLink = calcResults.dataset.agendamentoLink || '';
 
-      const prazo1 = adicionarMeses(entrega, 6);
-      const prazo2 = adicionarMeses(entrega, 12);
-      const status1 = calcStatusClass(prazo1, hoje, 900, 1100, kmAtual);
-      const status2 = calcStatusClass(prazo2, hoje, 5400, 6600, kmAtual);
-      const revisao1Vencida = calcRevisaoVencida(prazo1, hoje, 1100, kmAtual);
-      const revisao2Vencida = calcRevisaoVencida(prazo2, hoje, 6600, kmAtual);
-      const ambasEmDia = !revisao1Vencida && !revisao2Vencida;
-      const mostrarCard1 = ambasEmDia || revisao1Vencida;
-      const mostrarCard2 = ambasEmDia || revisao2Vencida;
-
-      calcCard1.hidden = !mostrarCard1;
-      calcCard2.hidden = !mostrarCard2;
-
-      if (mostrarCard1) {
-        calcCard1.className = 'revisoes-calc-result-card ' + status1;
-        calcCard1.innerHTML = calcCardHTML('1ª Revisão Gratuita', prazo1, hoje, 900, 1100, kmAtual, consultorLink, agendamentoLink);
-      } else {
-        calcCard1.innerHTML = '';
+      const revisaoSelecionada = parseRevisaoSelecionada(calcRevisao.value);
+      if (!revisaoSelecionada) {
+        calcError.textContent = 'Opção de revisão inválida.';
+        calcError.hidden = false;
+        calcResults.hidden = true;
+        return;
       }
 
-      if (mostrarCard2) {
-        calcCard2.className = 'revisoes-calc-result-card ' + status2;
-        calcCard2.innerHTML = calcCardHTML('2ª Revisão Gratuita', prazo2, hoje, 5400, 6600, kmAtual, consultorLink, agendamentoLink);
-      } else {
-        calcCard2.innerHTML = '';
-      }
+      const faixaKm = calcFaixaKm(revisaoSelecionada.kmAlvo);
+      const prazo = adicionarMeses(entrega, revisaoSelecionada.meses);
+      const status = calcStatusClass(prazo, hoje, faixaKm.kmMin, faixaKm.kmMax, kmAtual);
+
+      calcCard.className = 'revisoes-calc-result-card ' + status;
+      calcCard.innerHTML = calcCardHTML(
+        revisaoSelecionada.titulo,
+        prazo,
+        hoje,
+        faixaKm.kmMin,
+        faixaKm.kmMax,
+        kmAtual,
+        consultorLink,
+        agendamentoLink,
+      );
 
       calcResults.hidden = false;
     });
+  }
+
+  function parseRevisaoSelecionada(valor) {
+    const partes = valor.split('|');
+    if (partes.length !== 2) return null;
+
+    const kmAlvo = Number.parseInt(partes[0], 10);
+    const meses = Number.parseInt(partes[1], 10);
+
+    if (Number.isNaN(kmAlvo) || Number.isNaN(meses)) return null;
+
+    return {
+      kmAlvo,
+      meses,
+      titulo: 'Revisão de ' + kmAlvo.toLocaleString('pt-BR') + ' km ou ' + meses + ' meses',
+    };
+  }
+
+  function calcFaixaKm(kmAlvo) {
+    const tolerancia = Math.round(kmAlvo * 0.1);
+
+    return {
+      kmMin: Math.max(0, kmAlvo - tolerancia),
+      kmMax: kmAlvo + tolerancia,
+    };
   }
 
   function adicionarMeses(data, meses) {
@@ -637,6 +666,7 @@
     const dias = diffDias(hoje, prazo);
     const diasAtraso = Math.max(0, -dias);
     const kmExcedente = kmAtual !== null && kmAtual > kmMax ? kmAtual - kmMax : 0;
+    const perdeuGarantia = diasAtraso > 0 || kmExcedente > 100;
     const kmPassou = kmExcedente > 0;
     const kmNaFaixa = kmAtual !== null && kmAtual >= kmMin && kmAtual <= kmMax;
     const prazoVenc = dias < 0;
@@ -675,7 +705,7 @@
       prazoDesc = dias <= 3
         ? '<span class="revisoes-calc-inline-warning"><span class="revisoes-calc-inline-alert">Atenção</span><span>prazo próximo do vencimento.</span></span>'
         : 'Você está na faixa ideal.';
-      prazoAcaoHTML = agendamentoLink
+      prazoAcaoHTML = !perdeuGarantia && agendamentoLink
         ? '<a class="revisoes-calc-agendar-link" href="' + agendamentoLink + '">Agende já!</a>'
         : '';
     } else if (prazoNaFaixa) {
@@ -693,7 +723,7 @@
 
     // Linha de km atual (se informado e sem alerta somente por prazo)
     let kmLinhaHTML = '';
-    if (kmAtual !== null && !avisoSomentePorPrazo) {
+    if (kmAtual !== null && !avisoSomentePorPrazo && !perdeuGarantia) {
       let kmDesc;
       let kmAcaoHTML = '';
 
@@ -705,7 +735,7 @@
         kmDesc = kmRestanteParaLimite <= 100
           ? '<span class="revisoes-calc-inline-warning"><span class="revisoes-calc-inline-alert">Atenção</span><span>km próximo do limite.</span></span>'
           : 'Você está na faixa ideal.';
-        kmAcaoHTML = agendamentoLink
+        kmAcaoHTML = !perdeuGarantia && agendamentoLink
           ? '<a class="revisoes-calc-agendar-link" href="' + agendamentoLink + '">Agende já!</a>'
           : '';
       } else {

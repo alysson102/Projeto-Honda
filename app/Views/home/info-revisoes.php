@@ -69,6 +69,23 @@ $revisoesPeriodicas = [
                         <input type="date" id="calc-entrega">
                     </div>
                     <div class="revisoes-calc-field">
+                        <label for="calc-revisao">Qual revisão deseja calcular</label>
+                        <select id="calc-revisao" required aria-required="true">
+                            <option value="" selected disabled>Selecione a revisão</option>
+                            <option value="1000|6">Revisão de 1.000 km ou 6 meses</option>
+                            <option value="6000|12">Revisão de 6.000 km ou 12 meses</option>
+                            <?php foreach ($revisoesPeriodicas as $revisaoPeriodica): ?>
+                                <?php
+                                    $kmNumerico = (int) preg_replace('/\D+/', '', $revisaoPeriodica['km']);
+                                    $mesesNumerico = (int) preg_replace('/\D+/', '', $revisaoPeriodica['meses']);
+                                ?>
+                                <option value="<?= e((string) $kmNumerico) ?>|<?= e((string) $mesesNumerico) ?>">
+                                    Revisão de <?= e($revisaoPeriodica['km']) ?> ou <?= e($revisaoPeriodica['meses']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="revisoes-calc-field">
                         <label for="calc-km">Quilometragem atual</label>
                         <input type="number" id="calc-km" placeholder="Ex: 750" min="0" step="1" required>
                     </div>
@@ -80,8 +97,7 @@ $revisoesPeriodicas = [
                 <p class="revisoes-calc-hint" id="calc-error" hidden></p>
 
                 <div class="revisoes-calc-results" id="calc-results" data-consultor-link="<?= e($consultorWhatsappLink) ?>" data-agendamento-link="<?= e(url('/agendamento')) ?>" hidden>
-                    <div class="revisoes-calc-result-card" id="calc-card-1"></div>
-                    <div class="revisoes-calc-result-card" id="calc-card-2"></div>
+                    <div class="revisoes-calc-result-card" id="calc-card"></div>
                     <p class="revisoes-calc-disclaimer">
                         ⚠️ Vale o que ocorrer primeiro: prazo ou quilometragem.
                     </p>
