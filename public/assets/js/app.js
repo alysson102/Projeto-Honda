@@ -697,10 +697,14 @@
       let kmDesc;
       let kmAcaoHTML = '';
 
+      const kmRestanteParaLimite = kmMax - kmAtual;
+
       if (kmAtual < kmMin) {
         kmDesc = 'Faltam ' + (kmMin - kmAtual).toLocaleString('pt-BR') + ' km para o início da faixa';
       } else if (kmAtual <= kmMax) {
-        kmDesc = 'Você está na faixa ideal.';
+        kmDesc = kmRestanteParaLimite <= 100
+          ? '<span class="revisoes-calc-inline-warning"><span class="revisoes-calc-inline-alert">Atenção</span><span>km próximo do limite.</span></span>'
+          : 'Você está na faixa ideal.';
         kmAcaoHTML = agendamentoLink
           ? '<a class="revisoes-calc-agendar-link" href="' + agendamentoLink + '">Agende já!</a>'
           : '';
