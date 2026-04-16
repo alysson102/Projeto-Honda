@@ -36,14 +36,14 @@
         <article class="info-card">
             <h2>Nossa Missão</h2>
             <p>
-                Nossa missão é oferecer soluções completas para motociclistas, garantindo acesso a peças de alta qualidade e serviços especializados que mantêm cada moto em perfeito funcionamento. Inspirados pelo legado de Soichiro Honda e pelos padrões de excelência da Honda Motor Co., trabalhamos com compromisso, transparência e dedicação para proporcionar segurança, desempenho e confiança em cada atendimento. Nosso objetivo é cuidar da sua motocicleta como se fosse nossa, entregando sempre o melhor para você.
+                Nossa missão é oferecer soluções completas para motociclistas, garantindo acesso a peças de alta qualidade e serviços especializados que mantêm cada moto em perfeito funcionamento. Inspirados pelo legado de Soichiro Honda trabalhamos com compromisso, transparência e dedicação para proporcionar segurança, desempenho e confiança em cada atendimento. Nosso objetivo é cuidar da sua motocicleta como se fosse nossa, entregando sempre o melhor para você.
             </p>
         </article>
 
         <article class="info-card">
             <h2>Compromisso com Segurança</h2>
             <p>
-               Nosso compromisso com a segurança está em cada detalhe do que oferecemos. Trabalhamos apenas com peças de qualidade e seguimos padrões rigorosos de instalação e manutenção, garantindo que sua motocicleta esteja sempre em condições ideais de uso. Inspirados pela excelência de Soichiro Honda e pelos princípios da Honda Motor Co., priorizamos a confiança, a responsabilidade e o cuidado em cada serviço realizado. Assim, você pode pilotar com tranquilidade, sabendo que sua segurança vem sempre em primeiro lugar.
+               Nosso compromisso com a segurança está em cada detalhe do que oferecemos. Trabalhamos apenas com peças de qualidade e seguimos padrões rigorosos de instalação e manutenção, garantindo que sua motocicleta esteja sempre em condições ideais de uso. Inspirados pela excelência de Soichiro Honda priorizamos a confiança, a responsabilidade e o cuidado em cada serviço realizado. Assim, você pode pilotar com tranquilidade, sabendo que sua segurança vem sempre em primeiro lugar.
             </p>
         </article>
     </div>
