@@ -3382,19 +3382,48 @@ body.page-index .footer {
     inset 0 0 0 1px rgba(255, 255, 255, 0.06),
     0 14px 32px rgba(0, 0, 0, 0.2);
 
-  transform: translateY(80px);
+  transform: translateY(80px) scale(0.85);
   opacity: 0;
+  filter: blur(8px);
 
   transition:
-    transform 0.6s ease,
-    opacity 0.6s ease,
-    box-shadow 0.4s ease;
+    transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.8s ease,
+    filter 0.8s ease,
+    box-shadow 0.6s ease;
 }
 
 /* ativado ao aparecer */
 .card.show {
-  transform: translateY(0);
-  opacity: 1;
+  animation: cardEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes cardEntrance {
+  0% {
+    transform: translateY(80px) scale(0.85);
+    opacity: 0;
+    filter: blur(8px);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+      0 14px 32px rgba(0, 0, 0, 0.2),
+      0 0 0 rgba(255, 74, 74, 0);
+  }
+
+  50% {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+      0 14px 32px rgba(0, 0, 0, 0.2),
+      0 0 30px rgba(255, 74, 74, 0.4);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+      0 14px 32px rgba(0, 0, 0, 0.2);
+  }
 }
 
 /* imagem */

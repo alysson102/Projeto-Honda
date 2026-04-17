@@ -2,7 +2,14 @@
   const cardObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('show');
+        const cards = entry.target.closest('.cards-container')?.querySelectorAll('.card') || [entry.target];
+        cards.forEach((card, index) => {
+          if (!card.classList.contains('show')) {
+            setTimeout(() => {
+              card.classList.add('show');
+            }, index * 120);
+          }
+        });
         cardObserver.unobserve(entry.target);
       }
     });
