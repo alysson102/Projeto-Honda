@@ -117,6 +117,21 @@ nav.nav{
     display: flex;
     align-items: center;
     gap: 8px;
+    position: relative;
+}
+
+.nav-indicator {
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ffffff, #ff1744);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4), 0 0 12px rgba(255, 23, 68, 0.2);
+  border-radius: 999px;
+  transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 10;
+  pointer-events: none;
 }
 
 nav.nav a{
@@ -161,24 +176,16 @@ nav.nav a:hover{
 }
 
 nav.nav a::after{
-  content: "";
-  position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: 3px;
-  background: #fff;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.2s ease;
+  display: none;
 }
 
 nav.nav a.is-active{
-  background: rgba(255, 255, 255, 0.18);
+  background: transparent;
   opacity: 1;
 }
 
 nav.nav a.is-active::after{
-  transform: scaleX(1);
+  display: none;
 }
 
 .footer{

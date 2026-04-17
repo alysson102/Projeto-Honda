@@ -95,6 +95,7 @@ if ($currentRequestPath === '/agendamento') {
             </div>-->
 
                 <nav class="nav" id="site-menu" aria-label="Menu principal">
+                    <div class="nav-indicator"></div>
                     <a class="<?= $homeActive ? 'is-active' : '' ?>" href="<?= e(url('/')) ?>" <?= $homeActive ? 'aria-current="page"' : '' ?>>Home</a>
                     <a class="<?= $aboutActive ? 'is-active' : '' ?>" href="<?= e(url('/about')) ?>" <?= $aboutActive ? 'aria-current="page"' : '' ?>>Sobre</a>
                     <a class="<?= $contactActive ? 'is-active' : '' ?>" href="<?= e(url('/contact')) ?>" <?= $contactActive ? 'aria-current="page"' : '' ?>>Contato</a>

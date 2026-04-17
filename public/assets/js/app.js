@@ -17,6 +17,39 @@
 
   document.querySelectorAll('.card').forEach((card) => cardObserver.observe(card));
 
+  // Animated nav indicator - define early
+  const navMenu = document.getElementById('site-menu');
+  const navIndicator = navMenu?.querySelector('.nav-indicator');
+  
+  const updateNavIndicator = () => {
+    if (!navMenu || !navIndicator) return;
+    const activeLink = navMenu.querySelector('a.is-active');
+    const logoutBtn = navMenu.querySelector('.nav-logout-btn');
+    const elementToTrack = activeLink || logoutBtn;
+    if (!elementToTrack) return;
+    
+    const navRect = navMenu.getBoundingClientRect();
+    const elemRect = elementToTrack.getBoundingClientRect();
+    
+    // Get text content width
+    const textRange = document.createRange();
+    textRange.selectNodeContents(elementToTrack);
+    const textRect = textRange.getBoundingClientRect();
+    
+    const left = elemRect.left - navRect.left;
+    const textWidth = textRect.width;
+    const elemWidth = elemRect.width;
+    const offsetLeft = (elemWidth - textWidth) / 2;
+    
+    navIndicator.style.left = `${left + offsetLeft}px`;
+    navIndicator.style.width = `${textWidth}px`;
+  };
+  
+  if (navMenu && navIndicator) {
+    updateNavIndicator();
+    window.addEventListener('resize', updateNavIndicator);
+  }
+
   const menuToggle = document.querySelector('.menu-toggle');
   const siteMenu = document.getElementById('site-menu');
 
@@ -25,17 +58,32 @@
       const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
       menuToggle.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
       document.body.classList.toggle('menu-open', !isExpanded);
+      setTimeout(() => {
+        updateNavIndicator();
+      }, 300);
     });
 
     siteMenu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         menuToggle.setAttribute('aria-expanded', 'false');
         document.body.classList.remove('menu-open');
+        setTimeout(() => {
+          updateNavIndicator();
+        }, 50);
       });
     });
   }
 
   const passwordToggleBindings = [];
+
+  // Update indicator on nav link clicks
+  if (navMenu) {
+    navMenu.querySelectorAll('a, .nav-logout-btn').forEach((element) => {
+      element.addEventListener('click', () => {
+        setTimeout(updateNavIndicator, 50);
+      });
+    });
+  }
 
   const forgotPasswordLink = document.querySelector('.forgot-password-link');
   if (forgotPasswordLink) {
