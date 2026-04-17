@@ -170,7 +170,7 @@ if ($currentRequestPath === '/agendamento') {
                         <button type="submit" class="login-submit">Entrar</button>
                         <div class="login-access-links" aria-label="Links de acesso">
                             <a href="<?= e(url('/register')) ?>" class="login-access-link">Registrar</a>
-                            <a href="#" class="login-access-link" onclick="return false;" aria-disabled="true">Esqueceu a senha?</a>
+                            <a href="#" class="login-access-link forgot-password-link" aria-disabled="true">Esqueceu a senha?</a>
                         </div>
                     </form>
                 </div>

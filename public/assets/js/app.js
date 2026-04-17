@@ -30,6 +30,13 @@
 
   const passwordToggleBindings = [];
 
+  const forgotPasswordLink = document.querySelector('.forgot-password-link');
+  if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener('click', (e) => {
+      e.preventDefault();
+    });
+  }
+
   document.querySelectorAll('.password-toggle').forEach((button) => {
     const targetSelector = button.getAttribute('data-target');
     if (!targetSelector) {
